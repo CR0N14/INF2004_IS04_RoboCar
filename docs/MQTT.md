@@ -189,3 +189,27 @@ kernel semaphore, whose count the kernel updates atomically.
 
 For MQTT, fields are packed with explicit shifts (`bitpack.c`), not by sending
 C structs, because bit-field layout is compiler-defined and would add padding.
+
+## Testing with a broker
+
+1. Run a broker on a PC on the same 2.4 GHz network as the car, e.g.
+   Mosquitto. Mosquitto 2.x only accepts local clients by default, so start
+   it with a config file containing:
+
+   ```
+   listener 1883 0.0.0.0
+   allow_anonymous true
+   ```
+
+   `mosquitto -c that_file.conf -v`. Allow port 1883 through the PC's
+   firewall.
+2. Copy `config/wifi_secrets.example.h` to `config/wifi_secrets.h`, set the
+   SSID, password and `MQTT_BROKER_IP` (the PC's IP address).
+3. Build with `make NET=lwip MQTT=1 -j8` and flash
+   `mtk3pico_smp1_usb_cdc_wifi_lwip_mqtt.uf2`.
+4. `pip install paho-mqtt`, then `python tools/base_station.py monitor` (add
+   `--host <broker IP>` if the broker is on another machine). In a second
+   terminal: `ping`, `start`, `stop`, `bind A=left ...`.
+
+`monitor --sizes` prints each frame's binary size next to the size of the
+same data as JSON, for the Week 13 message-size comparison.
