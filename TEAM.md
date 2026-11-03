@@ -176,6 +176,7 @@ sends to it or waits on it. Agree on the data format before coding.
 | IF-03 | S1 State Machine → all | 32-bit status word, single writer | `sm_status_word()` | state, nav mode, fault mask; decode with `SM_STATUS_*()`; updated before the mode flags | S1 |
 | IF-04 | S1 State Machine → S2 | message buffer (owned by S1) | `mbf_nav_cmd` | 1 byte `SM_NAV_CMD_PACK(cmd, arg)`: turn, hold, avoid; S2 receives with `TMO_POL` | S1, S2 |
 | IF-05 | S1 State Machine → S3 | function, table under a mutex (owned by S1) | `sm_barcode_lookup()` | barcode symbol 0..25 (`'A'..'Z'`) → `sm_action_t` | S1, S3 |
+| IF-07 | S2, S3, S4, S5 → S1 Networking | snapshot copied under the owner's mutex | `s2_get_tlm()` … `s5_get_tlm()` | `sN_tlm_t` in each `subsystemN.h`; S1 reads every 200 ms; weak stub returns `E_NOSPT` until implemented | S1 (draft, owners to confirm) |
 
 Each interface is tested by at least one integration test
 (`testing/integration/TEST_LOG.md`).
