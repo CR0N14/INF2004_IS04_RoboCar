@@ -1,6 +1,6 @@
 /*
  *	subsystem5.c
- *	Subsystem 5 -- <name>.  EMPTY TEMPLATE.
+ *	Subsystem 5 -- Adaptive Ultrasonic Scanning and Obstacle Profiling.  EMPTY TEMPLATE.
  *
  *	subsystem5_init():  create this subsystem's kernel objects
  *	                    (semaphores, mailboxes, ...).  Do not start
@@ -10,7 +10,7 @@
  *	    return (tid < E_OK) ? tid : E_OK;
  *
  *	Drivers for this subsystem's hardware go in this folder as
- *	drv_<name>.c / drv_<name>.h, called only from the task that owns
+ *	drv_Adaptive Ultrasonic Scanning and Obstacle Profiling.c / drv_Adaptive Ultrasonic Scanning and Obstacle Profiling.h, called only from the task that owns
  *	the peripheral (TEAM.md section 3).
  *
  *	Record every pin, task, object and interface in TEAM.md.

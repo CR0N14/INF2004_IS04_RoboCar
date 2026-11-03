@@ -1,35 +1,29 @@
 /*
  *	subsystem1.c
- *	Subsystem 1 -- LED heartbeat: creates its objects and starts its task.
+ *	Subsystem 1 -- WiFi Communication, Command and Telemetry + State Machine.  EMPTY TEMPLATE.
  *
- *	APIs shown: tk_cre_cyc, tk_sta_cyc
+ *	subsystem1_init():  create this subsystem's kernel objects
+ *	                    (semaphores, mailboxes, ...).  Do not start
+ *	                    tasks here.
+ *	subsystem1_start(): create and start this subsystem's tasks, e.g.
+ *	    ID tid = app_start_task(my_task, S1_PRI_MAIN, 0, "my_task");
+ *	    return (tid < E_OK) ? tid : E_OK;
+ *
+ *	Drivers for this subsystem's hardware go in this folder as
+ *	drv_WiFi Communication, Command and Telemetry + State Machine.c / drv_WiFi Communication, Command and Telemetry + State Machine.h, called only from the task that owns
+ *	the peripheral (TEAM.md section 3).
+ *
+ *	Record every pin, task, object and interface in TEAM.md.
  */
 
 #include "subsystem1.h"
 
-EXPORT ID	tid_led;	/* IF-05, see subsystem1.h */
-EXPORT ID	cyc_led;
-
 EXPORT ER subsystem1_init(void)
 {
-	T_CCYC	ccyc = {0};
-
-	/* Cyclic handler: once started, the kernel calls led_cyclic_handler
-	   every S1_TICK_MS.  Without TA_STA it is created stopped; it is
-	   started in subsystem1_start(), once the task it wakes exists. */
-	ccyc.cycatr = TA_HLNG;
-	ccyc.cychdr = (FP)led_cyclic_handler;
-	ccyc.cyctim = S1_TICK_MS;	/* period, ms */
-	ccyc.cycphs = S1_TICK_MS;	/* delay before the first call, ms */
-	cyc_led = tk_cre_cyc(&ccyc);
-	return (cyc_led < E_OK) ? cyc_led : E_OK;
+	return E_OK;
 }
 
 EXPORT ER subsystem1_start(void)
 {
-	tid_led = app_start_task(led_task, S1_PRI_LED, 0, "led_task");
-	if (tid_led < E_OK) {
-		return tid_led;
-	}
-	return tk_sta_cyc(cyc_led);	/* start the cyclic handler now */
+	return E_OK;
 }

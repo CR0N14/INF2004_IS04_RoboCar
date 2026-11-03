@@ -1,6 +1,6 @@
 # Subsystem 5 — test log
 
-**Subsystem:** <name>  ·  **Student ID:** <student ID>  ·  **Code:** `app_program/subsystem5/`
+**Subsystem:** Adaptive Ultrasonic Scanning and Obstacle Profiling  ·  **Student ID:** 2303571  ·  **Code:** `app_program/subsystem5/`
 
 See `testing/README.md` for how to run tests and record results.
 
