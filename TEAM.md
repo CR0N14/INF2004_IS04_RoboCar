@@ -165,7 +165,11 @@ sends to it or waits on it. Agree on the data format before coding.
 
 | ID | From → To | Mechanism | Object ID name | Data / meaning | Agreed by |
 |---|---|---|---|---|---|
-| IF-01 | | | | | |
+| IF-01 | any → S1 State Machine | message buffer (owned by S1) | `sm_post_event()` | 16-bit control event `[code:5][arg:11]`, codes in `subsystem1/sm_types.h`; never blocks | S1 |
+| IF-02 | S1 State Machine → all | event flag (owned by S1) | `flg_mode` | `SM_FLG_SENSORS_ENABLED`, `SM_FLG_MOTORS_ENABLED`, `SM_FLG_INITIALISING`; only S1 writes | S1 |
+| IF-03 | S1 State Machine → all | 32-bit status word, single writer | `sm_status_word()` | state, nav mode, fault mask; decode with `SM_STATUS_*()`; updated before the mode flags | S1 |
+| IF-04 | S1 State Machine → S2 | message buffer (owned by S1) | `mbf_nav_cmd` | 1 byte `SM_NAV_CMD_PACK(cmd, arg)`: turn, hold, avoid; S2 receives with `TMO_POL` | S1, S2 |
+| IF-05 | S1 State Machine → S3 | function, table under a mutex (owned by S1) | `sm_barcode_lookup()` | barcode symbol 0..25 (`'A'..'Z'`) → `sm_action_t` | S1, S3 |
 
 Each interface is tested by at least one integration test
 (`testing/integration/TEST_LOG.md`).
@@ -177,12 +181,12 @@ limit there.
 
 | Object | Limit | S1 | S2 | S3 | S4 | S5 |
 |---|---|---|---|---|---|---|
-| Task | 32 | | | | | |
+| Task | 32 | 1 | | | | |
 | Semaphore | 16 | | | | | |
-| Event flag | 16 | | | | | |
+| Event flag | 16 | 1 | | | | |
 | Mailbox | 12 | | | | | |
-| Mutex | 12 | | | | | |
-| Message buffer | 12 | | | | | |
+| Mutex | 12 | 1 | | | | |
+| Message buffer | 12 | 2 | | | | |
 | Fixed memory pool | 12 | | | | | |
 | Variable memory pool | 12 | | | | | |
 | Cyclic handler | 12 | | | | | |

@@ -1,15 +1,17 @@
 /*
- *	subsystem1.h
- *	Subsystem 1 -- WiFi Communication, Command and Telemetry + State Machine.  Student ID: 2303567.
+ *  subsystem1.h
+ *  Subsystem 1 -- WiFi Communication, Command and Telemetry + State
+ *  Machine.  Student ID: 2303567.
  *
- *	EMPTY TEMPLATE.  Put here only what OTHER subsystems may use (object IDs,
- *	message formats, priorities); keep everything else LOCAL in the .c.
+ *  Public interface of subsystem 1.  Other subsystems include the part
+ *  they need:
+ *    "../subsystem1/state_machine.h"   control events, mode flags, state
  */
 
 #ifndef SUBSYSTEM1_H
 #define SUBSYSTEM1_H
 
 #include "../app.h"
-
+#include "state_machine.h"
 
 #endif /* SUBSYSTEM1_H */
