@@ -11,6 +11,6 @@
 
 #include "../app.h"
 
-#define S2_PRI_MAIN	14		/* priority band 14-15 (TEAM.md) */
+#define S2_PRI_MAIN	PRI_MOTION_CONTROL	/* app.h priority map */
 
 #endif /* SUBSYSTEM2_H */

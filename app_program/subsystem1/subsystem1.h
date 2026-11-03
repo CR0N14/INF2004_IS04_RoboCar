@@ -11,6 +11,5 @@
 
 #include "../app.h"
 
-#define S1_PRI_MAIN	12		/* priority band 12-13 (TEAM.md) */
 
 #endif /* SUBSYSTEM1_H */

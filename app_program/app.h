@@ -22,9 +22,19 @@
 
 /* ---------------------------------------------------------------------
  *  Task priorities: 1 is the highest; the kernel's USB console (3) and
- *  WiFi (4) tasks sit above every application task.  Each subsystem
- *  has its own band (TEAM.md section 4), defined in its own header.
+ *  WiFi (4) tasks sit above every application task.  The order follows
+ *  the Week 6 design review RTOS task table (TEAM.md section 4).  Every
+ *  task takes its priority from here so that no two subsystems pick
+ *  the same level by accident.
  * --------------------------------------------------------------------- */
+#define PRI_STATE_MACHINE	10	/* S1: mode changes, fault handling   */
+#define PRI_MOTION_CONTROL	11	/* S2: 10 ms speed loop, braking      */
+#define PRI_LINE_FOLLOWING	12	/* S3: 10 ms steering correction      */
+#define PRI_IMU			13	/* S4: 10 ms sampling                 */
+#define PRI_ULTRASOUND		14	/* S5: obstacle scan                  */
+#define PRI_BARCODE		15	/* S3: decoder, tolerates some delay  */
+#define PRI_NETWORKING		16	/* S1: telemetry, commands, lowest    */
+
 #define TASK_STACK_SIZE		2048	/* bytes; tm_printf needs ~1 KB */
 
 /* Create and start a task.  prc = TP_PRC1 (core 0), TP_PRC2 (core 1), or

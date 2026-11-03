@@ -11,6 +11,6 @@
 
 #include "../app.h"
 
-#define S4_PRI_MAIN	18		/* priority band 18-19 (TEAM.md) */
+#define S4_PRI_MAIN	PRI_IMU			/* app.h priority map */
 
 #endif /* SUBSYSTEM4_H */

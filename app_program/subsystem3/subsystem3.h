@@ -11,6 +11,6 @@
 
 #include "../app.h"
 
-#define S3_PRI_MAIN	16		/* priority band 16-17 (TEAM.md) */
+#define S3_PRI_MAIN	PRI_LINE_FOLLOWING	/* app.h priority map */
 
 #endif /* SUBSYSTEM3_H */
