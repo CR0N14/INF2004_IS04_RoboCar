@@ -8,7 +8,8 @@
  *    1. publish the new status word (IF-03)
  *    2. update the mode flags (IF-02)
  *    3. send a navigation command to Motion Control (IF-04)
- *    4. commit staged barcode bindings, report the result
+ *    4. commit staged barcode bindings
+ *    5. report the state change / command result as telemetry events
  *  The INITIALISING timeout and the ERROR retry delay are the receive
  *  timeout of the same message buffer, so no separate timer object is
  *  needed.
@@ -16,6 +17,7 @@
 
 #include "state_machine.h"
 #include "sm_logic.h"
+#include "networking.h"
 
 #define SM_EVT_MSG_SIZE     ((INT)sizeof(uint16_t))
 #define SM_NAV_MSG_SIZE     ((INT)sizeof(uint8_t))
@@ -32,6 +34,9 @@
                              ((uint64_t)SM_ACTION_STRAIGHT << 4u) | \
                              ((uint64_t)SM_ACTION_UTURN    << 6u))
 #define SM_ALL_SYMBOLS_MASK ((1u << SM_BARCODE_SYMBOLS) - 1u)
+
+/* Command opcode reported in an acknowledgement, per sm_ack_cmd_t */
+static uint8_t const g_ack_ops[] = { NET_OP_START, NET_OP_STOP, NET_OP_BIND };
 
 EXPORT ID   flg_mode;
 EXPORT ID   mbf_nav_cmd;
@@ -173,6 +178,22 @@ apply_actions(sm_evt_code_t code, sm_ctx_t const *p_ctx,
     if (0u != p_act->b_commit_bindings)
     {
         commit_bindings();
+    }
+
+    /* 5. Telemetry: state change (with the fault code, FR5) and the
+          result of a command (FR4) */
+    if (0u != p_act->b_state_changed)
+    {
+        (void)net_post_event(NET_EVT_STATE,
+                             NET_EVT_STATE_PAYLOAD(p_act->prev_state,
+                                                   p_ctx->state,
+                                                   p_ctx->fault_mask));
+    }
+    if (0u != p_act->b_ack)
+    {
+        (void)net_post_event(NET_EVT_CMD_ACK,
+                             NET_EVT_ACK_PAYLOAD(g_ack_ops[p_act->ack_cmd],
+                                                 0u != p_act->b_ack_ok));
     }
 
     apply_timer((sm_timer_req_t)p_act->timer);

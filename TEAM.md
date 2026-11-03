@@ -177,6 +177,7 @@ sends to it or waits on it. Agree on the data format before coding.
 | IF-04 | S1 State Machine → S2 | message buffer (owned by S1) | `mbf_nav_cmd` | 1 byte `SM_NAV_CMD_PACK(cmd, arg)`: turn, hold, avoid; S2 receives with `TMO_POL` | S1, S2 |
 | IF-05 | S1 State Machine → S3 | function, table under a mutex (owned by S1) | `sm_barcode_lookup()` | barcode symbol 0..25 (`'A'..'Z'`) → `sm_action_t` | S1, S3 |
 | IF-07 | S2, S3, S4, S5 → S1 Networking | snapshot copied under the owner's mutex | `s2_get_tlm()` … `s5_get_tlm()` | `sN_tlm_t` in each `subsystemN.h`; S1 reads every 200 ms; weak stub returns `E_NOSPT` until implemented | S1 (draft, owners to confirm) |
+| IF-08 | any → S1 Networking | message buffer (owned by S1) | `net_post_event()` | 32-bit `[type:5][payload:27]` telemetry event, types in `subsystem1/net_types.h`; never blocks, losses counted | S1 |
 
 Each interface is tested by at least one integration test
 (`testing/integration/TEST_LOG.md`).
@@ -188,15 +189,15 @@ limit there.
 
 | Object | Limit | S1 | S2 | S3 | S4 | S5 |
 |---|---|---|---|---|---|---|
-| Task | 32 | 1 | | | | |
-| Semaphore | 16 | | | | | |
+| Task | 32 | 2 | | | | |
+| Semaphore | 16 | 1 | | | | |
 | Event flag | 16 | 1 | | | | |
 | Mailbox | 12 | | | | | |
 | Mutex | 12 | 1 | | | | |
-| Message buffer | 12 | 2 | | | | |
+| Message buffer | 12 | 5 | | | | |
 | Fixed memory pool | 12 | | | | | |
 | Variable memory pool | 12 | | | | | |
-| Cyclic handler | 12 | | | | | |
+| Cyclic handler | 12 | 1 | | | | |
 | Alarm handler | 12 | | | | | |
 
 (The kernel's USB and WiFi service tasks also use a few of these.)
