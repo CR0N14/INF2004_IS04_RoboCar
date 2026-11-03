@@ -18,7 +18,10 @@
 /* Only used when built with MQTT=1 (also requires NET=lwip). */
 #define MQTT_BROKER_IP   "192.168.1.10"
 #define MQTT_BROKER_PORT 1883
-#define MQTT_CLIENT_ID   "mtk3smp-pico"
-#define MQTT_TOPIC       "mtk3smp-pico/heartbeat"
+#define MQTT_CLIENT_ID   "is04-car"
+
+/* Every topic starts with this: <root>/tlm, /hb, /evt, /status, /cmd.
+   See docs/MQTT.md. */
+#define MQTT_TOPIC_ROOT  "is04/car"
 
 #endif /* WIFI_SECRETS_H */

@@ -110,7 +110,7 @@ the drivers have no locking to stop it.
 | ADC | S3 | Line Following task | GP26–GP28 |
 | PWM slices 4, 5 | S2 | Motion Control task | GP8–GP11 |
 | PWM slice 6 | S5 | Ultrasound task | GP12 |
-| WiFi radio, TCP/IP, MQTT | *kernel* | `cyw43_utk_task` (built in) | GP23–25, GP29 |
+| WiFi radio, TCP/IP, MQTT | *kernel* (MQTT bridge: S1) | `cyw43_utk_task` (built in) | GP23–25, GP29 |
 
 ### WiFi and MQTT are special
 
@@ -136,6 +136,12 @@ What students *can* do:
   Because this changes shared library code, **agree it with the team and
   the instructor first**, and record it as an interface in section 5.
   It needs the `NET=lwip MQTT=1` build (README section 3).
+
+  **Done for this project (S1):** `mqtt_utk.c` publishes whatever S1's
+  Networking task puts in its TX message buffer and delivers command
+  payloads to its RX message buffer (`mqtt_utk_attach()`, see
+  `mqtt_utk.h`). Every other subsystem sends telemetry to Networking,
+  never to MQTT.
 
 ## 4. Task priorities
 
