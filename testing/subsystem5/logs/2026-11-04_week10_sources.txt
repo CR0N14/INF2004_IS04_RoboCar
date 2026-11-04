@@ -1,0 +1,17 @@
+Client date: 2026-11-04 (Asia/Singapore)
+Baseline HEAD: 516b52cedc98075d0a3ee89dcdd7f967990d694a
+Working tree: uncommitted; no commit or push performed.
+Host tests: 10 passed, 0 failed; mocked dependencies, not a robot run.
+Normal build: exit 0, Pico SDK /Users/cayden/pico/pico-sdk.
+TEST=1 build: exit 0, same SDK.
+
+SHA-256 of tested sources:
+37bdc8d21bea49b293e0d1c7893dc70b098bf593415bf5566b9fc1c6092c6e7a  app_program/subsystem5/drv_servo.c
+5dfae072f7e68475a591bb5966db8b5f88313226d2e5e93a40e2f57b78c16859  app_program/subsystem5/drv_servo.h
+804965a685ad950c46508b63ef829fab1c46e500c253a7954f81e700b8ab7650  app_program/subsystem5/drv_ultrasonic.c
+573b06112963698c17ef55309e2353a33ce1a1b550f45b36aaf79fba50f1b146  app_program/subsystem5/drv_ultrasonic.h
+1c5e768a889b96298cd582a59f4f18f2b096180d229b3088bf363a6fce373ca6  app_program/subsystem5/subsystem5.c
+2242d3b479592bfefe25c6801014a7c29e19a4ed29250201ba0505cee4d2624d  app_program/subsystem5/subsystem5.h
+1f27f6f14fc0ca9f2d1affc16d00006d84f97ee852d37360fb851625fe6f8b62  app_program/subsystem5/subsystem5_test.c
+7ba2a316db092780d761a88819217af2ce0ffecacdaf9f667b7cde97fab2abde  testing/subsystem5/host_tests.c
+ef6e51cc09dfd530fe12279296068a19e26b46af6e89516bf3e604a3edd80812  testing/subsystem5/run_host_tests.sh
