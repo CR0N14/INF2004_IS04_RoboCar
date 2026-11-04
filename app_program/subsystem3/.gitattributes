@@ -1,0 +1,2 @@
+*.c text eol=lf whitespace=-blank-at-eof
+*.h text eol=lf whitespace=-blank-at-eof

@@ -26,13 +26,9 @@
    message rounded up to 4 bytes. */
 #define SM_MBF_SLOT_BYTES   8u
 
-/* Default barcode bindings (design assumption 1): A left, B right,
-   C straight, D U-turn, as in the project write-up. */
-#define SM_DEFAULT_BOUND    0x0000000Fu
-#define SM_DEFAULT_ACTIONS  (((uint64_t)SM_ACTION_LEFT     << 0u) | \
-                             ((uint64_t)SM_ACTION_RIGHT    << 2u) | \
-                             ((uint64_t)SM_ACTION_STRAIGHT << 4u) | \
-                             ((uint64_t)SM_ACTION_UTURN    << 6u))
+/* Instructor bindings arrive through MQTT; nothing is bound at boot. */
+#define SM_DEFAULT_BOUND 0u
+#define SM_DEFAULT_ACTIONS 0u
 #define SM_ALL_SYMBOLS_MASK ((1u << SM_BARCODE_SYMBOLS) - 1u)
 
 /* Command opcode reported in an acknowledgement, per sm_ack_cmd_t */
@@ -284,7 +280,7 @@ sm_barcode_lookup(uint8_t symbol, sm_action_t *p_action)
     bool b_bound = false;
 
     if ((symbol < SM_BARCODE_SYMBOLS) && (NULL != p_action) &&
-        (E_OK == tk_loc_mtx(g_mtx_bindings, TMO_FEVR)))
+        (E_OK == tk_loc_mtx(g_mtx_bindings, TMO_POL)))
     {
         if (0u != (g_bindings_active.bound_mask & (1u << symbol)))
         {

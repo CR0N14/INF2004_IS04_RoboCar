@@ -187,7 +187,7 @@ subsystem1_test(void)
     TEST_INIT();
 
     /* S1-U01: the packed types fit their storage */
-    TEST_CHECK("S1-U01", (sizeof(sm_ctx_t) == 4u) &&
+    TEST_CHECK("S1-U01", (sizeof(sm_ctx_t) == 8u) &&
                (sizeof(sm_actions_t) == 4u) &&
                (SM_EVT_COUNT <= (1u << SM_EVT_CODE_BITS)) &&
                (SM_FAULT_COUNT <= SM_FAULT_BITS),
@@ -316,14 +316,11 @@ subsystem1_test(void)
                (E_PAR == sm_post_event(SM_EVT_TIMEOUT, 0u)),
                "State Machine task publishes a valid status");
 
-    /* S1-U14: default bindings A..D, other symbols unbound */
-    b_ok = sm_barcode_lookup(SM_BARCODE_SYMBOL('A'), &action) &&
-           (SM_ACTION_LEFT == action);
-    b_ok = b_ok && sm_barcode_lookup(SM_BARCODE_SYMBOL('D'), &action) &&
-           (SM_ACTION_UTURN == action);
-    TEST_CHECK("S1-U14", b_ok &&
-               !sm_barcode_lookup(SM_BARCODE_SYMBOL('E'), &action),
-               "default barcode bindings A-D");
+    /* S1-U14: no hard-coded demo mapping. */
+    TEST_CHECK("S1-U14",
+               !sm_barcode_lookup(SM_BARCODE_SYMBOL('A'), &action) &&
+               !sm_barcode_lookup(SM_BARCODE_SYMBOL('Z'), &action),
+               "symbols unbound until MQTT configuration");
 
     TEST_SUMMARY("subsystem1");
 

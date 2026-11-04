@@ -168,19 +168,10 @@ handle_navigating(sm_ctx_t *p_ctx, sm_evt_code_t code, uint16_t arg,
         {
             sm_action_t const action = SM_BARCODE_ARG_ACTION(arg);
 
-            if (SM_ACTION_UTURN == action)
-            {
-                /* A U-turn needs no junction: turn now */
-                p_ctx->b_pending = 0u;
-                p_ctx->nav_mode = SM_NAV_MANOEUVRE;
-                send_nav_cmd(p_act, SM_NAV_CMD_TURN, (uint8_t)action);
-            }
-            else
-            {
-                /* Turn at the next junction */
-                p_ctx->b_pending = 1u;
-                p_ctx->pending = (unsigned int)action;
-            }
+            /* Every demo movement waits for the next cross-junction. */
+            p_ctx->pending_symbol = SM_BARCODE_ARG_SYMBOL(arg);
+            p_ctx->b_pending = 1u;
+            p_ctx->pending = (unsigned int)action;
             break;
         }
 
