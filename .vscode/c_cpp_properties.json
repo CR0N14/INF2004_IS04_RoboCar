@@ -1,0 +1,28 @@
+{
+    "configurations": [
+        {
+            "name": "micro T-Kernel (Pico W)",
+            "includePath": [
+                "${workspaceFolder}/include",
+                "${workspaceFolder}/config",
+                "${workspaceFolder}/kernel/knlinc",
+                "${workspaceFolder}/lib/libwifi/sysdepend/pico_rp2040",
+                "${workspaceFolder}/lib/liblwip/sysdepend/pico_rp2040",
+                "${workspaceFolder}/lib/libtm/sysdepend/pico_rp2040/usb"
+            ],
+            "defines": [
+                "_PICO_RP2040_",
+                "CNF_SMP=1",
+                "APP_TEST=1",
+                "TM_CONSOLE_UART=0",
+                "TM_CONSOLE_USB_CDC=1",
+                "TM_WIFI_CYW43=1",
+                "BOARD_UART0_FREE=1"
+            ],
+            "compilerArgs": ["-mcpu=cortex-m0plus", "-mthumb"],
+            "cStandard": "gnu11",
+            "intelliSenseMode": "gcc-arm"
+        }
+    ],
+    "version": 4
+}
