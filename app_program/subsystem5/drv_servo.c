@@ -6,6 +6,7 @@
 #define SERVO_MIN_US       500u
 #define SERVO_MAX_US       2500u
 #define SERVO_MAX_DEG      180u
+#define PWM_RESET_TIMEOUT_US 10000u
 
 ER s5_servo_set_angle(UINT angle_deg)
 {
@@ -25,6 +26,18 @@ ER s5_servo_set_angle(UINT angle_deg)
 ER s5_servo_init(void)
 {
     ER er;
+    UW start_us;
+
+    /* Startup only releases PWM when USE_PTMR is enabled. Deassert just
+       PWM's reset with the RP2040 atomic clear alias; never assert it here,
+       since other slices may already be running. Repeating this is safe. */
+    clr_w(RESETS_RESET, RESETS_RESET_PWM);
+    start_us = in_w(TIMER_TIMERAWL);
+    while ((in_w(RESETS_RESET_DONE) & RESETS_RESET_PWM) == 0u) {
+        if ((UW)(in_w(TIMER_TIMERAWL) - start_us) >= PWM_RESET_TIMEOUT_US) {
+            return E_TMOUT;
+        }
+    }
 
     /* Reset only our slice: disabled, free-running, normal polarity. */
     out_w(PWM_CH6_BASE + PWM_CHx_CSR, 0u);

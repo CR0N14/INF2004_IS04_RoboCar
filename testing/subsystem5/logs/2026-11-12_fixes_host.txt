@@ -1,0 +1,50 @@
+[S5 test] private mocks only; injected ERROR messages below are expected
+[TEST] S5-U18 PASS  PWM-only reset release/done/timeout, idempotence, unchanged 50 Hz pulses
+ERROR S5 servo init: -5
+ERROR S5 ultrasonic init (requires GP0/GP1 free from UART0): -5
+[TEST] S5-U05 PASS  mock task creation, READY, both SELFTEST_FAIL paths
+[TEST] S5-U06 PASS  snapshot copy, defaults, null/lock/unlock errors
+[S5] angle=45 deg distance=54 cm
+[S5] angle=90 deg distance=54 cm
+[S5] angle=135 deg distance=54 cm
+[S5] angle=90 deg distance=54 cm
+[S5] angle=45 deg no echo
+ERROR S5 servo set angle: -5
+[TEST] S5-U07 PASS  scan sequence, settle/monitor/error states, no-echo snapshot
+[S5] profile: left=80 forward=20 right=60 recommend=LEFT
+[TEST] S5-U08 PASS  forward <25, re-arm >35, sides ignored
+[TEST] S5-U09 PASS  three forward no-echo readings, saturation, valid-reading reset
+[S5] profile: left=100 forward=20 right=60 recommend=LEFT
+[S5] profile: left=60 forward=20 right=100 recommend=RIGHT
+[S5] profile: left=39 forward=20 right=39 recommend=STOP
+[S5] profile: left=40 forward=20 right=40 recommend=LEFT
+[S5] profile: left=39 forward=20 right=40 recommend=RIGHT
+[S5] profile: left=40 forward=20 right=39 recommend=LEFT
+[S5] profile: forward=36 recommend=CONTINUE
+[TEST] S5-U10 PASS  LEFT/RIGHT/STOP/CONTINUE, 40 cm boundary, safe tie prefers LEFT
+[S5] profile: left=80 forward=20 right=90 recommend=RIGHT
+[TEST] S5-U11 PASS  old samples/no echo cannot complete a fresh three-point profile
+[S5] profile: left=80 forward=20 right=60 recommend=LEFT
+[S5] profile: left=80 forward=20 right=60 recommend=LEFT
+[TEST] S5-U12 PASS  completed bypass profile is suppressed, next episode can report again
+[S5] profile: left=300 forward=20 right=60 recommend=LEFT
+[S5] profile: left=10 forward=20 right=100 recommend=RIGHT
+[TEST] S5-U13 PASS  profile persistence, clamping, nearest bearing, new-episode reset
+ERROR S5 post PROFILE_READY: -43
+[S5] profile: left=80 forward=20 right=60 recommend=LEFT
+ERROR S5 post OBSTACLE: -43
+ERROR S5 post NO_ECHO fault: -43
+[TEST] S5-U14 PASS  rejected OBSTACLE/PROFILE_READY/FAULT posts retry without duplicate success
+ERROR S5 post OBSTACLE: -43
+[S5] profile: left=80 forward=20 right=80 recommend=LEFT
+[TEST] S5-U19 PASS  STANDBY gating, observed avoidance, unconfirmed retry, stop/start re-arm
+[S5] profile: left=10 forward=20 right=10 recommend=STOP
+ERROR S5 post clear PROFILE_READY: -43
+[S5] profile: forward=36 recommend=CONTINUE
+[S5] profile: left=10 forward=20 right=10 recommend=STOP
+[S5] profile: left=80 forward=20 right=50 recommend=LEFT
+[TEST] S5-U20 PASS  STOP suppression, clear CONTINUE retry releases real S1 HOLD, fresh improved route
+[S5] profile: forward=36 recommend=CONTINUE
+ERROR S5 post profile timeout fault: -43
+[TEST] S5-U21 PASS  missing sides allow forward-clear recovery; bounded SCAN fault reaches S1 error/retry
+[TEST] subsystem5 SUMMARY 14 passed, 0 failed

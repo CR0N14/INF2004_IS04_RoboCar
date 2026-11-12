@@ -19,6 +19,7 @@
 #define PROFILE_RIGHT_ANGLE_DEG  135u
 #define PROFILE_SAFE_CLEAR_CM   40u
 #define PROFILE_ALL_POINTS      7u
+#define PROFILE_TIMEOUT_MS      10000u /* Protocol liveness, not a clearance. */
 
 /* Private to the owning task; sideways samples never affect these latches. */
 typedef struct
@@ -31,11 +32,48 @@ typedef struct
     bool profile_pending;
     bool profile_new;
     bool profile_reported;
+    bool obstacle_confirmed;      /* Observed S1 in obstacle avoidance. */
+    bool scan_fault_reported;
+    sm_avoid_t last_recommendation;
+    UW profile_started_ms;
 } s5_detection_t;
+
+static UW now_ms(void)
+{
+    SYSTIM tim;
+
+    (void)tk_get_otm(&tim);
+    return (UW)tim.lo;
+}
+
+static void reset_episode(s5_detection_t *detection)
+{
+    detection->obstacle_reported = false;
+    detection->obstacle_confirmed = false;
+    detection->profile_pending = false;
+    detection->profile_new = false;
+    detection->profile_reported = false;
+    detection->scan_fault_reported = false;
+    detection->fresh_mask = 0u;
+}
 
 static void check_forward(s5_detection_t *detection, UINT angle, UINT distance_cm)
 {
     ER er;
+    uint32_t status = sm_status_word();
+    sm_state_t state = SM_STATUS_STATE(status);
+
+    /* Queue success is not an acknowledgment. Discard episodes when S1
+       stops/faults, or returns from a confirmed avoidance episode. */
+    if ((state != SM_STATE_NAVIGATING && state != SM_STATE_OBSTACLE_AVOIDANCE) ||
+        (state == SM_STATE_NAVIGATING && detection->obstacle_confirmed)) {
+        reset_episode(detection);
+    }
+    if (state == SM_STATE_OBSTACLE_AVOIDANCE && detection->obstacle_reported &&
+        !detection->obstacle_confirmed) {
+        detection->obstacle_confirmed = true;
+        detection->profile_started_ms = now_ms();
+    }
 
     if (angle != FORWARD_ANGLE_DEG) {
         return;
@@ -60,24 +98,27 @@ static void check_forward(s5_detection_t *detection, UINT angle, UINT distance_c
     /* A valid forward reading ends this no-echo episode. */
     detection->no_echo_count = 0u;
     detection->no_echo_reported = false;
+    if (state != SM_STATE_NAVIGATING) {
+        return; /* HOLD/clear handling belongs to profile_sample below. */
+    }
     if (distance_cm > OBSTACLE_CLEAR_CM) {
-        /* Finish a pending profile (possibly CONTINUE) before re-arming. */
-        if (!detection->profile_pending) {
-            detection->obstacle_reported = false;
-            detection->profile_reported = false;
-            detection->fresh_mask = 0u;
-        }
+        reset_episode(detection);
     } else if (distance_cm < OBSTACLE_THRESHOLD_CM &&
-               !detection->obstacle_reported) {
+               !detection->obstacle_confirmed) {
+        /* At most one attempt per forward sample (~2 s). If S1 stayed in
+           NAVIGATING after a queued event, allow a later sample to retry. */
         er = sm_post_event(SM_EVT_OBSTACLE, 0u);
         CHECK(er, "S5 post OBSTACLE");
-        detection->obstacle_reported = (er == E_OK);
         if (er == E_OK) {
+            detection->obstacle_reported = true;
             detection->profile_pending = true;
             detection->profile_new = true;
             detection->profile_reported = false;
             detection->fresh_mask = 0u;
+            detection->profile_started_ms = now_ms();
         }
+        /* A rejected retry must not forget an earlier queued event that
+           S1 may still consume after this status observation. */
     }
     /* Failed nonblocking posts remain eligible at the next forward sample. */
 }
@@ -161,6 +202,7 @@ static void profile_sample(s5_detection_t *detection, UINT angle, UINT distance_
     sm_avoid_t recommendation;
     char const *name;
     ER er;
+    uint32_t status;
 
     if (angle != 45u && angle != 90u && angle != 135u) {
         return;
@@ -180,8 +222,49 @@ static void profile_sample(s5_detection_t *detection, UINT angle, UINT distance_
         /* Keep the latest valid value, but do not use a stale/no-echo point. */
         detection->fresh_mask &= ~(1u << index);
     }
-    if (!detection->profile_pending || detection->profile_reported ||
-        detection->fresh_mask != PROFILE_ALL_POINTS) {
+    status = sm_status_word();
+    if (!detection->obstacle_reported || detection->scan_fault_reported ||
+        SM_STATUS_STATE(status) != SM_STATE_OBSTACLE_AVOIDANCE ||
+        SM_STATUS_NAV(status) != SM_NAV_HOLD) {
+        return; /* Never send a profile into STANDBY, ERROR or a bypass. */
+    }
+    if (!detection->obstacle_confirmed) {
+        detection->obstacle_confirmed = true;
+        detection->profile_started_ms = now_ms();
+    }
+
+    /* A valid clear forward sample is sufficient to release HOLD. Missing
+       side echoes must not prevent this, and are never interpreted as clear. */
+    if (angle == FORWARD_ANGLE_DEG && distance_cm > OBSTACLE_CLEAR_CM &&
+        distance_cm <= 400u && (!detection->profile_reported ||
+        detection->last_recommendation == SM_AVOID_STOP)) {
+        if (s5_get_tlm(&profile) == E_OK) {
+            profile.recommendation = SM_AVOID_CONTINUE;
+            publish_profile(&profile); /* b_profile stays false if incomplete. */
+        }
+        er = sm_post_event(SM_EVT_PROFILE_READY, SM_AVOID_CONTINUE);
+        CHECK(er, "S5 post clear PROFILE_READY");
+        if (er == E_OK) {
+            detection->profile_reported = true;
+            detection->profile_pending = false;
+            detection->last_recommendation = SM_AVOID_CONTINUE;
+            tm_printf((UB*)"[S5] profile: forward=%u recommend=CONTINUE\n", distance_cm);
+        }
+        return;
+    }
+    if (!detection->profile_pending) {
+        return;
+    }
+    if (detection->fresh_mask != PROFILE_ALL_POINTS) {
+        if ((UW)(now_ms() - detection->profile_started_ms) >= PROFILE_TIMEOUT_MS) {
+            er = sm_post_event(SM_EVT_FAULT, SM_FAULT_SCAN);
+            CHECK(er, "S5 post profile timeout fault");
+            if (er == E_OK) {
+                detection->scan_fault_reported = true;
+                detection->profile_pending = false;
+                publish_tlm(S5_SCAN_ERROR, angle, distance_cm);
+            }
+        }
         return;
     }
 
@@ -218,18 +301,26 @@ static void profile_sample(s5_detection_t *detection, UINT angle, UINT distance_
     profile.recommendation = recommendation;
     publish_profile(&profile);
 
+    /* STOP means keep holding and inspect another fresh set. Publish only a
+       changed recommendation, rather than repeating STOP every scan. */
+    if (detection->profile_reported &&
+        recommendation == detection->last_recommendation) {
+        detection->fresh_mask = 0u;
+        detection->profile_started_ms = now_ms();
+        publish_tlm(S5_SCAN_MONITORING, angle, distance_cm);
+        return;
+    }
     er = sm_post_event(SM_EVT_PROFILE_READY, recommendation);
     CHECK(er, "S5 post PROFILE_READY");
     if (er == E_OK) {
         detection->profile_reported = true;
-        detection->profile_pending = false;
+        detection->profile_pending = (recommendation == SM_AVOID_STOP);
+        detection->last_recommendation = recommendation;
+        detection->fresh_mask = 0u;
+        detection->profile_started_ms = now_ms();
         tm_printf((UB*)"[S5] profile: left=%u forward=%u right=%u recommend=%s\n",
                   left, forward, right, name);
-        if (forward > OBSTACLE_CLEAR_CM) {
-            detection->obstacle_reported = false;
-            detection->profile_reported = false;
-            detection->fresh_mask = 0u;
-        }
+        /* Keep the latch until S1's published state leaves this episode. */
     }
     /* Retry a rejected nonblocking post on a later complete set of readings.
        No avoidance state: S5 has recommended a route, not executed a bypass. */

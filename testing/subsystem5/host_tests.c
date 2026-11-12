@@ -10,6 +10,8 @@
 #define APP_H
 #define STATE_MACHINE_H
 #define __TM_TMONITOR_H__
+#define __SYS_MACHINE_H__
+#include "../../include/sys/sysdepend/pico_rp2040/sysdef.h"
 #define APP_TEST 1
 #define EXPORT
 #define E_OK 0
@@ -26,10 +28,14 @@
 typedef int INT, ER, ID, PRI, TMO;
 typedef unsigned int UINT;
 typedef uint32_t UW, RELTIM;
+typedef struct { int32_t hi; uint32_t lo; } SYSTIM;
 typedef unsigned char UB;
+typedef int BOOL;
+#define TRUE 1
 typedef void (*FP)(void);
 typedef struct { UW mtxatr; } T_CMTX;
 #include "../../app_program/subsystem1/sm_types.h"
+#include "../../app_program/subsystem1/sm_logic.c"
 
 static unsigned host_failures;
 static INT tm_printf(const UB *format, ...)
