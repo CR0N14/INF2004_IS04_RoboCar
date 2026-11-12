@@ -13,7 +13,8 @@ import sys
 ROOT = Path(__file__).resolve().parents[1]
 CORE = ROOT.parents[1] / "app_program/subsystem3"
 SOURCES = [CORE / name for name in
-           ("code39.c", "ir_frame.c", "ir_processing.c", "barcode_decoder.c",
+           ("code39.c", "ir_config.c", "ir_junction.c", "ir_frame.c",
+            "ir_processing.c", "barcode_decoder.c",
             "ir_transport.c")]
 TEST = ROOT / "host/test_main.c"
 FLAGS = ["-std=c99", "-Wall", "-Wextra", "-Werror", "-Wconversion",
@@ -106,6 +107,13 @@ def main():
                  str(ROOT / "host/code39_main.c"), "-o", str(code39_test)],
                 transcript)
         command([str(code39_test)], transcript)
+        components = build / ("integration_components.exe" if
+                              sys.platform == "win32" else
+                              "integration_components")
+        command(["clang", *FLAGS, "-I", str(CORE), *map(str, SOURCES),
+                 str(ROOT / "host/integration_components.c"), "-o",
+                 str(components)], transcript)
+        command([str(components)], transcript)
         if args.arm:
             objects = []
             for source in SOURCES:

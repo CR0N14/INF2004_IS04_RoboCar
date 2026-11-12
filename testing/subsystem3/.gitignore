@@ -1,3 +1,15 @@
+# Generated unit-test output and caches.
 build/
 __pycache__/
 host/__pycache__/
+
+# Personal demonstrations and planning belong outside the project repository.
+/standalone_archive/
+/local-only/
+*.uf2
+*.ps1
+/AFFECTED_PARTIES.md
+/INTEGRATION_PLAN.md
+/INTEGRATION_TESTS.md
+/MAIN_MERGE_AND_INTEGRATION_PLAN.md
+/TRIBUNAL_ALIGNMENT.md
