@@ -333,6 +333,15 @@ static barcode_outcome_t capture_step (barcode_decoder_t * p_decoder,
         p_decoder->b_dark = b_dark;
     }
 
+    /* A complete default Code 39 frame is validated at its final edge.
+       Clearance still gates rearming; it no longer delays a valid result. */
+    if ((BARCODE_NONE == outcome) && (!b_dark) &&
+        (NULL == p_decoder->config.p_recognise) &&
+        (CODE39_RUN_COUNT == p_decoder->count))
+    {
+        return recognise(p_decoder, p_result);
+    }
+
     if ((BARCODE_NONE == outcome) && (!b_dark) &&
         (ir_frame_elapsed(time_ms, p_decoder->edge_ms) >=
          p_decoder->config.clearance_ms))

@@ -95,7 +95,8 @@ static bool replay_symbol (char const * p_bits, bool b_reverse,
         if (BARCODE_NONE != result.outcome)
         {
             if ((BARCODE_UNBOUND != result.outcome) ||
-                (expected != result.symbol))
+                (expected != result.symbol) ||
+                (time != 110u + length * 10u))
             {
                 return false;
             }
@@ -160,7 +161,7 @@ int main (void)
         }
     }
 
-    printf("Code39 independent A-Z bidirectional checks: %u; failures: %u\n",
+    printf("Code39 A-Z bidirectional and final-edge checks: %u; failures: %u\n",
            checks, failures);
     return (0u == failures) ? 0 : 1;
 }
