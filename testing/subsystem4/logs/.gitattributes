@@ -1,0 +1,2 @@
+# Console captures are evidence: keep them byte for byte (CRLF as sent)
+*.txt -text

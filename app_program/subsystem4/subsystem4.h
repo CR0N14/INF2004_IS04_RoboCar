@@ -2,8 +2,17 @@
  *	subsystem4.h
  *	Subsystem 4 -- IMU-Based Motion and Terrain Monitoring.  Student ID: 2303557.
  *
- *	EMPTY TEMPLATE.  Put here only what OTHER subsystems may use (object IDs,
- *	message formats, priorities); keep everything else LOCAL in the .c.
+ *	What other subsystems may use.  Subsystem 4 talks to the others only
+ *	through:
+ *	  IF-07  s4_get_tlm()          snapshot below, read by S1 Networking
+ *	  IF-08  net_post_event()      NET_EVT_HUMP, NET_EVT_MOTION_CLASS,
+ *	                               NET_EVT_IMU_FAULT (S1 net_types.h)
+ *	  IF-01  sm_post_event()       SM_EVT_READY / SM_EVT_SELFTEST_FAIL
+ *	                               (arg SM_SUBSYS_IMU), SM_EVT_FAULT with
+ *	                               SM_FAULT_COLLISION, SM_FAULT_TIP_OVER,
+ *	                               SM_FAULT_IMU (non-fatal)
+ *	  IF-02  sm_mode_flags()       reads SENSORS / MOTORS / INITIALISING
+ *	Everything else is private to this folder.
  */
 
 #ifndef SUBSYSTEM4_H
@@ -53,8 +62,10 @@ typedef struct
     unsigned int pitch_half_deg : 8;    /* |pitch|, 0..180 x 0.5 deg     */
     unsigned int b_pitch_down   : 1;    /* nose down                     */
     unsigned int roll_half_deg  : 8;    /* |roll|, 0..180 x 0.5 deg      */
-    unsigned int b_roll_left    : 1;    /* rolled to the left            */
-    unsigned int heading_deg    : 9;    /* 0..359 deg                    */
+    unsigned int b_roll_left    : 1;    /* rolled to the left (left side */
+                                        /*   lower than the right)       */
+    unsigned int heading_deg    : 9;    /* 0..359 deg, clockwise from    */
+                                        /*   magnetic north              */
     unsigned int imu_status     : 2;    /* s4_imu_status_t               */
     unsigned int turn_rate_dps  : 9;    /* |turn rate|, 0..511 deg/s     */
     unsigned int b_turn_left    : 1;    /* turning anticlockwise         */

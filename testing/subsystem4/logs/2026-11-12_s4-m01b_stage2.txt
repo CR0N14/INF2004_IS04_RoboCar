@@ -1,0 +1,1232 @@
+
+
+microT-Kernel Version 3.00
+
+
+=== micro T-Kernel on Raspberry Pi Pico W (spec 0x6300, product 0x0003) ===
+dual-core (SMP) build, usermain on core 0
+sm: INITIALISING -> INITIALISING (evt 0, faults 0x0000)
+all subsystems started
+
+sm: INITIALISING -> STANDBY (evt 18, faults 0x0000)
+wifi: cyw43_utk_task starting (proc 1)
+s4 raw: LSM303D bring-up (0x1d or 0x1e), I2C1 at 400 kHz, FIFO burst
+wifi: cyw43_init() ...
+s4 t=0.0 wifi: cyw43_init() returned, bringing interface up ...
+scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=0.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=0.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=0.0 i2c: 21 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 0 FIFO overruns, longest 286 us (116 scan probes not counted)
+s4 t=0.5 @1e acc mg X=-160 Y=+96 Z=-861 |a|=880 (raw -1310 +791 -7061)  mag mG X=-40 Y=-4 Z=-9 |B|=41 (raw -495 -46 -110)  fifo 1/4/12  fails 0  bus 2267 us
+s4 t=1.0 @1e acc mg X=-160 Y=+96 Z=-865 |a|=884 (raw -1312 +791 -7093)  mag mG X=-40 Y=-5 Z=-10 |B|=41 (raw -500 -61 -121)  fifo 3/3/4  fails 0  bus 1177 us
+s4 t=1.5 @1e acc mg X=-160 Y=+97 Z=-864 |a|=884 (raw -1313 +792 -7086)  mag mG X=-39 Y=-4 Z=-10 |B|=40 (raw -482 -52 -130)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=2.0 @1e acc mg X=-160 Y=+96 Z=-864 |a|=883 (raw -1313 +791 -7085)  mag mG X=-38 Y=-3 Z=-10 |B|=39 (raw -475 -37 -123)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=2.5 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1315 +792 -7089)  mag mG X=-37 Y=-4 Z=-11 |B|=38 (raw -458 -45 -132)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=2.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1328 +777 -7066] [-1318 +799 -7066] [-1300 +785 -7067] [-1297 +805 -7088]
+s4 t=3.0 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1314 +794 -7091)  mag mG X=-38 Y=-4 Z=-10 |B|=39 (raw -480 -49 -130)  fifo 0/3/4  fails 0  bus 1055 us
+s4 t=3.5 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1309 +794 -7088)  mag mG X=-38 Y=-4 Z=-11 |B|=39 (raw -474 -50 -139)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=4.0 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1309 +792 -7088)  mag mG X=-40 Y=-2 Z=-11 |B|=41 (raw -495 -19 -137)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=4.5 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1312 +794 -7088)  mag mG X=-39 Y=-3 Z=-11 |B|=40 (raw -493 -36 -135)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=5.0 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1310 +793 -7094)  mag mG X=-39 Y=-3 Z=-11 |B|=40 (raw -489 -34 -132)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=5.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=5.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=5.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=5.0 i2c: 1282 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (232 scan probes not counted)
+s4 t=5.5 @1e acc mg X=-160 Y=+96 Z=-865 |a|=884 (raw -1308 +790 -7089)  mag mG X=-40 Y=-4 Z=-11 |B|=41 (raw -494 -45 -137)  fifo 2/3/6  fails 0  bus 1358 us
+s4 t=6.0 @1e acc mg X=-159 Y=+97 Z=-865 |a|=884 (raw -1306 +793 -7090)  mag mG X=-41 Y=-3 Z=-11 |B|=42 (raw -515 -34 -136)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=6.5 @1e acc mg X=-159 Y=+97 Z=-865 |a|=884 (raw -1305 +795 -7092)  mag mG X=-43 Y=-5 Z=-11 |B|=44 (raw -539 -62 -139)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=7.0 @1e acc mg X=-159 Y=+96 Z=-866 |a|=885 (raw -1307 +791 -7096)  mag mG X=-41 Y=-4 Z=-11 |B|=42 (raw -510 -49 -139)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=7.5 @1e acc mg X=-159 Y=+96 Z=-865 |a|=884 (raw -1306 +790 -7090)  mag mG X=-41 Y=-3 Z=-11 |B|=42 (raw -518 -40 -134)  fifo 3/3/4  fails 0  bus 1060 us
+s4 t=7.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1315 +796 -7072] [-1304 +802 -7079] [-1327 +792 -7070] [-1310 +801 -7087]
+s4 t=8.0 @1e acc mg X=-160 Y=+96 Z=-865 |a|=884 (raw -1312 +790 -7093)  mag mG X=-42 Y=-4 Z=-11 |B|=43 (raw -520 -55 -136)  fifo 0/3/4  fails 0  bus 1055 us
+s4 t=8.5 @1e acc mg X=-160 Y=+96 Z=-865 |a|=884 (raw -1308 +791 -7091)  mag mG X=-42 Y=-2 Z=-11 |B|=43 (raw -527 -31 -141)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=9.0 @1e acc mg X=-160 Y=+97 Z=-866 |a|=885 (raw -1309 +793 -7096)  mag mG X=-42 Ys4 t=57.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7079)  mag mG X=-391 Y=-203 Z=-166 |B|=470 (raw -4888 -2532 -2077)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=57.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1355 +752 -7026] [-1346 +743 -7073] [-1349 +736 -7093] [-1358 +760 -7104]
+s4 t=58.0 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1361 +747 -7081)  mag mG X=-389 Y=-200 Z=-166 |B|=467 (raw -4859 -2501 -2075)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=58.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +747 -7079)  mag mG X=-388 Y=-201 Z=-166 |B|=467 (raw -4855 -2509 -2074)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=59.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +745 -7084)  mag mG X=-385 Y=-202 Z=-166 |B|=465 (raw -4817 -2526 -2071)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=59.5 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1356 +748 -7078)  mag mG X=-386 Y=-199 Z=-166 |B|=464 (raw -4828 -2483 -2072)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=60.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1354 +747 -7077)  mag mG X=-385 Y=-200 Z=-165 |B|=464 (raw -4817 -2495 -2068)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=60.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=60.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=60.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=60.0 i2c: 15159 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (1508 scan probes not counted)
+s4 t=60.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +748 -7079)  mag mG X=-386 Y=-197 Z=-166 |B|=464 (raw -4819 -2462 -2070)  fifo 1/3/7  fails 0  bus 1508 us
+s4 t=61.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +750 -7080)  mag mG X=-383 Y=-198 Z=-165 |B|=461 (raw -4791 -2470 -2065)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=61.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1356 +752 -7086)  mag mG X=-385 Y=-199 Z=-165 |B|=463 (raw -4813 -2488 -2067)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=62.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7079)  mag mG X=-385 Y=-197 Z=-165 |B|=462 (raw -4815 -2468 -2061)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=62.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +748 -7083)  mag mG X=-384 Y=-195 Z=-165 |B|=461 (raw -4798 -2437 -2066)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=62.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1341 +777 -7112] [-1370 +777 -7103] [-1355 +765 -7053] [-1357 +752 -7087]
+s4 t=63.0 @1e acc mg X=-166 Y=+92 Z=-863 |a|=883 (raw -1358 +751 -7077)  mag mG X=-385 Y=-197 Z=-166 |B|=463 (raw -4811 -2467 -2070)  fifo 1/3/4  fails 0  bus 1071 us
+s4 t=63.5 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1357 +746 -7082)  mag mG X=-386 Y=-198 Z=-165 |B|=464 (raw -4822 -2470 -2067)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=64.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +746 -7081)  mag mG X=-385 Y=-197 Z=-166 |B|=463 (raw -4814 -2465 -2071)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=64.5 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1357 +750 -7084)  mag mG X=-386 Y=-198 Z=-165 |B|=464 (raw -4827 -2473 -2066)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=65.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +749 -7086)  mag mG X=-384 Y=-198 Z=-166 |B|=462 (raw -4804 -2475 -2070)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=65.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=65.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=65.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=65.0 i2c: 16421 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (1624 scan probes not counted)
+s4 t=65.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +748 -7079)  mag mG X=-385 Y=-198 Z=-166 |B|=463 (raw -4816 -2480 -2074)  fifo 2/3/6  fails 0  bus 1354 us
+s4 t=66.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1354 +749 -7077)  mag mG X=-387 Y=-198 Z=-166 |B|=465 (raw -4835 -2473 -2074)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=66.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +749 -7082)  mag mG X=-386 Y=-199 Z=-166 |B|=464 (raw -4826 -2488 -2070)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=67.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +745 -7080)  mag mG X=-386 Y=-198 Z=-165 |B|=464 (raw -4819 -2470 -2064)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=67.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +750 -7079)  mag mG X=-384 Y=-200 Z=-165 |B|=463 (raw -4798 -2495 -2062)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=67.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1359 +768 -7099] [-1359 +760 -7093] [-1376 +757 -7098] [-1382 +753 -7114]
+s4 t=68.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +748 -7079)  mag mG X=-384 Y=-198 Z=-165 |B|=462 (raw -4802 -2474 -2064)  fifo 1/3/4  fails 0  bus 1067 us
+s4 t=68.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7080)  mag mG X=-384 Y=-198 Z=-165 |B|=462 (raw -4801 -2480 -2061)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=69.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +748 -7084)  mag mG X=-385 Y=-198 Z=-165 |B|=463 (raw -4811 -2475 -2061)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=69.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +749 -7084)  mag mG X=-384 Y=-199 Z=-165 |B|=462 (raw -4801 -2492 -2061)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=70.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +750 -7081)  mag mG X=-385 Y=-200 Z=-166 |B|=464 (raw -4815 -2495 -2077)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=70.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=70.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=70.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=70.0 i2c: 17683 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (1740 scan probes not counted)
+s4 t=70.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7082)  mag mG X=-385 Y=-200 Z=-166 |B|=464 (raw -4809 -2501 -2078)  fifo 1/3/7  fails 0  bus 1505 us
+s4 t=71.0 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1358 +750 -7082)  mag mG X=-387 Y=-199 Z=-166 |B|=465 (raw -4836 -2491 -2079)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=71.5 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1357 +749 -7081)  mag mG X=-384 Y=-199 Z=-166 |B|=463 (raw -4806 -2484 -2073)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=72.0 @1e acc mg X=-166 Y=+92 Z=-864 |a|=884 (raw -1357 +751 -7083)  mag mG X=-388 Y=-198 Z=-166 |B|=466 (raw -4848 -2470 -2078)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=72.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +750 -7079)  mag mG X=-387 Y=-201 Z=-166 |B|=466 (raw -4834 -2511 -2080)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=72.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=73.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1353 +751 -7080)  mag mG X=-386 Y=-198 Z=-167 |B|=464 (raw -4819 -2474 -2087)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=73.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +750 -7086)  mag mG X=-387 Y=-199 Z=-167 |B|=466 (raw -4833 -2489 -2084)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=74.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +749 -7079)  mag mG X=-387 Y=-198 Z=-166 |B|=465 (raw -4835 -2475 -2078)  fifo 3/3/4  fails 0  bus 1072 us
+s4 t=74.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7079)  mag mG X=-388 Y=-196 Z=-166 |B|=465 (raw -4844 -2452 -2080)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=75.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +749 -7080)  mag mG X=-387 Y=-199 Z=-166 |B|=465 (raw -4834 -2487 -2076)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=75.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=75.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=75.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=75.0 i2c: 18943 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (1856 scan probes not counted)
+s4 t=75.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +748 -7081)  mag mG X=-386 Y=-200 Z=-166 |B|=465 (raw -4825 -2494 -2073)  fifo 1/3/6  fails 0  bus 1353 us
+s4 t=76.0 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1354 +751 -7077)  mag mG X=-386 Y=-199 Z=-166 |B|=464 (raw -4824 -2485 -2076)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=76.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1352 +751 -7081)  mag mG X=-386 Y=-200 Z=-166 |B|=465 (raw -4821 -2498 -2074)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=77.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1354 +753 -7082)  mag mG X=-387 Y=-200 Z=-166 |B|=466 (raw -4832 -2501 -2081)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=77.5 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1352 +752 -7078)  mag mG X=-386 Y=-200 Z=-166 |B|=465 (raw -4819 -2496 -2080)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=77.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1328 +742 -7064] [-1357 +755 -7087] [-1363 +749 -7096] [-1355 +766 -7072]
+s4 t=78.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1354 +751 -7080)  mag mG X=-386 Y=-201 Z=-167 |B|=466 (raw -4826 -2513 -2084)  fifo 0/3/4  fails 0  bus 1058 us
+s4 t=78.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +750 -7085)  mag mG X=-385 Y=-198 Z=-166 |B|=463 (raw -4813 -2478 -2078)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=79.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1350 +749 -7078)  mag mG X=-386 Y=-199 Z=-167 |B|=465 (raw -4826 -2484 -2085)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=79.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1354 +751 -7083)  mag mG X=-387 Y=-200 Z=-166 |B|=466 (raw -4839 -2500 -2079)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=80.0 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1358 +750 -7082)  mag mG X=-386 Y=-198 Z=-166 |B|=464 (raw -4829 -2474 -2080)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=80.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=80.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=80.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=80.0 i2c: 20204 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (1972 scan probes not counted)
+s4 t=80.5 @1e acc mg X=-165 Y=+91 Z=-865 |a|=885 (raw -1352 +748 -7087)  mag mG X=-384 Y=-199 Z=-166 |B|=463 (raw -4799 -2491 -2076)  fifo 2/3/6  fails 0  bus 1356 us
+s4 t=81.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +749 -7080)  mag mG X=-384 Y=-199 Z=-166 |B|=463 (raw -4798 -2489 -2071)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=81.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +749 -7086)  mag mG X=-385 Y=-198 Z=-166 |B|=463 (raw -4816 -2469 -2075)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=82.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +749 -7082)  mag mG X=-383 Y=-198 Z=-166 |B|=462 (raw -4785 -2480 -2071)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=82.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +750 -7082)  mag mG X=-383 Y=-199 Z=-166 |B|=462 (raw -4793 -2490 -2073)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=82.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1354 +738 -7082] [-1339 +737 -7051] [-1351 +745 -7074] [-1349 +725 -7082]
+s4 t=83.0 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1357 +746 -7081)  mag mG X=-382 Y=-198 Z=-166 |B|=461 (raw -4776 -2472 -2069)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=83.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +749 -7081)  mag mG X=-383 Y=-198 Z=-165 |B|=461 (raw -4790 -2470 -2068)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=84.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +745 -7079)  mag mG X=-384 Y=-197 Z=-165 |B|=462 (raw -4803 -2465 -2067)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=84.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +750 -7085)  mag mG X=-384 Y=-199 Z=-165 |B|=462 (raw -4794 -2487 -2068)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=85.0 @1e acc mg X=-166 Y=+91 Z=-864 |a|=884 (raw -1358 +747 -7080)  mag mG X=-383 Y=-198 Z=-165 |B|=461 (raw -4786 -2477 -2058)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=85.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=85.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=85.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=85.0 i2c: 21466 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2088 scan probes not counted)
+s4 t=85.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7081)  mag mG X=-384 Y=-197 Z=-165 |B|=462 (raw -4801 -2463 -2064)  fifo 1/3/7  fails 0  bus 1505 us
+s4 t=86.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +746 -7083)  mag mG X=-384 Y=-197 Z=-166 |B|=462 (raw -4794 -2466 -2069)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=86.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +749 -7083)  mag mG X=-381 Y=-199 Z=-165 |B|=460 (raw -4767 -2482 -2066)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=87.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +746 -7080)  mag mG X=-382 Y=-199 Z=-165 |B|=461 (raw -4779 -2492 -2062)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=87.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +747 -7084)  mag mG X=-383 Y=-199 Z=-165 |B|=462 (raw -4791 -2491 -2063)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=87.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1362 +733 -7079] [-1347 +752 -7097] [-1353 +763 -7077] [-1373 +766 -7061]
+s4 t=88.0 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1354 +751 -7078)  mag mG X=-384 Y=-199 Z=-166 |B|=463 (raw -4794 -2485 -2071)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=88.5 @1e acc mg X=-165 Y=+91 Z=-865 |a|=885 (raw -1354 +748 -7088)  mag mG X=-383 Y=-197 Z=-165 |B|=461 (raw -4791 -2461 -2068)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=89.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +749 -7081)  mag mG X=-383 Y=-198 Z=-166 |B|=462 (raw -4787 -2476 -2076)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=89.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +746 -7079)  mag mG X=-383 Y=-198 Z=-166 |B|=462 (raw -4782 -2472 -2077)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=90.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +751 -7079)  mag mG X=-383 Y=-197 Z=-166 |B|=461 (raw -4793 -2466 -2073)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=90.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=90.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=90.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=90.0 i2c: 22728 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2204 scan probes not counted)
+s4 t=90.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7080)  mag mG X=-383 Y=-200 Z=-166 |B|=462 (raw -4788 -2505 -2077)  fifo 1/3/6  fails 0  bus 1359 us
+s4 t=91.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1349 +750 -7083)  mag mG X=-384 Y=-199 Z=-166 |B|=463 (raw -4802 -2493 -2073)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=91.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +747 -7080)  mag mG X=-384 Y=-197 Z=-166 |B|=462 (raw -4795 -2462 -2072)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=92.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +749 -7079)  mag mG X=-384 Y=-198 Z=-166 |B|=462 (raw -4794 -2480 -2070)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=92.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +749 -7081)  mag mG X=-383 Y=-198 Z=-166 |B|=462 (raw -4793 -2478 -2074)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=92.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=93.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +746 -7079)  mag mG X=-383 Y=-198 Z=-166 |B|=462 (raw -4782 -2475 -2076)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=93.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +748 -7079)  mag mG X=-382 Y=-197 Z=-166 |B|=460 (raw -4780 -2465 -2072)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=94.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1352 +750 -7077)  mag mG X=-383 Y=-199 Z=-166 |B|=462 (raw -4786 -2488 -2077)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=94.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +750 -7081)  mag mG X=-384 Y=-195 Z=-166 |B|=461 (raw -4804 -2438 -2078)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=95.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1351 +749 -7078)  mag mG X=-384 Y=-197 Z=-167 |B|=462 (raw -4803 -2466 -2083)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=95.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=95.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=95.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=95.0 i2c: 23988 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2320 scan probes not counted)
+s4 t=95.5 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1354 +748 -7078)  mag mG X=-385 Y=-199 Z=-166 |B|=464 (raw -4807 -2486 -2080)  fifo 2/3/6  fails 0  bus 1355 us
+s4 t=96.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1353 +754 -7080)  mag mG X=-385 Y=-199 Z=-167 |B|=464 (raw -4809 -2482 -2086)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=96.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +751 -7079)  mag mG X=-385 Y=-197 Z=-167 |B|=463 (raw -4810 -2467 -2091)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=97.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +747 -7079)  mag mG X=-385 Y=-199 Z=-167 |B|=464 (raw -4813 -2486 -2083)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=97.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +748 -7080)  mag mG X=-385 Y=-200 Z=-167 |B|=464 (raw -4807 -2503 -2086)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=97.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1353 +773 -7069] [-1351 +747 -7089] [-1347 +754 -7071] [-1340 +748 -7096]
+s4 t=98.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +746 -7079)  mag mG X=-386 Y=-200 Z=-167 |B|=465 (raw -4825 -2501 -2083)  fifo 0/3/4  fails 0  bus 1069 us
+s4 t=98.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +751 -7080)  mag mG X=-387 Y=-199 Z=-167 |B|=466 (raw -4835 -2486 -2091)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=99.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +747 -7083)  mag mG X=-389 Y=-199 Z=-167 |B|=467 (raw -4860 -2485 -2091)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=99.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +748 -7080)  mag mG X=-387 Y=-199 Z=-167 |B|=466 (raw -4835 -2487 -2093)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=100.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +750 -7080)  mag mG X=-389 Y=-199 Z=-168 |B|=468 (raw -4864 -2485 -2094)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=100.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=100.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=100.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=100.0 i2c: 25249 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2436 scan probes not counted)
+s4 t=100.5 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1354 +746 -7078)  mag mG X=-389 Y=-201 Z=-168 |B|=468 (raw -4864 -2509 -2095)  fifo 2/3/6  fails 0  bus 1352 us
+s4 t=101.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1353 +747 -7075)  mag mG X=-387 Y=-201 Z=-168 |B|=467 (raw -4840 -2509 -2097)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=101.5 @1e acc mg X=-164 Y=+91 Z=-864 |a|=884 (raw -1348 +748 -7080)  mag mG X=-387 Y=-200 Z=-167 |B|=466 (raw -4842 -2495 -2092)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=102.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +747 -7084)  mag mG X=-387 Y=-201 Z=-167 |B|=466 (raw -4841 -2513 -2090)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=102.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1349 +753 -7079)  mag mG X=-388 Y=-200 Z=-167 |B|=467 (raw -4856 -2503 -2091)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=102.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1362 +759 -7055] [-1366 +751 -7043] [-1381 +746 -7054] [-1370 +749 -7067]
+s4 t=103.0 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1354 +751 -7074)  mag mG X=-386 Y=-200 Z=-167 |B|=465 (raw -4825 -2494 -2092)  fifo 0/3/4  fails 0  bus 1056 us
+s4 t=103.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +747 -7081)  mag mG X=-387 Y=-198 Z=-167 |B|=465 (raw -4832 -2479 -2088)  fifo 3/3/4  fails 0  bus 1055 us
+s4 t=104.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +745 -7081)  mag mG X=-386 Y=-199 Z=-167 |B|=465 (raw -4823 -2486 -2088)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=104.5 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1353 +752 -7078)  mag mG X=-386 Y=-200 Z=-167 |B|=465 (raw -4831 -2495 -2093)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=105.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +748 -7083)  mag mG X=-385 Y=-197 Z=-167 |B|=463 (raw -4808 -2459 -2092)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=105.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=105.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=105.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=105.0 i2c: 26510 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2552 scan probes not counted)
+s4 t=105.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1354 +754 -7080)  mag mG X=-384 Y=-198 Z=-167 |B|=463 (raw -4801 -2471 -2093)  fifo 2/3/6  fails 0  bus 1354 us
+s4 t=106.0 @1e acc mg X=-164 Y=+92 Z=-864 |a|=884 (raw -1348 +752 -7079)  mag mG X=-386 Y=-200 Z=-167 |B|=465 (raw -4826 -2505 -2085)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=106.5 @1e acc mg X=-164 Y=+91 Z=-864 |a|=884 (raw -1348 +749 -7082)  mag mG X=-385 Y=-198 Z=-167 |B|=464 (raw -4809 -2481 -2092)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=107.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +749 -7081)  mag mG X=-385 Y=-199 Z=-167 |B|=464 (raw -4808 -2487 -2089)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=107.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +752 -7081)  mag mG X=-384 Y=-199 Z=-167 |B|=463 (raw -4803 -2484 -2092)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=107.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1350 +750 -7093] [-1350 +750 -7066] [-1341 +750 -7071] [-1334 +770 -7066]
+s4 t=108.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +751 -7079)  mag mG X=-385 Y=-200 Z=-167 |B|=464 (raw -4810 -2506 -2092)  fifo 0/3/4  fails 0  bus 1070 us
+s4 t=108.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +749 -7080)  mag mG X=-386 Y=-198 Z=-167 |B|=464 (raw -4827 -2472 -2093)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=109.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +749 -7079)  mag mG X=-386 Y=-198 Z=-168 |B|=465 (raw -4826 -2470 -2095)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=109.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +748 -7081)  mag mG X=-386 Y=-200 Z=-168 |B|=466 (raw -4819 -2499 -2095)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=110.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1353 +750 -7078)  mag mG X=-387 Y=-200 Z=-168 |B|=466 (raw -4836 -2500 -2098)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=110.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=110.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=110.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=110.0 i2c: 27771 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2668 scan probes not counted)
+s4 t=110.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +750 -7079)  mag mG X=-386 Y=-200 Z=-167 |B|=465 (raw -4830 -2503 -2093)  fifo 2/3/6  fails 0  bus 1352 us
+s4 t=111.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +749 -7080)  mag mG X=-386 Y=-199 Z=-168 |B|=465 (raw -4820 -2483 -2106)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=111.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1349 +753 -7080)  mag mG X=-388 Y=-202 Z=-168 |B|=468 (raw -4851 -2528 -2102)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=112.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +753 -7081)  mag mG X=-387 Y=-200 Z=-168 |B|=466 (raw -4834 -2502 -2094)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=112.5 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1351 +747 -7077)  mag mG X=-387 Y=-201 Z=-167 |B|=466 (raw -4841 -2517 -2093)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=112.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1336 +736 -7075] [-1335 +728 -7084] [-1346 +750 -7077] [-1347 +748 -7075]
+s4 t=113.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +751 -7079)  mag mG X=-386 Y=-197 Z=-167 |B|=464 (raw -4822 -2468 -2089)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=113.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +751 -7079)  mag mG X=-385 Y=-198 Z=-167 |B|=464 (raw -4814 -2479 -2089)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=114.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +749 -7082)  mag mG X=-383 Y=-200 Z=-167 |B|=463 (raw -4793 -2497 -2086)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=114.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1355 +747 -7082)  mag mG X=-384 Y=-198 Z=-167 |B|=463 (raw -4801 -2479 -2083)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=115.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +749 -7079)  mag mG X=-384 Y=-199 Z=-167 |B|=463 (raw -4802 -2490 -2089)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=115.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=115.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=115.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=115.0 i2c: 29032 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2784 scan probes not counted)
+s4 t=115.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1352 +753 -7081)  mag mG X=-384 Y=-200 Z=-167 |B|=464 (raw -4801 -2501 -2089)  fifo 2/3/6  fails 0  bus 1356 us
+s4 t=116.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1352 +749 -7078)  mag mG X=-386 Y=-200 Z=-167 |B|=465 (raw -4821 -2504 -2090)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=116.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +746 -7080)  mag mG X=-384 Y=-200 Z=-167 |B|=464 (raw -4796 -2495 -2093)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=117.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1354 +749 -7081)  mag mG X=-385 Y=-202 Z=-168 |B|=466 (raw -4815 -2519 -2097)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=117.5 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1356 +751 -7077)  mag mG X=-384 Y=-201 Z=-168 |B|=464 (raw -4797 -2508 -2098)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=117.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1361 +732 -7107] [-1373 +734 -7092] [-1358 +744 -7088] [-1351 +730 -7099]
+s4 t=118.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +748 -7082)  mag mG X=-386 Y=-199 Z=-168 |B|=465 (raw -4819 -2482 -2101)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=118.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1352 +751 -7082)  mag mG X=-385 Y=-198 Z=-168 |B|=464 (raw -4811 -2475 -2100)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=119.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +750 -7080)  mag mG X=-384 Y=-200 Z=-168 |B|=464 (raw -4799 -2494 -2098)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=119.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +746 -7079)  mag mG X=-385 Y=-198 Z=-168 |B|=464 (raw -4807 -2478 -2096)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=120.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +747 -7080)  mag mG X=-385 Y=-200 Z=-168 |B|=465 (raw -4817 -2504 -2099)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=120.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=120.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=120.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=120.0 i2c: 30294 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (2900 scan probes not counted)
+s4 t=120.5 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1354 +748 -7078)  mag mG X=-385 Y=-202 Z=-168 |B|=466 (raw -4809 -2520 -2099)  fifo 1/3/7  fails 0  bus 1506 us
+s4 t=121.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1353 +747 -7079)  mag mG X=-386 Y=-201 Z=-168 |B|=466 (raw -4819 -2510 -2099)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=121.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1356 +750 -7080)  mag mG X=-386 Y=-200 Z=-168 |B|=466 (raw -4824 -2504 -2104)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=122.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +745 -7079)  mag mG X=-384 Y=-200 Z=-168 |B|=464 (raw -4803 -2496 -2099)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=122.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +747 -7080)  mag mG X=-384 Y=-201 Z=-168 |B|=464 (raw -4796 -2508 -2099)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=122.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1336 +729 -7094] [-1359 +751 -7085] [-1375 +751 -7098] [-1375 +743 -7094]
+s4 t=123.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1354 +751 -7085)  mag mG X=-386 Y=-200 Z=-168 |B|=466 (raw -4826 -2505 -2106)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=123.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +752 -7081)  mag mG X=-387 Y=-200 Z=-169 |B|=467 (raw -4834 -2495 -2108)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=124.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +751 -7081)  mag mG X=-387 Y=-199 Z=-168 |B|=466 (raw -4833 -2493 -2105)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=124.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +751 -7080)  mag mG X=-387 Y=-200 Z=-169 |B|=467 (raw -4837 -2501 -2114)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=125.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +747 -7082)  mag mG X=-387 Y=-202 Z=-170 |B|=468 (raw -4832 -2519 -2119)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=125.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=125.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=125.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=125.0 i2c: 31556 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3016 scan probes not counted)
+s4 t=125.5 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1352 +751 -7077)  mag mG X=-387 Y=-199 Z=-169 |B|=466 (raw -4839 -2493 -2116)  fifo 2/3/6  fails 0  bus 1356 us
+s4 t=126.0 @1e acc mg X=-165 Y=+91 Z=-863 |a|=883 (raw -1354 +748 -7076)  mag mG X=-386 Y=-201 Z=-169 |B|=466 (raw -4819 -2517 -2114)  fifo 3/3/4  fails 0  bus 1060 us
+s4 t=126.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +747 -7079)  mag mG X=-387 Y=-200 Z=-169 |B|=467 (raw -4839 -2495 -2110)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=127.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +752 -7081)  mag mG X=-385 Y=-200 Z=-168 |B|=465 (raw -4814 -2498 -2105)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=127.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +750 -7083)  mag mG X=-384 Y=-200 Z=-168 |B|=464 (raw -4794 -2497 -2106)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=127.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=128.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1349 +749 -7079)  mag mG X=-386 Y=-200 Z=-170 |B|=466 (raw -4826 -2495 -2121)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=128.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +750 -7079)  mag mG X=-389 Y=-201 Z=-170 |B|=469 (raw -4866 -2514 -2125)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=129.0 @1e acc mg X=-165 Y=+92 Z=-863 |a|=883 (raw -1353 +751 -7078)  mag mG X=-390 Y=-202 Z=-170 |B|=470 (raw -4870 -2525 -2128)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=129.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1351 +749 -7082)  mag mG X=-389 Y=-201 Z=-171 |B|=470 (raw -4860 -2511 -2139)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=130.0 @1e acc mg X=-164 Y=+91 Z=-864 |a|=884 (raw -1348 +749 -7081)  mag mG X=-388 Y=-201 Z=-171 |B|=469 (raw -4848 -2512 -2139)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=130.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=130.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=130.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=130.0 i2c: 32816 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3132 scan probes not counted)
+s4 t=130.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +753 -7079)  mag mG X=-389 Y=-200 Z=-171 |B|=469 (raw -4866 -2502 -2134)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=131.0 @1e acc mg X=-164 Y=+92 Z=-864 |a|=884 (raw -1348 +751 -7081)  mag mG X=-390 Y=-202 Z=-171 |B|=471 (raw -4879 -2525 -2140)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=131.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1352 +749 -7080)  mag mG X=-389 Y=-200 Z=-171 |B|=469 (raw -4868 -2499 -2138)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=132.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1350 +751 -7082)  mag mG X=-390 Y=-199 Z=-170 |B|=469 (raw -4869 -2488 -2130)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=132.5 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1351 +751 -7081)  mag mG X=-391 Y=-201 Z=-171 |B|=471 (raw -4882 -2517 -2134)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=132.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1360 +762 -7107] [-1352 +762 -7087] [-1338 +766 -7106] [-1364 +760 -7075]
+s4 t=133.0 @1e acc mg X=-165 Y=+92 Z=-864 |a|=884 (raw -1349 +753 -7081)  mag mG X=-391 Y=-201 Z=-171 |B|=471 (raw -4883 -2510 -2140)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=133.5 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +750 -7080)  mag mG X=-389 Y=-203 Z=-171 |B|=470 (raw -4867 -2535 -2138)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=134.0 @1e acc mg X=-165 Y=+91 Z=-864 |a|=884 (raw -1350 +750 -7083)  mag mG X=-390 Y=-201 Z=-171 |B|=470 (raw -4870 -2515 -2134)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=134.5 @1e acc mg X=-157 Y=+92 Z=-863 |a|=881 (raw -1291 +757 -7076)  mag mG X=-388 Y=-203 Z=-181 |B|=473 (raw -4846 -2543 -2260)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=135.0 @1e acc mg X=+89 Y=+88 Z=-892 |a|=900 (raw +727 +718 -7312)  mag mG X=-335 Y=-218 Z=-299 |B|=499 (raw -4185 -2721 -3741)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=135.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=135.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=135.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=135.0 i2c: 34078 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3248 scan probes not counted)
+s4 t=135.5 @1e acc mg X=+228 Y=+85 Z=-888 |a|=920 (raw +1869 +697 -7276)  mag mG X=-289 Y=-231 Z=-375 |B|=526 (raw -3618 -2882 -4689)  fifo 1/3/7  fails 0  bus 1508 us
+s4 t=136.0 @1e acc mg X=+213 Y=+82 Z=-887 |a|=915 (raw +1742 +671 -7271)  mag mG X=-292 Y=-233 Z=-371 |B|=526 (raw -3656 -2912 -4642)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=136.5 @1e acc mg X=+206 Y=+84 Z=-888 |a|=915 (raw +1688 +688 -7279)  mag mG X=-296 Y=-234 Z=-368 |B|=527 (raw -3702 -2923 -4596)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=137.0 @1e acc mg X=+205 Y=+83 Z=-888 |a|=915 (raw +1682 +680 -7280)  mag mG X=-296 Y=-234 Z=-367 |B|=526 (raw -3702 -2925 -4587)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=137.5 @1e acc mg X=+200 Y=+85 Z=-888 |a|=914 (raw +1639 +694 -7281)  mag mG X=-296 Y=-232 Z=-364 |B|=523 (raw -3695 -2904 -4553)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=137.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [+1673 +700 -7318] [+1692 +677 -7294] [+1710 +662 -7307] [+1729 +651 -7335]
+s4 t=138.0 @1e acc mg X=+203 Y=+84 Z=-889 |a|=915 (raw +1660 +688 -7286)  mag mG X=-297 Y=-231 Z=-365 |B|=524 (raw -3716 -2892 -4564)  fifo 0/3/4  fails 0  bus 1067 us
+s4 t=138.5 @1e acc mg X=+203 Y=+84 Z=-889 |a|=915 (raw +1664 +686 -7291)  mag mG X=-295 Y=-232 Z=-365 |B|=523 (raw -3693 -2901 -4562)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=139.0 @1e acc mg X=+198 Y=+84 Z=-888 |a|=913 (raw +1624 +691 -7281)  mag mG X=-296 Y=-233 Z=-364 |B|=523 (raw -3699 -2912 -4547)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=139.5 @1e acc mg X=+199 Y=+85 Z=-889 |a|=914 (raw +1633 +693 -7286)  mag mG X=-296 Y=-232 Z=-362 |B|=522 (raw -3694 -2895 -4531)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=140.0 @1e acc mg X=+200 Y=+84 Z=-889 |a|=915 (raw +1638 +690 -7288)  mag mG X=-296 Y=-233 Z=-362 |B|=522 (raw -3694 -2909 -4529)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=140.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=140.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=140.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=140.0 i2c: 35339 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3364 scan probes not counted)
+s4 t=140.5 @1e acc mg X=+200 Y=+84 Z=-889 |a|=915 (raw +1636 +687 -7289)  mag mG X=-294 Y=-231 Z=-362 |B|=520 (raw -3675 -2890 -4524)  fifo 1/3/7  fails 0  bus 1506 us
+s4 t=141.0 @1e acc mg X=+199 Y=+83 Z=-889 |a|=914 (raw +1630 +682 -7287)  mag mG X=-294 Y=-230 Z=-361 |B|=519 (raw -3679 -2873 -4513)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=141.5 @1e acc mg X=+199 Y=+84 Z=-889 |a|=914 (raw +1629 +685 -7288)  mag mG X=-296 Y=-230 Z=-361 |B|=520 (raw -3695 -2875 -4509)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=142.0 @1e acc mg X=+199 Y=+84 Z=-889 |a|=914 (raw +1630 +685 -7290)  mag mG X=-295 Y=-231 Z=-361 |B|=520 (raw -3687 -2889 -4509)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=142.5 @1e acc mg X=+198 Y=+83 Z=-889 |a|=914 (raw +1622 +684 -7284)  mag mG X=-294 Y=-233 Z=-360 |B|=519 (raw -3680 -2913 -4504)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=142.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [+1636 +693 -7264] [+1640 +695 -7266] [+1655 +663 -7276] [+1671 +679 -7249]
+s4 t=143.0 @1e acc mg X=+200 Y=+83 Z=-889 |a|=914 (raw +1639 +683 -7288)  mag mG X=-292 Y=-231 Z=-360 |B|=517 (raw -3656 -2892 -4504)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=143.5 @1e acc mg X=+200 Y=+83 Z=-888 |a|=914 (raw +1643 +682 -7281)  mag mG X=-291 Y=-231 Z=-361 |B|=518 (raw -3641 -2889 -4517)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=144.0 @1e acc mg X=+200 Y=+84 Z=-889 |a|=915 (raw +1639 +685 -7286)  mag mG X=-291 Y=-230 Z=-361 |B|=517 (raw -3638 -2872 -4513)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=144.5 @1e acc mg X=+200 Y=+84 Z=-889 |a|=915 (raw +1643 +687 -7289)  mag mG X=-291 Y=-232 Z=-361 |B|=518 (raw -3640 -2901 -4510)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=145.0 @1e acc mg X=+201 Y=+83 Z=-888 |a|=914 (raw +1644 +680 -7283)  mag mG X=-293 Y=-232 Z=-360 |B|=518 (raw -3661 -2899 -4505)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=145.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=145.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=145.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=145.0 i2c: 36601 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3480 scan probes not counted)
+s4 t=145.5 @1e acc mg X=+198 Y=+83 Z=-890 |a|=915 (raw +1622 +684 -7292)  mag mG X=-295 Y=-232 Z=-358 |B|=518 (raw -3684 -2894 -4476)  fifo 1/3/7  fails 0  bus 1505 us
+s4 t=146.0 @1e acc mg X=+90 Y=+87 Z=-893 |a|=901 (raw +740 +717 -7317)  mag mG X=-334 Y=-220 Z=-291 |B|=494 (raw -4176 -2750 -3633)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=146.5 @1e acc mg X=-184 Y=+93 Z=-857 |a|=881 (raw -1506 +761 -7022)  mag mG X=-386 Y=-202 Z=-170 |B|=467 (raw -4819 -2522 -2130)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=147.0 @1e acc mg X=-162 Y=+93 Z=-865 |a|=884 (raw -1332 +761 -7091)  mag mG X=-386 Y=-204 Z=-170 |B|=468 (raw -4830 -2549 -2121)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=147.5 @1e acc mg X=-162 Y=+92 Z=-864 |a|=883 (raw -1332 +756 -7084)  mag mG X=-385 Y=-204 Z=-171 |B|=468 (raw -4808 -2550 -2132)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=147.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=148.0 @1e acc mg X=-162 Y=+93 Z=-864 |a|=883 (raw -1331 +760 -7085)  mag mG X=-385 Y=-204 Z=-171 |B|=468 (raw -4810 -2552 -2132)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=148.5 @1e acc mg X=-163 Y=+92 Z=-865 |a|=885 (raw -1333 +757 -7089)  mag mG X=-385 Y=-204 Z=-171 |B|=468 (raw -4815 -2548 -2134)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=149.0 @1e acc mg X=-162 Y=+92 Z=-864 |a|=883 (raw -1330 +754 -7083)  mag mG X=-387 Y=-204 Z=-171 |B|=469 (raw -4832 -2545 -2134)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=149.5 @1e acc mg X=-162 Y=+92 Z=-864 |a|=883 (raw -1328 +758 -7085)  mag mG X=-385 Y=-202 Z=-171 |B|=467 (raw -4818 -2531 -2132)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=150.0 @1e acc mg X=-162 Y=+93 Z=-864 |a|=883 (raw -1332 +760 -7085)  mag mG X=-384 Y=-202 Z=-171 |B|=466 (raw -4804 -2524 -2138)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=150.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=150.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=150.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=150.0 i2c: 37861 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3596 scan probes not counted)
+s4 t=150.5 @1e acc mg X=-163 Y=+92 Z=-865 |a|=885 (raw -1333 +758 -7089)  mag mG X=-385 Y=-203 Z=-170 |B|=467 (raw -4812 -2539 -2129)  fifo 1/3/7  fails 0  bus 1507 us
+s4 t=151.0 @1e acc mg X=-162 Y=+93 Z=-865 |a|=884 (raw -1327 +759 -7087)  mag mG X=-386 Y=-202 Z=-170 |B|=467 (raw -4831 -2523 -2131)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=151.5 @1e acc mg X=-162 Y=+93 Z=-864 |a|=883 (raw -1330 +762 -7085)  mag mG X=-384 Y=-203 Z=-170 |B|=466 (raw -4802 -2537 -2130)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=152.0 @1e acc mg X=-162 Y=+93 Z=-865 |a|=884 (raw -1331 +760 -7089)  mag mG X=-386 Y=-204 Z=-170 |B|=468 (raw -4823 -2555 -2126)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=152.5 @1e acc mg X=-163 Y=+92 Z=-864 |a|=884 (raw -1333 +756 -7085)  mag mG X=-386 Y=-203 Z=-170 |B|=468 (raw -4829 -2540 -2130)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=152.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1315 +776 -7045] [-1335 +772 -7075] [-1348 +796 -7092] [-1362 +787 -7087]
+s4 t=153.0 @1e acc mg X=-163 Y=+92 Z=-865 |a|=885 (raw -1333 +758 -7088)  mag mG X=-388 Y=-205 Z=-169 |B|=470 (raw -4847 -2565 -2115)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=153.5 @1e acc mg X=-162 Y=+92 Z=-865 |a|=884 (raw -1331 +758 -7088)  mag mG X=-388 Y=-202 Z=-170 |B|=469 (raw -4851 -2529 -2124)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=154.0 @1e acc mg X=-163 Y=+93 Z=-865 |a|=885 (raw -1333 +760 -7089)  mag mG X=-386 Y=-204 Z=-172 |B|=469 (raw -4830 -2548 -2145)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=154.5 @1e acc mg X=-162 Y=+92 Z=-865 |a|=884 (raw -1332 +756 -7088)  mag mG X=-389 Y=-203 Z=-172 |B|=471 (raw -4863 -2533 -2149)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=155.0 @1e acc mg X=-162 Y=+92 Z=-865 |a|=884 (raw -1329 +758 -7088)  mag mG X=-389 Y=-205 Z=-173 |B|=472 (raw -4860 -2559 -2157)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=155.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=155.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=155.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=155.0 i2c: 39123 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3712 scan probes not counted)
+s4 t=155.5 @1e acc mg X=-163 Y=+93 Z=-865 |a|=885 (raw -1337 +762 -7090)  mag mG X=-388 Y=-204 Z=-173 |B|=471 (raw -4846 -2544 -2157)  fifo 1/3/7  fails 0  bus 1508 us
+s4 t=156.0 @1e acc mg X=-172 Y=+85 Z=-861 |a|=882 (raw -1413 +696 -7059)  mag mG X=-390 Y=-203 Z=-167 |B|=470 (raw -4879 -2539 -2092)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=156.5 @1e acc mg X=-249 Y=+54 Z=-845 |a|=882 (raw -2040 +446 -6923)  mag mG X=-407 Y=-199 Z=-110 |B|=466 (raw -5093 -2489 -1369)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=157.0 @1e acc mg X=-447 Y=+22 Z=-732 |a|=857 (raw -3667 +182 -6002)  mag mG X=-430 Y=-181 Z=+19 |B|=466 (raw -5372 -2258 +234)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=157.5 @1e acc mg X=-508 Y=+15 Z=-700 |a|=865 (raw -4160 +120 -5740)  mag mG X=-430 Y=-172 Z=+61 |B|=467 (raw -5375 -2149 +759)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=157.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-4221 -168 -5825] [-4232 -151 -5784] [-4224 -175 -5826] [-4196 -177 -5802]
+s4 t=158.0 @1e acc mg X=-509 Y=+17 Z=-700 |a|=865 (raw -4172 +143 -5741)  mag mG X=-429 Y=-169 Z=+62 |B|=465 (raw -5367 -2109 +780)  fifo 1/3/4  fails 0  bus 1067 us
+s4 t=158.5 @1e acc mg X=-505 Y=+19 Z=-703 |a|=865 (raw -4139 +156 -5759)  mag mG X=-430 Y=-169 Z=+58 |B|=465 (raw -5371 -2115 +720)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=159.0 @1e acc mg X=-497 Y=+16 Z=-710 |a|=866 (raw -4073 +129 -5818)  mag mG X=-429 Y=-170 Z=+52 |B|=464 (raw -5367 -2119 +652)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=159.5 @1e acc mg X=-496 Y=+18 Z=-709 |a|=865 (raw -4065 +149 -5813)  mag mG X=-428 Y=-169 Z=+51 |B|=462 (raw -5355 -2115 +640)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=160.0 @1e acc mg X=-487 Y=+19 Z=-718 |a|=867 (raw -3991 +153 -5883)  mag mG X=-428 Y=-171 Z=+46 |B|=463 (raw -5347 -2142 +574)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=160.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=160.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=160.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=160.0 i2c: 40385 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3828 scan probes not counted)
+s4 t=160.5 @1e acc mg X=-482 Y=+16 Z=-720 |a|=866 (raw -3947 +135 -5898)  mag mG X=-428 Y=-172 Z=+41 |B|=463 (raw -5352 -2155 +515)  fifo 1/3/7  fails 0  bus 1508 us
+s4 t=161.0 @1e acc mg X=-478 Y=+16 Z=-722 |a|=866 (raw -3919 +134 -5916)  mag mG X=-428 Y=-173 Z=+39 |B|=463 (raw -5345 -2158 +488)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=161.5 @1e acc mg X=-475 Y=+16 Z=-724 |a|=866 (raw -3896 +133 -5935)  mag mG X=-427 Y=-172 Z=+36 |B|=461 (raw -5342 -2152 +451)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=162.0 @1e acc mg X=-473 Y=+15 Z=-724 |a|=864 (raw -3879 +120 -5934)  mag mG X=-428 Y=-174 Z=+35 |B|=463 (raw -5354 -2170 +439)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=162.5 @1e acc mg X=-472 Y=+13 Z=-726 |a|=866 (raw -3866 +110 -5951)  mag mG X=-428 Y=-170 Z=+34 |B|=461 (raw -5344 -2129 +429)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=162.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-3942 -76 -5943] [-3949 -89 -5936] [-3961 -86 -5902] [-3948 -96 -5872]
+s4 t=163.0 @1e acc mg X=-472 Y=+11 Z=-725 |a|=865 (raw -3868 +87 -5946)  mag mG X=-428 Y=-171 Z=+33 |B|=462 (raw -5355 -2140 +417)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=163.5 @1e acc mg X=-471 Y=+11 Z=-725 |a|=864 (raw -3863 +93 -5946)  mag mG X=-428 Y=-173 Z=+32 |B|=462 (raw -5354 -2159 +398)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=164.0 @1e acc mg X=-465 Y=+8 Z=-731 |a|=866 (raw -3808 +63 -5990)  mag mG X=-428 Y=-171 Z=+27 |B|=461 (raw -5346 -2142 +342)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=164.5 @1e acc mg X=-465 Y=+10 Z=-729 |a|=864 (raw -3813 +83 -5978)  mag mG X=-428 Y=-171 Z=+28 |B|=461 (raw -5345 -2142 +352)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=165.0 @1e acc mg X=-468 Y=+9 Z=-729 |a|=866 (raw -3838 +77 -5973)  mag mG X=-427 Y=-170 Z=+30 |B|=460 (raw -5339 -2128 +378)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=165.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=165.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=165.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=165.0 i2c: 41647 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (3944 scan probes not counted)
+s4 t=165.5 @1e acc mg X=-473 Y=+9 Z=-724 |a|=864 (raw -3876 +71 -5937)  mag mG X=-429 Y=-168 Z=+32 |B|=461 (raw -5363 -2095 +403)  fifo 1/3/6  fails 0  bus 1355 us
+s4 t=166.0 @1e acc mg X=-473 Y=+6 Z=-723 |a|=863 (raw -3879 +49 -5929)  mag mG X=-429 Y=-170 Z=+33 |B|=462 (raw -5362 -2122 +409)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=166.5 @1e acc mg X=-458 Y=+10 Z=-716 |a|=850 (raw -3757 +78 -5873)  mag mG X=-430 Y=-172 Z=+15 |B|=463 (raw -5372 -2155 +191)  fifo 3/3/4  fails 0  bus 1055 us
+s4 t=167.0 @1e acc mg X=-207 Y=+64 Z=-864 |a|=890 (raw -1695 +528 -7079)  mag mG X=-402 Y=-197 Z=-135 |B|=467 (raw -5020 -2464 -1692)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=167.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1342 +760 -7082)  mag mG X=-390 Y=-202 Z=-173 |B|=472 (raw -4881 -2529 -2160)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=167.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1322 +775 -7079] [-1338 +770 -7105] [-1322 +767 -7113] [-1309 +749 -7086]
+s4 t=168.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1346 +763 -7083)  mag mG X=-392 Y=-203 Z=-172 |B|=473 (raw -4896 -2539 -2146)  fifo 0/3/4  fails 0  bus 1070 us
+s4 t=168.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1348 +760 -7084)  mag mG X=-392 Y=-203 Z=-174 |B|=474 (raw -4894 -2534 -2171)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=169.0 @1e acc mg X=-164 Y=+92 Z=-864 |a|=884 (raw -1344 +758 -7080)  mag mG X=-391 Y=-203 Z=-172 |B|=472 (raw -4893 -2542 -2149)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=169.5 @1e acc mg X=-163 Y=+93 Z=-864 |a|=884 (raw -1338 +761 -7083)  mag mG X=-391 Y=-202 Z=-172 |B|=472 (raw -4889 -2530 -2149)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=170.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1345 +760 -7083)  mag mG X=-390 Y=-201 Z=-172 |B|=471 (raw -4879 -2517 -2156)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=170.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=170.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=170.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=170.0 i2c: 42908 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4060 scan probes not counted)
+s4 t=170.5 @1e acc mg X=-164 Y=+93 Z=-863 |a|=883 (raw -1343 +766 -7077)  mag mG X=-392 Y=-201 Z=-174 |B|=473 (raw -4904 -2514 -2169)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=171.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1343 +759 -7086)  mag mG X=-393 Y=-204 Z=-173 |B|=475 (raw -4913 -2547 -2158)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=171.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1344 +762 -7086)  mag mG X=-390 Y=-199 Z=-173 |B|=470 (raw -4877 -2487 -2157)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=172.0 @1e acc mg X=-164 Y=+92 Z=-865 |a|=885 (raw -1343 +757 -7087)  mag mG X=-392 Y=-202 Z=-172 |B|=473 (raw -4900 -2529 -2153)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=172.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1346 +760 -7081)  mag mG X=-392 Y=-202 Z=-172 |B|=473 (raw -4900 -2523 -2148)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=172.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1324 +782 -7096] [-1335 +782 -7100] [-1333 +779 -7102] [-1336 +767 -7106]
+s4 t=173.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1347 +763 -7085)  mag mG X=-390 Y=-202 Z=-171 |B|=471 (raw -4881 -2531 -2136)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=173.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1343 +764 -7082)  mag mG X=-392 Y=-202 Z=-173 |B|=473 (raw -4900 -2531 -2157)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=174.0 @1e acc mg X=-163 Y=+93 Z=-864 |a|=884 (raw -1340 +762 -7083)  mag mG X=-391 Y=-201 Z=-173 |B|=472 (raw -4892 -2510 -2161)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=174.5 @1e acc mg X=-163 Y=+93 Z=-864 |a|=884 (raw -1340 +760 -7080)  mag mG X=-391 Y=-202 Z=-170 |B|=471 (raw -4893 -2526 -2131)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=175.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1341 +764 -7079)  mag mG X=-390 Y=-203 Z=-172 |B|=472 (raw -4881 -2537 -2156)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=175.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=175.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=175.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=175.0 i2c: 44170 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4176 scan probes not counted)
+s4 t=175.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1342 +763 -7083)  mag mG X=-389 Y=-203 Z=-171 |B|=470 (raw -4867 -2539 -2143)  fifo 1/3/6  fails 0  bus 1357 us
+s4 t=176.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1343 +760 -7085)  mag mG X=-392 Y=-201 Z=-173 |B|=473 (raw -4894 -2517 -2159)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=176.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1342 +759 -7084)  mag mG X=-392 Y=-202 Z=-172 |B|=473 (raw -4904 -2526 -2151)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=177.0 @1e acc mg X=-163 Y=+93 Z=-864 |a|=884 (raw -1340 +761 -7083)  mag mG X=-390 Y=-201 Z=-171 |B|=470 (raw -4875 -2516 -2143)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=177.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1343 +762 -7084)  mag mG X=-389 Y=-200 Z=-171 |B|=469 (raw -4868 -2501 -2141)  fifo 3/3/4  fails 0  bus 1055 us
+s4 t=177.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1379 +780 -7065] [-1359 +760 -7077] [-1364 +771 -7093] [-1376 +776 -7079]
+s4 t=178.0 @1e acc mg X=-163 Y=+93 Z=-864 |a|=884 (raw -1340 +762 -7084)  mag mG X=-391 Y=-202 Z=-173 |B|=472 (raw -4889 -2521 -2160)  fifo 0/3/4  fails 0  bus 1056 us
+s4 t=178.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1345 +762 -7083)  mag mG X=-389 Y=-203 Z=-171 |B|=470 (raw -4863 -2540 -2141)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=179.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1342 +763 -7082)  mag mG X=-391 Y=-201 Z=-172 |B|=472 (raw -4886 -2507 -2152)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=179.5 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1345 +762 -7084)  mag mG X=-390 Y=-202 Z=-169 |B|=470 (raw -4870 -2527 -2111)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=180.0 @1e acc mg X=-164 Y=+93 Z=-864 |a|=884 (raw -1345 +762 -7086)  mag mG X=-387 Y=-200 Z=-169 |B|=467 (raw -4841 -2497 -2117)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=180.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=180.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=180.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=180.0 i2c: 45431 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4292 scan probes not counted)
+s4 t=180.5 @1e acc mg X=-163 Y=+94 Z=-865 |a|=885 (raw -1339 +768 -7090)  mag mG X=-388 Y=-198 Z=-170 |B|=467 (raw -4853 -2477 -2120)  fifo 2/3/6  fails 0  bus 1354 us
+s4 t=181.0 @1e acc mg X=-204 Y=+42 Z=-853 |a|=878 (raw -1675 +346 -6993)  mag mG X=-395 Y=-211 Z=-155 |B|=473 (raw -4934 -2635 -1936)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=181.5 @1e acc mg X=-106 Y=-237 Z=-811 |a|=851 (raw -865 -1939 -6645)  mag mG X=-374 Y=-254 Z=-181 |B|=486 (raw -4674 -3181 -2262)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=182.0 @1e acc mg X=-27 Y=-371 Z=-771 |a|=856 (raw -225 -3037 -6317)  mag mG X=-341 Y=-281 Z=-210 |B|=489 (raw -4263 -3512 -2624)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=182.5 @1e acc mg X=-29 Y=-401 Z=-751 |a|=851 (raw -240 -3286 -6152)  mag mG X=-332 Y=-288 Z=-214 |B|=488 (raw -4149 -3597 -2674)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=182.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-290 -3401 -6040] [-315 -3401 -6020] [-341 -3400 -6016] [-387 -3421 -6002]
+s4 t=183.0 @1e acc mg X=-27 Y=-417 Z=-741 |a|=850 (raw -223 -3416 -6075)  mag mG X=-330 Y=-288 Z=-215 |B|=487 (raw -4129 -3595 -2693)  fifo 1/3/4  fails 0  bus 1071 us
+s4 t=183.5 @1e acc mg X=-20 Y=-415 Z=-744 |a|=852 (raw -160 -3402 -6099)  mag mG X=-329 Y=-290 Z=-217 |B|=489 (raw -4108 -3628 -2707)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=184.0 @1e acc mg X=-31 Y=-414 Z=-743 |a|=851 (raw -256 -3397 -6088)  mag mG X=-332 Y=-288 Z=-215 |B|=489 (raw -4146 -3594 -2691)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=184.5 @1e acc mg X=-36 Y=-416 Z=-740 |a|=849 (raw -297 -3412 -6066)  mag mG X=-334 Y=-285 Z=-212 |B|=487 (raw -4175 -3558 -2654)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=185.0 @1e acc mg X=-34 Y=-416 Z=-741 |a|=850 (raw -278 -3406 -6072)  mag mG X=-332 Y=-283 Z=-215 |B|=486 (raw -4151 -3537 -2682)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=185.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=185.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=185.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=185.0 i2c: 46693 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4408 scan probes not counted)
+s4 t=185.5 @1e acc mg X=-41 Y=-409 Z=-744 |a|=849 (raw -338 -3355 -6100)  mag mG X=-336 Y=-277 Z=-214 |B|=485 (raw -4197 -3461 -2681)  fifo 1/3/6  fails 0  bus 1354 us
+s4 t=186.0 @1e acc mg X=-47 Y=-409 Z=-743 |a|=849 (raw -383 -3352 -6092)  mag mG X=-337 Y=-277 Z=-214 |B|=485 (raw -4212 -3466 -2674)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=186.5 @1e acc mg X=-50 Y=-410 Z=-743 |a|=850 (raw -408 -3359 -6089)  mag mG X=-338 Y=-277 Z=-213 |B|=486 (raw -4229 -3457 -2659)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=187.0 @1e acc mg X=-49 Y=-411 Z=-742 |a|=849 (raw -404 -3367 -6080)  mag mG X=-337 Y=-278 Z=-211 |B|=485 (raw -4215 -3481 -2635)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=187.5 @1e acc mg X=-48 Y=-419 Z=-737 |a|=849 (raw -397 -3435 -6040)  mag mG X=-336 Y=-277 Z=-213 |B|=484 (raw -4198 -3459 -2666)  fifo 3/3/4  fails 0  bus 1055 us
+s4 t=187.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-332 -3560 -5996] [-311 -3586 -6024] [-275 -3576 -5979] [-232 -3557 -6053]
+s4 t=188.0 @1e acc mg X=-48 Y=-412 Z=-741 |a|=849 (raw -395 -3377 -6075)  mag mG X=-337 Y=-276 Z=-212 |B|=484 (raw -4209 -3452 -2647)  fifo 0/3/4  fails 0  bus 1056 us
+s4 t=188.5 @1e acc mg X=-51 Y=-411 Z=-741 |a|=848 (raw -419 -3367 -6077)  mag mG X=-338 Y=-275 Z=-211 |B|=484 (raw -4223 -3441 -2633)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=189.0 @1e acc mg X=-54 Y=-404 Z=-746 |a|=850 (raw -442 -3313 -6115)  mag mG X=-338 Y=-274 Z=-210 |B|=483 (raw -4229 -3419 -2628)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=189.5 @1e acc mg X=-53 Y=-409 Z=-742 |a|=848 (raw -437 -3349 -6084)  mag mG X=-338 Y=-276 Z=-210 |B|=484 (raw -4227 -3449 -2630)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=190.0 @1e acc mg X=-54 Y=-408 Z=-743 |a|=849 (raw -442 -3346 -6093)  mag mG X=-339 Y=-274 Z=-211 |B|=484 (raw -4243 -3426 -2639)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=190.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=190.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=190.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=190.0 i2c: 47954 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4524 scan probes not counted)
+s4 t=190.5 @1e acc mg X=-57 Y=-408 Z=-743 |a|=849 (raw -471 -3341 -6088)  mag mG X=-339 Y=-272 Z=-210 |B|=482 (raw -4240 -3406 -2619)  fifo 2/3/6  fails 0  bus 1353 us
+s4 t=191.0 @1e acc mg X=-59 Y=-412 Z=-739 |a|=848 (raw -481 -3378 -6056)  mag mG X=-338 Y=-272 Z=-209 |B|=481 (raw -4228 -3406 -2614)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=191.5 @1e acc mg X=-54 Y=-413 Z=-740 |a|=849 (raw -443 -3385 -6069)  mag mG X=-338 Y=-276 Z=-210 |B|=484 (raw -4225 -3456 -2621)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=192.0 @1e acc mg X=-54 Y=-414 Z=-739 |a|=848 (raw -439 -3397 -6055)  mag mG X=-338 Y=-274 Z=-212 |B|=484 (raw -4223 -3428 -2644)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=192.5 @1e acc mg X=-57 Y=-416 Z=-737 |a|=848 (raw -468 -3408 -6045)  mag mG X=-337 Y=-274 Z=-212 |B|=483 (raw -4210 -3427 -2648)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=192.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=193.0 @1e acc mg X=-57 Y=-410 Z=-741 |a|=848 (raw -465 -3362 -6073)  mag mG X=-336 Y=-272 Z=-212 |B|=481 (raw -4205 -3400 -2654)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=193.5 @1e acc mg X=-58 Y=-402 Z=-746 |a|=849 (raw -472 -3296 -6118)  mag mG X=-337 Y=-269 Z=-211 |B|=480 (raw -4207 -3358 -2632)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=194.0 @1e acc mg X=-65 Y=-409 Z=-741 |a|=848 (raw -531 -3349 -6071)  mag mG X=-337 Y=-268 Z=-207 |B|=477 (raw -4213 -3347 -2587)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=194.5 @1e acc mg X=-74 Y=-370 Z=-759 |a|=847 (raw -607 -3032 -6223)  mag mG X=-347 Y=-255 Z=-202 |B|=475 (raw -4340 -3185 -2526)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=195.0 @1e acc mg X=-144 Y=-70 Z=-847 |a|=862 (raw -1180 -570 -6944)  mag mG X=-379 Y=-211 Z=-177 |B|=468 (raw -4732 -2642 -2209)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=195.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=195.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=195.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=195.0 i2c: 49214 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4640 scan probes not counted)
+s4 t=195.5 @1e acc mg X=-162 Y=+94 Z=-868 |a|=887 (raw -1327 +773 -7115)  mag mG X=-383 Y=-189 Z=-169 |B|=459 (raw -4788 -2360 -2110)  fifo 2/3/6  fails 0  bus 1355 us
+s4 t=196.0 @1e acc mg X=-161 Y=+90 Z=-866 |a|=885 (raw -1323 +740 -7095)  mag mG X=-382 Y=-191 Z=-168 |B|=458 (raw -4774 -2382 -2105)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=196.5 @1e acc mg X=-162 Y=+90 Z=-865 |a|=884 (raw -1324 +741 -7088)  mag mG X=-383 Y=-191 Z=-169 |B|=460 (raw -4788 -2385 -2108)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=197.0 @1e acc mg X=-162 Y=+91 Z=-866 |a|=885 (raw -1327 +742 -7095)  mag mG X=-381 Y=-190 Z=-167 |B|=457 (raw -4767 -2376 -2090)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=197.5 @1e acc mg X=-162 Y=+90 Z=-865 |a|=884 (raw -1325 +739 -7092)  mag mG X=-383 Y=-192 Z=-165 |B|=459 (raw -4785 -2395 -2067)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=197.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=198.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1321 +744 -7089)  mag mG X=-384 Y=-190 Z=-167 |B|=459 (raw -4804 -2374 -2091)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=198.5 @1e acc mg X=-161 Y=+90 Z=-864 |a|=883 (raw -1322 +739 -7084)  mag mG X=-383 Y=-192 Z=-166 |B|=459 (raw -4786 -2401 -2071)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=199.0 @1e acc mg X=-162 Y=+90 Z=-865 |a|=884 (raw -1327 +739 -7088)  mag mG X=-382 Y=-190 Z=-165 |B|=457 (raw -4778 -2376 -2067)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=199.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1323 +745 -7087)  mag mG X=-382 Y=-188 Z=-166 |B|=456 (raw -4778 -2355 -2077)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=200.0 @1e acc mg X=-161 Y=+91 Z=-864 |a|=883 (raw -1323 +744 -7086)  mag mG X=-382 Y=-190 Z=-167 |B|=458 (raw -4781 -2374 -2088)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=200.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=200.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=200.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=200.0 i2c: 50474 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4756 scan probes not counted)
+s4 t=200.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1321 +744 -7088)  mag mG X=-383 Y=-190 Z=-164 |B|=457 (raw -4784 -2380 -2055)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=201.0 @1e acc mg X=-162 Y=+91 Z=-865 |a|=884 (raw -1324 +743 -7088)  mag mG X=-385 Y=-189 Z=-166 |B|=459 (raw -4807 -2367 -2073)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=201.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1323 +745 -7087)  mag mG X=-385 Y=-190 Z=-166 |B|=460 (raw -4807 -2375 -2075)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=202.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1321 +740 -7088)  mag mG X=-384 Y=-190 Z=-167 |B|=459 (raw -4798 -2380 -2082)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=202.5 @1e acc mg X=-161 Y=+91 Z=-864 |a|=883 (raw -1321 +745 -7084)  mag mG X=-385 Y=-191 Z=-169 |B|=461 (raw -4813 -2383 -2118)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=202.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1328 +755 -7116] [-1329 +745 -7117] [-1342 +748 -7092] [-1349 +761 -7124]
+s4 t=203.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1321 +746 -7087)  mag mG X=-383 Y=-193 Z=-169 |B|=460 (raw -4787 -2411 -2111)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=203.5 @1e acc mg X=-162 Y=+91 Z=-864 |a|=883 (raw -1325 +746 -7084)  mag mG X=-383 Y=-191 Z=-169 |B|=460 (raw -4786 -2382 -2110)  fifo 3/3/4  fails 0  bus 1055 us
+s4 t=204.0 @1e acc mg X=-162 Y=+91 Z=-864 |a|=883 (raw -1324 +743 -7083)  mag mG X=-384 Y=-190 Z=-170 |B|=460 (raw -4801 -2380 -2124)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=204.5 @1e acc mg X=-162 Y=+91 Z=-865 |a|=884 (raw -1330 +746 -7088)  mag mG X=-383 Y=-187 Z=-168 |B|=458 (raw -4792 -2332 -2104)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=205.0 @1e acc mg X=-160 Y=+139 Z=-867 |a|=892 (raw -1308 +1141 -7105)  mag mG X=-390 Y=-182 Z=-160 |B|=459 (raw -4870 -2277 -2004)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=205.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=205.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=205.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=205.0 i2c: 51735 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4872 scan probes not counted)
+s4 t=205.5 @1e acc mg X=-126 Y=+347 Z=-834 |a|=912 (raw -1033 +2842 -6835)  mag mG X=-404 Y=-162 Z=-139 |B|=456 (raw -5054 -2026 -1738)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=206.0 @1e acc mg X=-80 Y=+540 Z=-770 |a|=943 (raw -658 +4423 -6311)  mag mG X=-419 Y=-150 Z=-122 |B|=461 (raw -5241 -1873 -1520)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=206.5 @1e acc mg X=-61 Y=+619 Z=-728 |a|=957 (raw -496 +5071 -5968)  mag mG X=-423 Y=-146 Z=-114 |B|=461 (raw -5283 -1821 -1421)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=207.0 @1e acc mg X=-55 Y=+632 Z=-720 |a|=959 (raw -451 +5179 -5905)  mag mG X=-425 Y=-145 Z=-112 |B|=462 (raw -5313 -1813 -1397)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=207.5 @1e acc mg X=-54 Y=+628 Z=-723 |a|=959 (raw -443 +5148 -5927)  mag mG X=-424 Y=-144 Z=-113 |B|=461 (raw -5306 -1804 -1413)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=207.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-401 +4981 -6034] [-395 +4959 -6050] [-418 +4963 -6043] [-481 +4957 -6040]
+s4 t=208.0 @1e acc mg X=-55 Y=+630 Z=-722 |a|=959 (raw -452 +5166 -5917)  mag mG X=-424 Y=-146 Z=-113 |B|=462 (raw -5295 -1820 -1410)  fifo 0/3/4  fails 0  bus 1069 us
+s4 t=208.5 @1e acc mg X=-55 Y=+626 Z=-724 |a|=958 (raw -451 +5130 -5935)  mag mG X=-423 Y=-144 Z=-113 |B|=460 (raw -5292 -1805 -1408)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=209.0 @1e acc mg X=-55 Y=+631 Z=-722 |a|=960 (raw -448 +5169 -5916)  mag mG X=-423 Y=-145 Z=-113 |B|=461 (raw -5287 -1816 -1407)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=209.5 @1e acc mg X=-55 Y=+627 Z=-723 |a|=958 (raw -451 +5137 -5928)  mag mG X=-424 Y=-144 Z=-114 |B|=462 (raw -5294 -1803 -1419)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=210.0 @1e acc mg X=-55 Y=+629 Z=-722 |a|=959 (raw -447 +5160 -5919)  mag mG X=-424 Y=-146 Z=-112 |B|=462 (raw -5303 -1820 -1405)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=210.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=210.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=210.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=210.0 i2c: 52996 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (4988 scan probes not counted)
+s4 t=210.5 @1e acc mg X=-53 Y=+631 Z=-721 |a|=959 (raw -437 +5173 -5913)  mag mG X=-424 Y=-146 Z=-112 |B|=462 (raw -5305 -1828 -1404)  fifo 2/3/6  fails 0  bus 1356 us
+s4 t=211.0 @1e acc mg X=-55 Y=+629 Z=-723 |a|=959 (raw -448 +5152 -5926)  mag mG X=-424 Y=-144 Z=-113 |B|=461 (raw -5306 -1804 -1413)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=211.5 @1e acc mg X=-53 Y=+632 Z=-721 |a|=960 (raw -431 +5180 -5913)  mag mG X=-425 Y=-146 Z=-113 |B|=463 (raw -5316 -1827 -1412)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=212.0 @1e acc mg X=-54 Y=+631 Z=-722 |a|=960 (raw -439 +5169 -5917)  mag mG X=-424 Y=-144 Z=-113 |B|=461 (raw -5294 -1802 -1409)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=212.5 @1e acc mg X=-53 Y=+634 Z=-720 |a|=960 (raw -431 +5197 -5901)  mag mG X=-425 Y=-146 Z=-112 |B|=463 (raw -5315 -1821 -1400)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=212.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-592 +5019 -5925] [-603 +5044 -5924] [-636 +5026 -5898] [-666 +5033 -5890]
+s4 t=213.0 @1e acc mg X=-53 Y=+634 Z=-719 |a|=960 (raw -434 +5200 -5890)  mag mG X=-424 Y=-145 Z=-111 |B|=461 (raw -5304 -1815 -1393)  fifo 0/3/4  fails 0  bus 1072 us
+s4 t=213.5 @1e acc mg X=-51 Y=+642 Z=-715 |a|=962 (raw -416 +5261 -5859)  mag mG X=-424 Y=-145 Z=-111 |B|=461 (raw -5304 -1816 -1388)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=214.0 @1e acc mg X=-51 Y=+642 Z=-714 |a|=961 (raw -419 +5266 -5852)  mag mG X=-425 Y=-145 Z=-110 |B|=462 (raw -5312 -1809 -1381)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=214.5 @1e acc mg X=-51 Y=+643 Z=-714 |a|=962 (raw -419 +5268 -5854)  mag mG X=-425 Y=-142 Z=-111 |B|=461 (raw -5312 -1781 -1383)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=215.0 @1e acc mg X=-51 Y=+644 Z=-713 |a|=962 (raw -418 +5278 -5845)  mag mG X=-424 Y=-144 Z=-111 |B|=461 (raw -5300 -1805 -1382)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=215.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=215.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=215.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=215.0 i2c: 54257 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5104 scan probes not counted)
+s4 t=215.5 @1e acc mg X=-50 Y=+645 Z=-713 |a|=962 (raw -410 +5290 -5847)  mag mG X=-424 Y=-144 Z=-110 |B|=461 (raw -5302 -1799 -1375)  fifo 1/3/7  fails 0  bus 1506 us
+s4 t=216.0 @1e acc mg X=-51 Y=+645 Z=-712 |a|=962 (raw -416 +5285 -5839)  mag mG X=-425 Y=-145 Z=-110 |B|=462 (raw -5318 -1812 -1376)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=216.5 @1e acc mg X=-50 Y=+645 Z=-713 |a|=962 (raw -413 +5285 -5841)  mag mG X=-425 Y=-145 Z=-110 |B|=462 (raw -5311 -1811 -1380)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=217.0 @1e acc mg X=-51 Y=+643 Z=-714 |a|=962 (raw -422 +5274 -5851)  mag mG X=-425 Y=-144 Z=-110 |B|=462 (raw -5308 -1799 -1372)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=217.5 @1e acc mg X=-51 Y=+640 Z=-716 |a|=961 (raw -419 +5242 -5871)  mag mG X=-425 Y=-145 Z=-111 |B|=462 (raw -5310 -1818 -1388)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=217.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-475 +5298 -5825] [-471 +5295 -5835] [-448 +5280 -5843] [-425 +5287 -5848]
+s4 t=218.0 @1e acc mg X=-52 Y=+635 Z=-719 |a|=960 (raw -426 +5206 -5893)  mag mG X=-426 Y=-144 Z=-112 |B|=463 (raw -5330 -1794 -1398)  fifo 1/3/4  fails 0  bus 1067 us
+s4 t=218.5 @1e acc mg X=-53 Y=+636 Z=-718 |a|=960 (raw -437 +5214 -5889)  mag mG X=-424 Y=-145 Z=-112 |B|=461 (raw -5297 -1811 -1406)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=219.0 @1e acc mg X=-80 Y=+523 Z=-768 |a|=932 (raw -655 +4288 -6296)  mag mG X=-418 Y=-149 Z=-124 |B|=460 (raw -5231 -1864 -1544)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=219.5 @1e acc mg X=-160 Y=+143 Z=-865 |a|=891 (raw -1313 +1171 -7089)  mag mG X=-390 Y=-179 Z=-157 |B|=456 (raw -4875 -2241 -1958)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=220.0 @1e acc mg X=-160 Y=+98 Z=-864 |a|=884 (raw -1313 +802 -7084)  mag mG X=-384 Y=-189 Z=-166 |B|=459 (raw -4800 -2359 -2079)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=220.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=220.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=220.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=220.0 i2c: 55519 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5220 scan probes not counted)
+s4 t=220.5 @1e acc mg X=-161 Y=+97 Z=-865 |a|=885 (raw -1322 +792 -7093)  mag mG X=-384 Y=-188 Z=-167 |B|=459 (raw -4798 -2351 -2084)  fifo 1/3/7  fails 0  bus 1507 us
+s4 t=221.0 @1e acc mg X=-161 Y=+97 Z=-865 |a|=885 (raw -1318 +793 -7088)  mag mG X=-384 Y=-188 Z=-167 |B|=459 (raw -4797 -2353 -2082)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=221.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +788 -7084)  mag mG X=-385 Y=-189 Z=-166 |B|=459 (raw -4810 -2357 -2079)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=222.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1327 +789 -7090)  mag mG X=-383 Y=-189 Z=-167 |B|=458 (raw -4792 -2357 -2092)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=222.5 @1e acc mg X=-161 Y=+97 Z=-864 |a|=884 (raw -1323 +792 -7084)  mag mG X=-384 Y=-187 Z=-166 |B|=458 (raw -4795 -2341 -2075)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=222.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1318 +818 -7091] [-1332 +787 -7073] [-1349 +767 -7055] [-1336 +774 -7078]
+s4 t=223.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1325 +789 -7084)  mag mG X=-385 Y=-188 Z=-166 |B|=459 (raw -4814 -2352 -2069)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=223.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1325 +790 -7084)  mag mG X=-385 Y=-187 Z=-166 |B|=459 (raw -4818 -2343 -2076)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=224.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1321 +791 -7085)  mag mG X=-386 Y=-188 Z=-166 |B|=460 (raw -4819 -2345 -2080)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=224.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1320 +788 -7079)  mag mG X=-385 Y=-186 Z=-167 |B|=459 (raw -4813 -2329 -2083)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=225.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1319 +787 -7085)  mag mG X=-384 Y=-188 Z=-165 |B|=458 (raw -4798 -2347 -2067)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=225.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=225.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=225.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=225.0 i2c: 56781 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5336 scan probes not counted)
+s4 t=225.5 @1e acc mg X=-161 Y=+97 Z=-865 |a|=885 (raw -1318 +793 -7087)  mag mG X=-384 Y=-188 Z=-167 |B|=459 (raw -4800 -2351 -2083)  fifo 3/3/5  fails 0  bus 1204 us
+s4 t=226.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +788 -7088)  mag mG X=-386 Y=-190 Z=-166 |B|=461 (raw -4820 -2369 -2081)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=226.5 @1e acc mg X=-161 Y=+96 Z=-865 |a|=885 (raw -1321 +790 -7088)  mag mG X=-385 Y=-188 Z=-167 |B|=459 (raw -4809 -2346 -2082)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=227.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1325 +785 -7085)  mag mG X=-387 Y=-188 Z=-167 |B|=461 (raw -4837 -2347 -2082)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=227.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1326 +788 -7091)  mag mG X=-384 Y=-189 Z=-166 |B|=459 (raw -4798 -2365 -2078)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=227.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1334 +794 -7082] [-1330 +789 -7122] [-1309 +766 -7118] [-1309 +762 -7138]
+s4 t=228.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1325 +788 -7087)  mag mG X=-383 Y=-189 Z=-166 |B|=458 (raw -4791 -2367 -2080)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=228.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1321 +791 -7086)  mag mG X=-387 Y=-189 Z=-167 |B|=461 (raw -4833 -2368 -2084)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=229.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +789 -7088)  mag mG X=-384 Y=-189 Z=-167 |B|=459 (raw -4804 -2358 -2087)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=229.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1325 +785 -7085)  mag mG X=-387 Y=-187 Z=-167 |B|=461 (raw -4836 -2341 -2087)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=230.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1329 +784 -7089)  mag mG X=-386 Y=-188 Z=-167 |B|=460 (raw -4821 -2352 -2091)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=230.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=230.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=230.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=230.0 i2c: 58043 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5452 scan probes not counted)
+s4 t=230.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +790 -7088)  mag mG X=-388 Y=-189 Z=-167 |B|=462 (raw -4844 -2358 -2085)  fifo 1/3/7  fails 0  bus 1507 us
+s4 t=231.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1328 +785 -7085)  mag mG X=-386 Y=-187 Z=-162 |B|=458 (raw -4829 -2336 -2028)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=231.5 @1e acc mg X=-161 Y=+96 Z=-865 |a|=885 (raw -1323 +787 -7087)  mag mG X=-385 Y=-189 Z=-165 |B|=459 (raw -4812 -2364 -2065)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=232.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +787 -7085)  mag mG X=-385 Y=-189 Z=-166 |B|=459 (raw -4808 -2357 -2069)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=232.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1325 +791 -7088)  mag mG X=-386 Y=-188 Z=-166 |B|=460 (raw -4820 -2351 -2072)  fifo 3/3/4  fails 0  bus 1072 us
+s4 t=232.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1311 +774 -7096] [-1326 +794 -7101] [-1304 +794 -7066] [-1295 +787 -7094]
+s4 t=233.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +786 -7086)  mag mG X=-386 Y=-187 Z=-166 |B|=459 (raw -4826 -2334 -2071)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=233.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1328 +785 -7091)  mag mG X=-386 Y=-188 Z=-166 |B|=460 (raw -4825 -2355 -2072)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=234.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +784 -7084)  mag mG X=-386 Y=-188 Z=-166 |B|=460 (raw -4830 -2355 -2074)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=234.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1326 +787 -7085)  mag mG X=-385 Y=-188 Z=-165 |B|=459 (raw -4816 -2352 -2068)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=235.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +790 -7086)  mag mG X=-387 Y=-188 Z=-166 |B|=461 (raw -4837 -2352 -2073)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=235.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=235.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=235.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=235.0 i2c: 59305 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5568 scan probes not counted)
+s4 t=235.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1325 +785 -7085)  mag mG X=-385 Y=-189 Z=-165 |B|=459 (raw -4813 -2362 -2064)  fifo 1/3/7  fails 0  bus 1507 us
+s4 t=236.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1322 +786 -7084)  mag mG X=-385 Y=-188 Z=-165 |B|=459 (raw -4814 -2350 -2067)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=236.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1327 +787 -7089)  mag mG X=-384 Y=-191 Z=-165 |B|=459 (raw -4801 -2387 -2066)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=237.0 @1e acc mg X=-161 Y=+96 Z=-865 |a|=885 (raw -1323 +785 -7088)  mag mG X=-385 Y=-186 Z=-166 |B|=458 (raw -4814 -2327 -2081)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=237.5 @1e acc mg X=-161 Y=+96 Z=-865 |a|=885 (raw -1321 +787 -7087)  mag mG X=-385 Y=-188 Z=-166 |B|=459 (raw -4818 -2349 -2076)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=237.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1347 +782 -7103] [-1341 +792 -7098] [-1327 +772 -7092] [-1344 +789 -7103]
+s4 t=238.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +786 -7089)  mag mG X=-385 Y=-189 Z=-166 |B|=459 (raw -4816 -2357 -2073)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=238.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +787 -7086)  mag mG X=-384 Y=-187 Z=-166 |B|=458 (raw -4796 -2340 -2072)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=239.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1322 +785 -7086)  mag mG X=-384 Y=-189 Z=-166 |B|=459 (raw -4803 -2364 -2078)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=239.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1326 +784 -7087)  mag mG X=-383 Y=-189 Z=-166 |B|=458 (raw -4791 -2359 -2077)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=240.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1327 +786 -7084)  mag mG X=-383 Y=-189 Z=-166 |B|=458 (raw -4791 -2365 -2077)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=240.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=240.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=240.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=240.0 i2c: 60567 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5684 scan probes not counted)
+s4 t=240.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1325 +785 -7089)  mag mG X=-382 Y=-188 Z=-167 |B|=457 (raw -4777 -2349 -2089)  fifo 1/3/6  fails 0  bus 1354 us
+s4 t=241.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1328 +783 -7091)  mag mG X=-384 Y=-187 Z=-166 |B|=458 (raw -4798 -2341 -2073)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=241.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +787 -7088)  mag mG X=-385 Y=-187 Z=-166 |B|=459 (raw -4812 -2339 -2077)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=242.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1326 +784 -7086)  mag mG X=-383 Y=-188 Z=-166 |B|=457 (raw -4792 -2353 -2070)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=242.5 @1e acc mg X=-161 Y=+96 Z=-865 |a|=885 (raw -1323 +787 -7089)  mag mG X=-384 Y=-187 Z=-166 |B|=458 (raw -4796 -2337 -2071)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=242.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=243.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1326 +787 -7086)  mag mG X=-385 Y=-188 Z=-165 |B|=459 (raw -4814 -2345 -2062)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=243.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +786 -7086)  mag mG X=-384 Y=-189 Z=-165 |B|=458 (raw -4798 -2359 -2065)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=244.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +783 -7086)  mag mG X=-385 Y=-187 Z=-166 |B|=459 (raw -4809 -2341 -2078)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=244.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +785 -7086)  mag mG X=-385 Y=-187 Z=-166 |B|=459 (raw -4817 -2341 -2073)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=245.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1327 +785 -7090)  mag mG X=-385 Y=-187 Z=-167 |B|=459 (raw -4808 -2333 -2082)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=245.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=245.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=245.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=245.0 i2c: 61827 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5800 scan probes not counted)
+s4 t=245.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1328 +787 -7086)  mag mG X=-384 Y=-188 Z=-165 |B|=458 (raw -4805 -2353 -2068)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=246.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +784 -7086)  mag mG X=-385 Y=-187 Z=-166 |B|=459 (raw -4813 -2339 -2076)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=246.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1325 +785 -7086)  mag mG X=-386 Y=-188 Z=-166 |B|=460 (raw -4823 -2349 -2072)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=247.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +785 -7089)  mag mG X=-385 Y=-188 Z=-165 |B|=459 (raw -4816 -2349 -2062)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=247.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1324 +783 -7087)  mag mG X=-388 Y=-189 Z=-166 |B|=462 (raw -4846 -2362 -2080)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=247.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1329 +777 -7048] [-1335 +769 -7091] [-1348 +763 -7090] [-1342 +767 -7060]
+s4 t=248.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +784 -7086)  mag mG X=-386 Y=-189 Z=-165 |B|=460 (raw -4820 -2362 -2064)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=248.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +786 -7086)  mag mG X=-386 Y=-188 Z=-166 |B|=460 (raw -4831 -2352 -2075)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=249.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1329 +784 -7086)  mag mG X=-385 Y=-188 Z=-166 |B|=459 (raw -4813 -2349 -2080)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=249.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1322 +787 -7086)  mag mG X=-383 Y=-189 Z=-166 |B|=458 (raw -4789 -2362 -2073)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=250.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1326 +784 -7087)  mag mG X=-384 Y=-188 Z=-166 |B|=458 (raw -4794 -2353 -2074)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=250.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=250.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=250.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=250.0 i2c: 63089 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (5916 scan probes not counted)
+s4 t=250.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +785 -7085)  mag mG X=-384 Y=-188 Z=-165 |B|=458 (raw -4804 -2355 -2064)  fifo 1/3/7  fails 0  bus 1506 us
+s4 t=251.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1328 +787 -7084)  mag mG X=-384 Y=-187 Z=-166 |B|=458 (raw -4801 -2334 -2077)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=251.5 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +784 -7086)  mag mG X=-386 Y=-186 Z=-166 |B|=459 (raw -4820 -2330 -2080)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=252.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1325 +788 -7089)  mag mG X=-385 Y=-187 Z=-167 |B|=459 (raw -4807 -2340 -2082)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=252.5 @1e acc mg X=-162 Y=+95 Z=-865 |a|=885 (raw -1328 +782 -7089)  mag mG X=-382 Y=-186 Z=-165 |B|=455 (raw -4772 -2329 -2068)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=252.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=253.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1328 +788 -7088)  mag mG X=-382 Y=-185 Z=-167 |B|=456 (raw -4777 -2314 -2084)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=253.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1329 +784 -7090)  mag mG X=-384 Y=-188 Z=-166 |B|=458 (raw -4798 -2350 -2079)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=254.0 @1e acc mg X=-162 Y=+95 Z=-865 |a|=885 (raw -1324 +780 -7092)  mag mG X=-384 Y=-188 Z=-167 |B|=459 (raw -4804 -2350 -2087)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=254.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1327 +784 -7088)  mag mG X=-385 Y=-187 Z=-167 |B|=459 (raw -4817 -2334 -2088)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=255.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1329 +784 -7087)  mag mG X=-386 Y=-189 Z=-167 |B|=461 (raw -4824 -2360 -2092)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=255.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=255.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=255.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=255.0 i2c: 64349 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6032 scan probes not counted)
+s4 t=255.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1326 +784 -7082)  mag mG X=-384 Y=-186 Z=-166 |B|=457 (raw -4802 -2330 -2074)  fifo 2/3/6  fails 0  bus 1354 us
+s4 t=256.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1323 +785 -7086)  mag mG X=-385 Y=-186 Z=-164 |B|=457 (raw -4818 -2320 -2052)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=256.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1327 +783 -7085)  mag mG X=-384 Y=-187 Z=-168 |B|=458 (raw -4795 -2336 -2106)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=257.0 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +785 -7083)  mag mG X=-384 Y=-187 Z=-166 |B|=458 (raw -4805 -2341 -2080)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=257.5 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1325 +783 -7087)  mag mG X=-383 Y=-187 Z=-168 |B|=458 (raw -4785 -2343 -2095)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=257.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1315 +776 -7077] [-1325 +803 -7096] [-1341 +806 -7089] [-1323 +817 -7095]
+s4 t=258.0 @1e acc mg X=-162 Y=+96 Z=-865 |a|=885 (raw -1325 +787 -7088)  mag mG X=-386 Y=-187 Z=-168 |B|=460 (raw -4824 -2337 -2096)  fifo 0/3/4  fails 0  bus 1067 us
+s4 t=258.5 @1e acc mg X=-162 Y=+96 Z=-864 |a|=884 (raw -1324 +786 -7085)  mag mG X=-385 Y=-186 Z=-168 |B|=459 (raw -4811 -2321 -2105)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=259.0 @1e acc mg X=-161 Y=+96 Z=-864 |a|=884 (raw -1320 +784 -7085)  mag mG X=-384 Y=-188 Z=-168 |B|=459 (raw -4796 -2356 -2101)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=259.5 @1e acc mg X=-160 Y=+95 Z=-864 |a|=883 (raw -1315 +777 -7086)  mag mG X=-383 Y=-187 Z=-170 |B|=458 (raw -4792 -2335 -2128)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=260.0 @1e acc mg X=-152 Y=+92 Z=-876 |a|=893 (raw -1249 +753 -7177)  mag mG X=-382 Y=-189 Z=-177 |B|=461 (raw -4773 -2368 -2217)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=260.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=260.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=260.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=260.0 i2c: 65610 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6148 scan probes not counted)
+s4 t=260.5 @1e acc mg X=+320 Y=+64 Z=-820 |a|=882 (raw +2621 +526 -6720)  mag mG X=-296 Y=-215 Z=-298 |B|=471 (raw -3703 -2690 -3726)  fifo 2/3/6  fails 0  bus 1355 us
+s4 t=261.0 @1e acc mg X=+856 Y=+15 Z=-447 |a|=965 (raw +7017 +121 -3666)  mag mG X=-54 Y=-218 Z=-343 |B|=409 (raw -680 -2726 -4288)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=261.5 @1e acc mg X=+1032 Y=+86 Z=-218 |a|=1058 (raw +8460 +706 -1786)  mag mG X=+68 Y=-178 Z=-261 |B|=323 (raw +852 -2221 -3263)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=262.0 @1e acc mg X=+1067 Y=+75 Z=-63 |a|=1071 (raw +8749 +613 -516)  mag mG X=+125 Y=-178 Z=-209 |B|=301 (raw +1559 -2219 -2609)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=262.5 @1e acc mg X=+1066 Y=+79 Z=-43 |a|=1069 (raw +8738 +645 -352)  mag mG X=+136 Y=-174 Z=-197 |B|=295 (raw +1694 -2175 -2466)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=262.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [+8836 +497 -371] [+8833 +506 -385] [+8825 +479 -382] [+8812 +468 -365]
+s4 t=263.0 @1e acc mg X=+1066 Y=+74 Z=-36 |a|=1069 (raw +8740 +609 -295)  mag mG X=+137 Y=-176 Z=-195 |B|=296 (raw +1713 -2198 -2434)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=263.5 @1e acc mg X=+1067 Y=+72 Z=-30 |a|=1069 (raw +8743 +587 -242)  mag mG X=+138 Y=-176 Z=-192 |B|=294 (raw +1730 -2206 -2398)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=264.0 @1e acc mg X=+1066 Y=+69 Z=-22 |a|=1068 (raw +8737 +565 -183)  mag mG X=+142 Y=-175 Z=-188 |B|=293 (raw +1778 -2193 -2346)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=264.5 @1e acc mg X=+1068 Y=+69 Z=-14 |a|=1070 (raw +8753 +564 -115)  mag mG X=+144 Y=-176 Z=-184 |B|=292 (raw +1804 -2203 -2305)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=265.0 @1e acc mg X=+1069 Y=+68 Z=-11 |a|=1071 (raw +8762 +560 -90)  mag mG X=+146 Y=-177 Z=-182 |B|=292 (raw +1831 -2216 -2279)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=265.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=265.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=265.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=265.0 i2c: 66872 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6264 scan probes not counted)
+s4 t=265.5 @1e acc mg X=+1069 Y=+70 Z=-3 |a|=1071 (raw +8765 +574 -22)  mag mG X=+148 Y=-176 Z=-177 |B|=290 (raw +1854 -2195 -2214)  fifo 1/3/7  fails 0  bus 1505 us
+s4 t=266.0 @1e acc mg X=+1069 Y=+69 Z=+3 |a|=1071 (raw +8765 +569 +22)  mag mG X=+151 Y=-178 Z=-176 |B|=292 (raw +1882 -2226 -2195)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=266.5 @1e acc mg X=+1069 Y=+69 Z=+3 |a|=1071 (raw +8762 +564 +25)  mag mG X=+150 Y=-177 Z=-176 |B|=291 (raw +1877 -2211 -2199)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=267.0 @1e acc mg X=+1070 Y=+75 Z=+8 |a|=1072 (raw +8768 +614 +62)  mag mG X=+149 Y=-177 Z=-176 |B|=290 (raw +1868 -2212 -2196)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=267.5 @1e acc mg X=+1071 Y=+71 Z=+11 |a|=1073 (raw +8777 +579 +91)  mag mG X=+152 Y=-176 Z=-172 |B|=289 (raw +1899 -2197 -2145)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=267.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [+8714 +529 +130] [+8725 +571 +104] [+8762 +539 +123] [+8798 +519 +119]
+s4 t=268.0 @1e acc mg X=+1071 Y=+73 Z=+15 |a|=1073 (raw +8781 +598 +123)  mag mG X=+153 Y=-174 Z=-169 |B|=286 (raw +1917 -2169 -2118)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=268.5 @1e acc mg X=+1071 Y=+72 Z=+17 |a|=1073 (raw +8777 +588 +138)  mag mG X=+153 Y=-175 Z=-168 |B|=286 (raw +1916 -2184 -2104)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=269.0 @1e acc mg X=+1070 Y=+72 Z=+19 |a|=1072 (raw +8771 +591 +154)  mag mG X=+154 Y=-177 Z=-167 |B|=287 (raw +1927 -2215 -2091)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=269.5 @1e acc mg X=+1071 Y=+72 Z=+20 |a|=1073 (raw +8783 +591 +163)  mag mG X=+156 Y=-173 Z=-165 |B|=285 (raw +1947 -2166 -2068)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=270.0 @1e acc mg X=+1071 Y=+71 Z=+22 |a|=1073 (raw +8782 +586 +180)  mag mG X=+155 Y=-176 Z=-164 |B|=286 (raw +1942 -2200 -2048)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=270.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=270.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=270.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=270.0 i2c: 68134 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6380 scan probes not counted)
+s4 t=270.5 @1e acc mg X=+1071 Y=+72 Z=+27 |a|=1073 (raw +8782 +590 +219)  mag mG X=+155 Y=-174 Z=-162 |B|=283 (raw +1942 -2171 -2025)  fifo 1/3/6  fails 0  bus 1354 us
+s4 t=271.0 @1e acc mg X=+1071 Y=+72 Z=+29 |a|=1073 (raw +8780 +589 +239)  mag mG X=+155 Y=-174 Z=-160 |B|=282 (raw +1943 -2176 -1999)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=271.5 @1e acc mg X=+1073 Y=+72 Z=+32 |a|=1075 (raw +8792 +592 +262)  mag mG X=+155 Y=-170 Z=-158 |B|=279 (raw +1943 -2130 -1978)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=272.0 @1e acc mg X=+1072 Y=+74 Z=+35 |a|=1075 (raw +8790 +608 +285)  mag mG X=+156 Y=-173 Z=-157 |B|=280 (raw +1955 -2164 -1966)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=272.5 @1e acc mg X=+1072 Y=+66 Z=-19 |a|=1074 (raw +8784 +539 -158)  mag mG X=+140 Y=-185 Z=-187 |B|=297 (raw +1746 -2310 -2338)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=272.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=273.0 @1e acc mg X=+1016 Y=-3 Z=-238 |a|=1043 (raw +8326 -25 -1952)  mag mG X=+45 Y=-206 Z=-277 |B|=348 (raw +562 -2577 -3460)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=273.5 @1e acc mg X=+851 Y=+21 Z=-541 |a|=1008 (raw +6978 +169 -4431)  mag mG X=-133 Y=-182 Z=-324 |B|=394 (raw -1661 -2275 -4053)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=274.0 @1e acc mg X=+351 Y=-4 Z=-819 |a|=891 (raw +2875 -36 -6714)  mag mG X=-369 Y=-161 Z=-219 |B|=458 (raw -4609 -2008 -2740)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=274.5 @1e acc mg X=-347 Y=+87 Z=-763 |a|=842 (raw -2848 +715 -6253)  mag mG X=-472 Y=-124 Z=+63 |B|=492 (raw -5906 -1549 +793)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=275.0 @1e acc mg X=-823 Y=+123 Z=-271 |a|=875 (raw -6749 +1007 -2220)  mag mG X=-358 Y=-134 Z=+341 |B|=512 (raw -4475 -1673 +4257)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=275.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=275.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=275.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=275.0 i2c: 69394 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6496 scan probes not counted)
+s4 t=275.5 @1e acc mg X=-909 Y=+102 Z=+74 |a|=917 (raw -7453 +840 +608)  mag mG X=-229 Y=-116 Z=+424 |B|=495 (raw -2863 -1451 +5299)  fifo 1/3/6  fails 0  bus 1357 us
+s4 t=276.0 @1e acc mg X=-912 Y=+81 Z=+169 |a|=931 (raw -7479 +668 +1389)  mag mG X=-195 Y=-108 Z=+438 |B|=491 (raw -2432 -1354 +5475)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=276.5 @1e acc mg X=-913 Y=+80 Z=+154 |a|=929 (raw -7484 +655 +1262)  mag mG X=-200 Y=-107 Z=+437 |B|=492 (raw -2500 -1339 +5460)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=277.0 @1e acc mg X=-916 Y=+79 Z=+147 |a|=931 (raw -7507 +644 +1203)  mag mG X=-203 Y=-106 Z=+436 |B|=492 (raw -2532 -1327 +5454)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=277.5 @1e acc mg X=-917 Y=+78 Z=+137 |a|=930 (raw -7514 +637 +1124)  mag mG X=-206 Y=-109 Z=+435 |B|=493 (raw -2581 -1364 +5442)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=277.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-7489 +736 +1256] [-7478 +719 +1311] [-7482 +682 +1282] [-7459 +658 +1251]
+s4 t=278.0 @1e acc mg X=-916 Y=+77 Z=+129 |a|=928 (raw -7512 +635 +1058)  mag mG X=-210 Y=-111 Z=+435 |B|=495 (raw -2619 -1385 +5439)  fifo 0/3/4  fails 0  bus 1055 us
+s4 t=278.5 @1e acc mg X=-917 Y=+74 Z=+121 |a|=927 (raw -7518 +607 +995)  mag mG X=-213 Y=-109 Z=+434 |B|=495 (raw -2664 -1358 +5419)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=279.0 @1e acc mg X=-917 Y=+72 Z=+121 |a|=927 (raw -7516 +594 +989)  mag mG X=-215 Y=-110 Z=+434 |B|=496 (raw -2686 -1373 +5419)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=279.5 @1e acc mg X=-917 Y=+74 Z=+115 |a|=927 (raw -7517 +606 +945)  mag mG X=-216 Y=-110 Z=+433 |B|=496 (raw -2698 -1373 +5414)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=280.0 @1e acc mg X=-918 Y=+75 Z=+118 |a|=928 (raw -7524 +612 +965)  mag mG X=-216 Y=-110 Z=+433 |B|=496 (raw -2699 -1371 +5416)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=280.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=280.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=280.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=280.0 i2c: 70655 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6612 scan probes not counted)
+s4 t=280.5 @1e acc mg X=-915 Y=+77 Z=+123 |a|=926 (raw -7497 +630 +1011)  mag mG X=-214 Y=-111 Z=+434 |B|=496 (raw -2676 -1383 +5431)  fifo 1/3/7  fails 0  bus 1505 us
+s4 t=281.0 @1e acc mg X=-917 Y=+82 Z=+121 |a|=928 (raw -7513 +670 +993)  mag mG X=-213 Y=-110 Z=+434 |B|=495 (raw -2660 -1379 +5430)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=281.5 @1e acc mg X=-919 Y=+77 Z=+114 |a|=929 (raw -7532 +630 +938)  mag mG X=-216 Y=-112 Z=+434 |B|=497 (raw -2695 -1399 +5424)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=282.0 @1e acc mg X=-916 Y=+78 Z=+119 |a|=926 (raw -7512 +643 +977)  mag mG X=-214 Y=-113 Z=+435 |B|=497 (raw -2675 -1407 +5434)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=282.5 @1e acc mg X=-917 Y=+82 Z=+119 |a|=928 (raw -7516 +675 +976)  mag mG X=-214 Y=-112 Z=+435 |B|=497 (raw -2670 -1395 +5434)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=282.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-7575 +804 +1052] [-7575 +789 +1042] [-7555 +797 +1029] [-7529 +783 +1034]
+s4 t=283.0 @1e acc mg X=-916 Y=+85 Z=+122 |a|=927 (raw -7511 +700 +1003)  mag mG X=-211 Y=-112 Z=+435 |B|=496 (raw -2642 -1402 +5442)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=283.5 @1e acc mg X=-917 Y=+87 Z=+121 |a|=929 (raw -7517 +717 +991)  mag mG X=-212 Y=-113 Z=+435 |B|=496 (raw -2644 -1415 +5439)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=284.0 @1e acc mg X=-918 Y=+87 Z=+115 |a|=929 (raw -7522 +714 +945)  mag mG X=-215 Y=-113 Z=+436 |B|=499 (raw -2687 -1409 +5445)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=284.5 @1e acc mg X=-918 Y=+87 Z=+110 |a|=928 (raw -7521 +712 +898)  mag mG X=-217 Y=-114 Z=+434 |B|=498 (raw -2712 -1427 +5428)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=285.0 @1e acc mg X=-918 Y=+83 Z=+108 |a|=928 (raw -7523 +679 +889)  mag mG X=-220 Y=-113 Z=+434 |B|=499 (raw -2746 -1407 +5426)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=285.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=285.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=285.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=285.0 i2c: 71916 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6728 scan probes not counted)
+s4 t=285.5 @1e acc mg X=-918 Y=+82 Z=+104 |a|=927 (raw -7526 +675 +849)  mag mG X=-219 Y=-115 Z=+434 |B|=499 (raw -2743 -1435 +5421)  fifo 1/3/7  fails 0  bus 1507 us
+s4 t=286.0 @1e acc mg X=-919 Y=+82 Z=+100 |a|=928 (raw -7534 +669 +820)  mag mG X=-221 Y=-113 Z=+433 |B|=499 (raw -2758 -1414 +5415)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=286.5 @1e acc mg X=-918 Y=+85 Z=+89 |a|=926 (raw -7522 +695 +730)  mag mG X=-225 Y=-114 Z=+432 |B|=500 (raw -2817 -1424 +5398)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=287.0 @1e acc mg X=-919 Y=+82 Z=+75 |a|=925 (raw -7532 +673 +616)  mag mG X=-233 Y=-114 Z=+430 |B|=502 (raw -2908 -1423 +5372)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=287.5 @1e acc mg X=-921 Y=+107 Z=+47 |a|=928 (raw -7547 +881 +388)  mag mG X=-241 Y=-109 Z=+423 |B|=498 (raw -3015 -1366 +5287)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=287.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=288.0 @1e acc mg X=-725 Y=+527 Z=-61 |a|=898 (raw -5945 +4322 -497)  mag mG X=-190 Y=-31 Z=+399 |B|=443 (raw -2373 -393 +4992)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=288.5 @1e acc mg X=-270 Y=+1004 Z=-4 |a|=1039 (raw -2213 +8228 -32)  mag mG X=-42 Y=-60 Z=+421 |B|=427 (raw -529 -755 +5267)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=289.0 @1e acc mg X=+31 Y=+1084 Z=+7 |a|=1084 (raw +254 +8888 +54)  mag mG X=+15 Y=-102 Z=+432 |B|=444 (raw +189 -1277 +5405)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=289.5 @1e acc mg X=+91 Y=+1067 Z=+26 |a|=1071 (raw +745 +8749 +215)  mag mG X=+30 Y=-115 Z=+436 |B|=451 (raw +372 -1436 +5448)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=290.0 @1e acc mg X=+85 Y=+1069 Z=+25 |a|=1072 (raw +693 +8764 +203)  mag mG X=+28 Y=-112 Z=+437 |B|=451 (raw +353 -1405 +5460)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=290.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=290.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=290.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=290.0 i2c: 73176 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6844 scan probes not counted)
+s4 t=290.5 @1e acc mg X=+92 Y=+1069 Z=+26 |a|=1073 (raw +754 +8759 +213)  mag mG X=+27 Y=-117 Z=+438 |B|=454 (raw +334 -1459 +5477)  fifo 2/3/6  fails 0  bus 1358 us
+s4 t=291.0 @1e acc mg X=+99 Y=+1069 Z=+30 |a|=1073 (raw +814 +8760 +246)  mag mG X=+26 Y=-118 Z=+438 |B|=454 (raw +320 -1479 +5481)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=291.5 @1e acc mg X=+102 Y=+1067 Z=+32 |a|=1072 (raw +833 +8743 +262)  mag mG X=+24 Y=-119 Z=+439 |B|=455 (raw +298 -1483 +5490)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=292.0 @1e acc mg X=+103 Y=+1070 Z=+34 |a|=1075 (raw +843 +8772 +279)  mag mG X=+23 Y=-120 Z=+440 |B|=456 (raw +288 -1495 +5495)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=292.5 @1e acc mg X=+101 Y=+1068 Z=+38 |a|=1073 (raw +831 +8756 +309)  mag mG X=+19 Y=-121 Z=+440 |B|=456 (raw +232 -1510 +5496)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=292.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [+807 +8842 +297] [+829 +8847 +310] [+844 +8821 +292] [+869 +8772 +269]
+s4 t=293.0 @1e acc mg X=+100 Y=+1067 Z=+40 |a|=1072 (raw +817 +8750 +330)  mag mG X=+15 Y=-123 Z=+440 |B|=457 (raw +183 -1542 +5496)  fifo 0/3/4  fails 0  bus 1070 us
+s4 t=293.5 @1e acc mg X=+109 Y=+1065 Z=+42 |a|=1071 (raw +891 +8727 +344)  mag mG X=+16 Y=-125 Z=+440 |B|=457 (raw +205 -1559 +5502)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=294.0 @1e acc mg X=+124 Y=+1070 Z=+41 |a|=1077 (raw +1014 +8773 +340)  mag mG X=+13 Y=-124 Z=+442 |B|=459 (raw +168 -1556 +5527)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=294.5 @1e acc mg X=+120 Y=+1071 Z=+44 |a|=1078 (raw +985 +8775 +363)  mag mG X=+6 Y=-126 Z=+444 |B|=461 (raw +74 -1569 +5551)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=295.0 @1e acc mg X=+127 Y=+1068 Z=+47 |a|=1076 (raw +1037 +8755 +386)  mag mG X=+5 Y=-124 Z=+446 |B|=462 (raw +61 -1550 +5569)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=295.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=295.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=295.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=295.0 i2c: 74437 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (6960 scan probes not counted)
+s4 t=295.5 @1e acc mg X=+129 Y=+1068 Z=+45 |a|=1076 (raw +1054 +8756 +367)  mag mG X=+4 Y=-123 Z=+446 |B|=462 (raw +56 -1543 +5570)  fifo 1/3/7  fails 0  bus 1506 us
+s4 t=296.0 @1e acc mg X=+134 Y=+1067 Z=+42 |a|=1076 (raw +1100 +8746 +345)  mag mG X=+5 Y=-125 Z=+446 |B|=463 (raw +60 -1561 +5577)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=296.5 @1e acc mg X=+134 Y=+1067 Z=+41 |a|=1076 (raw +1100 +8750 +334)  mag mG X=+5 Y=-124 Z=+447 |B|=463 (raw +63 -1545 +5586)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=297.0 @1e acc mg X=+134 Y=+1067 Z=+37 |a|=1076 (raw +1100 +8746 +303)  mag mG X=+3 Y=-123 Z=+447 |B|=463 (raw +43 -1539 +5590)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=297.5 @1e acc mg X=+135 Y=+1067 Z=+39 |a|=1076 (raw +1107 +8746 +321)  mag mG X=+4 Y=-124 Z=+447 |B|=463 (raw +56 -1552 +5589)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=297.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=298.0 @1e acc mg X=+140 Y=+1066 Z=+40 |a|=1075 (raw +1149 +8742 +330)  mag mG X=+7 Y=-125 Z=+448 |B|=465 (raw +86 -1559 +5596)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=298.5 @1e acc mg X=+140 Y=+1068 Z=+40 |a|=1077 (raw +1144 +8751 +329)  mag mG X=+7 Y=-125 Z=+448 |B|=465 (raw +86 -1558 +5599)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=299.0 @1e acc mg X=+138 Y=+1067 Z=+38 |a|=1076 (raw +1135 +8744 +308)  mag mG X=+5 Y=-123 Z=+447 |B|=463 (raw +61 -1543 +5593)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=299.5 @1e acc mg X=+139 Y=+1066 Z=+35 |a|=1075 (raw +1140 +8736 +285)  mag mG X=+5 Y=-122 Z=+448 |B|=464 (raw +60 -1519 +5603)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=300.0 @1e acc mg X=+134 Y=+1072 Z=+32 |a|=1080 (raw +1096 +8790 +262)  mag mG X=+4 Y=-120 Z=+448 |B|=463 (raw +56 -1505 +5601)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=300.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=300.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=300.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=300.0 i2c: 75697 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7076 scan probes not counted)
+s4 t=300.5 @1e acc mg X=-6 Y=+1076 Z=+1 |a|=1076 (raw -47 +8817 +11)  mag mG X=-19 Y=-91 Z=+443 |B|=452 (raw -235 -1134 +5534)  fifo 2/3/6  fails 0  bus 1358 us
+s4 t=301.0 @1e acc mg X=-373 Y=+944 Z=-78 |a|=1018 (raw -3055 +7735 -641)  mag mG X=-105 Y=-32 Z=+416 |B|=430 (raw -1313 -398 +5204)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=301.5 @1e acc mg X=-721 Y=+382 Z=-260 |a|=856 (raw -5910 +3134 -2131)  mag mG X=-306 Y=-90 Z=+364 |B|=483 (raw -3830 -1127 +4552)  fifo 3/3/4  fails 0  bus 1055 us
+s4 t=302.0 @1e acc mg X=-587 Y=-475 Z=-219 |a|=786 (raw -4809 -3896 -1797)  mag mG X=-354 Y=-298 Z=+365 |B|=589 (raw -4422 -3720 +4558)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=302.5 @1e acc mg X=-48 Y=-851 Z=-99 |a|=858 (raw -395 -6973 -815)  mag mG X=-320 Y=-385 Z=+368 |B|=621 (raw -4000 -4812 +4594)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=302.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [+895 -7785 -726] [+931 -7760 -728] [+962 -7752 -846] [+940 -7711 -779]
+s4 t=303.0 @1e acc mg X=+86 Y=-866 Z=-36 |a|=871 (raw +705 -7100 -299)  mag mG X=-306 Y=-384 Z=+381 |B|=621 (raw -3822 -4799 +4758)  fifo 0/3/4  fails 0  bus 1056 us
+s4 t=303.5 @1e acc mg X=+81 Y=-874 Z=-15 |a|=877 (raw +660 -7163 -121)  mag mG X=-300 Y=-371 Z=+391 |B|=616 (raw -3752 -4632 +4882)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=304.0 @1e acc mg X=+100 Y=-861 Z=-15 |a|=866 (raw +816 -7061 -122)  mag mG X=-318 Y=-370 Z=+379 |B|=617 (raw -3973 -4630 +4734)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=304.5 @1e acc mg X=+95 Y=-865 Z=-11 |a|=870 (raw +775 -7089 -92)  mag mG X=-317 Y=-365 Z=+381 |B|=615 (raw -3967 -4558 +4762)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=305.0 @1e acc mg X=+87 Y=-866 Z=-8 |a|=870 (raw +713 -7101 -64)  mag mG X=-315 Y=-367 Z=+383 |B|=616 (raw -3939 -4585 +4790)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=305.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=305.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=305.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=305.0 i2c: 76958 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7192 scan probes not counted)
+s4 t=305.5 @1e acc mg X=+88 Y=-866 Z=-10 |a|=870 (raw +720 -7101 -81)  mag mG X=-316 Y=-362 Z=+385 |B|=615 (raw -3944 -4531 +4809)  fifo 1/3/7  fails 0  bus 1508 us
+s4 t=306.0 @1e acc mg X=+93 Y=-866 Z=-7 |a|=871 (raw +761 -7101 -56)  mag mG X=-311 Y=-365 Z=+387 |B|=616 (raw -3883 -4567 +4834)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=306.5 @1e acc mg X=+89 Y=-866 Z=-1 |a|=870 (raw +732 -7099 -5)  mag mG X=-309 Y=-362 Z=+390 |B|=615 (raw -3860 -4522 +4879)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=307.0 @1e acc mg X=+85 Y=-869 Z=+0 |a|=873 (raw +698 -7122 -2)  mag mG X=-309 Y=-357 Z=+392 |B|=613 (raw -3863 -4465 +4895)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=307.5 @1e acc mg X=+80 Y=-867 Z=+15 |a|=870 (raw +655 -7107 +124)  mag mG X=-308 Y=-352 Z=+395 |B|=612 (raw -3851 -4399 +4943)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=307.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [+591 -7193 +154] [+581 -7184 +170] [+607 -7189 +188] [+591 -7192 +166]
+s4 t=308.0 @1e acc mg X=+74 Y=-867 Z=+22 |a|=870 (raw +606 -7107 +177)  mag mG X=-305 Y=-347 Z=+398 |B|=609 (raw -3814 -4342 +4978)  fifo 1/3/4  fails 0  bus 1066 us
+s4 t=308.5 @1e acc mg X=+72 Y=-868 Z=+30 |a|=871 (raw +588 -7114 +246)  mag mG X=-302 Y=-345 Z=+400 |B|=608 (raw -3778 -4315 +5004)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=309.0 @1e acc mg X=+73 Y=-865 Z=+41 |a|=869 (raw +602 -7089 +333)  mag mG X=-300 Y=-340 Z=+403 |B|=606 (raw -3749 -4249 +5041)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=309.5 @1e acc mg X=+76 Y=-875 Z=+56 |a|=880 (raw +623 -7171 +462)  mag mG X=-302 Y=-332 Z=+403 |B|=603 (raw -3776 -4155 +5040)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=310.0 @1e acc mg X=+71 Y=-869 Z=+65 |a|=874 (raw +578 -7126 +532)  mag mG X=-307 Y=-328 Z=+403 |B|=603 (raw -3836 -4098 +5040)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=310.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=310.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=310.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=310.0 i2c: 78220 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7308 scan probes not counted)
+s4 t=310.5 @1e acc mg X=+63 Y=-868 Z=+83 |a|=874 (raw +519 -7115 +677)  mag mG X=-303 Y=-319 Z=+407 |B|=599 (raw -3791 -3990 +5082)  fifo 1/3/6  fails 0  bus 1357 us
+s4 t=311.0 @1e acc mg X=+61 Y=-870 Z=+88 |a|=876 (raw +501 -7134 +725)  mag mG X=-302 Y=-316 Z=+408 |B|=597 (raw -3781 -3950 +5105)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=311.5 @1e acc mg X=+60 Y=-849 Z=+115 |a|=858 (raw +493 -6962 +943)  mag mG X=-301 Y=-309 Z=+410 |B|=595 (raw -3763 -3863 +5124)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=312.0 @1e acc mg X=+84 Y=-715 Z=+532 |a|=895 (raw +690 -5863 +4363)  mag mG X=-285 Y=-143 Z=+377 |B|=493 (raw -3568 -1782 +4717)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=312.5 @1e acc mg X=+206 Y=-148 Z=+1009 |a|=1040 (raw +1691 -1212 +8269)  mag mG X=-212 Y=+42 Z=+191 |B|=288 (raw -2647 +522 +2390)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=312.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [+3294 +437 +7786] [+3158 +332 +7835] [+3021 +278 +7904] [+2944 +283 +7975]
+s4 t=313.0 @1e acc mg X=+331 Y=+128 Z=+997 |a|=1058 (raw +2717 +1049 +8172)  mag mG X=-162 Y=+83 Z=+135 |B|=226 (raw -2026 +1032 +1689)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=313.5 @1e acc mg X=+318 Y=+113 Z=+1017 |a|=1071 (raw +2604 +923 +8339)  mag mG X=-163 Y=+80 Z=+145 |B|=232 (raw -2043 +1001 +1807)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=314.0 @1e acc mg X=+309 Y=+103 Z=+1014 |a|=1065 (raw +2536 +844 +8313)  mag mG X=-163 Y=+78 Z=+147 |B|=232 (raw -2041 +980 +1842)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=314.5 @1e acc mg X=+295 Y=+95 Z=+1020 |a|=1066 (raw +2416 +777 +8357)  mag mG X=-165 Y=+75 Z=+151 |B|=235 (raw -2059 +934 +1887)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=315.0 @1e acc mg X=+284 Y=+83 Z=+1023 |a|=1064 (raw +2326 +678 +8389)  mag mG X=-166 Y=+74 Z=+153 |B|=237 (raw -2081 +925 +1916)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=315.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=315.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=315.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=315.0 i2c: 79481 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7424 scan probes not counted)
+s4 t=315.5 @1e acc mg X=+279 Y=+86 Z=+1024 |a|=1064 (raw +2285 +703 +8391)  mag mG X=-170 Y=+69 Z=+152 |B|=238 (raw -2120 +867 +1898)  fifo 2/3/6  fails 0  bus 1354 us
+s4 t=316.0 @1e acc mg X=+269 Y=+87 Z=+1026 |a|=1064 (raw +2205 +715 +8407)  mag mG X=-172 Y=+71 Z=+151 |B|=239 (raw -2147 +887 +1882)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=316.5 @1e acc mg X=+273 Y=+87 Z=+1020 |a|=1059 (raw +2238 +715 +8359)  mag mG X=-168 Y=+74 Z=+151 |B|=237 (raw -2102 +928 +1882)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=317.0 @1e acc mg X=+271 Y=+90 Z=+1027 |a|=1065 (raw +2221 +739 +8421)  mag mG X=-170 Y=+75 Z=+152 |B|=240 (raw -2121 +932 +1901)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=317.5 @1e acc mg X=+276 Y=+87 Z=+1027 |a|=1066 (raw +2265 +710 +8420)  mag mG X=-171 Y=+72 Z=+153 |B|=240 (raw -2132 +904 +1916)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=317.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [+2427 +681 +8182] [+2453 +714 +8220] [+2452 +760 +8165] [+2428 +822 +8123]
+s4 t=318.0 @1e acc mg X=+276 Y=+89 Z=+1022 |a|=1062 (raw +2263 +732 +8378)  mag mG X=-171 Y=+72 Z=+154 |B|=241 (raw -2140 +898 +1928)  fifo 1/3/4  fails 0  bus 1071 us
+s4 t=318.5 @1e acc mg X=+272 Y=+91 Z=+1025 |a|=1064 (raw +2228 +742 +8404)  mag mG X=-172 Y=+73 Z=+154 |B|=242 (raw -2151 +917 +1922)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=319.0 @1e acc mg X=+277 Y=+85 Z=+1026 |a|=1066 (raw +2270 +694 +8408)  mag mG X=-170 Y=+72 Z=+155 |B|=241 (raw -2128 +894 +1935)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=319.5 @1e acc mg X=+283 Y=+91 Z=+1023 |a|=1065 (raw +2316 +747 +8383)  mag mG X=-169 Y=+71 Z=+154 |B|=239 (raw -2112 +889 +1929)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=320.0 @1e acc mg X=+282 Y=+90 Z=+1022 |a|=1064 (raw +2313 +737 +8374)  mag mG X=-168 Y=+72 Z=+156 |B|=240 (raw -2102 +903 +1945)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=320.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=320.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=320.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=320.0 i2c: 80743 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7540 scan probes not counted)
+s4 t=320.5 @1e acc mg X=+282 Y=+91 Z=+1024 |a|=1066 (raw +2315 +748 +8396)  mag mG X=-167 Y=+70 Z=+155 |B|=238 (raw -2093 +872 +1939)  fifo 2/3/5  fails 0  bus 1203 us
+s4 t=321.0 @1e acc mg X=+281 Y=+87 Z=+1022 |a|=1063 (raw +2304 +715 +8377)  mag mG X=-169 Y=+69 Z=+157 |B|=240 (raw -2107 +857 +1963)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=321.5 @1e acc mg X=+288 Y=+88 Z=+1023 |a|=1066 (raw +2362 +724 +8382)  mag mG X=-169 Y=+68 Z=+157 |B|=240 (raw -2115 +852 +1965)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=322.0 @1e acc mg X=+185 Y=-69 Z=+1019 |a|=1037 (raw +1518 -568 +8354)  mag mG X=-204 Y=+39 Z=+190 |B|=281 (raw -2553 +483 +2378)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=322.5 @1e acc mg X=-125 Y=-694 Z=+477 |a|=851 (raw -1027 -5690 +3906)  mag mG X=-364 Y=-179 Z=+245 |B|=473 (raw -4550 -2240 +3067)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=322.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1672 -7428 +7] [-1700 -7385 +0] [-1707 -7334 -23] [-1722 -7288 -83]
+s4 t=323.0 @1e acc mg X=-168 Y=-657 Z=-391 |a|=782 (raw -1376 -5388 -3206)  mag mG X=-446 Y=-312 Z=+69 |B|=548 (raw -5574 -3896 +868)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=323.5 @1e acc mg X=-171 Y=-229 Z=-793 |a|=842 (raw -1404 -1878 -6501)  mag mG X=-438 Y=-262 Z=-58 |B|=513 (raw -5481 -3279 -723)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=324.0 @1e acc mg X=-156 Y=-6 Z=-868 |a|=881 (raw -1277 -48 -7112)  mag mG X=-401 Y=-193 Z=-88 |B|=453 (raw -5010 -2409 -1098)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=324.5 @1e acc mg X=-260 Y=-51 Z=-839 |a|=879 (raw -2128 -415 -6880)  mag mG X=-392 Y=-176 Z=-63 |B|=434 (raw -4897 -2196 -790)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=325.0 @1e acc mg X=-191 Y=+31 Z=-843 |a|=864 (raw -1568 +257 -6908)  mag mG X=-378 Y=-169 Z=-86 |B|=422 (raw -4725 -2116 -1074)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=325.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=325.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=325.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=325.0 i2c: 82004 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7656 scan probes not counted)
+s4 t=325.5 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1308 +736 -7090)  mag mG X=-368 Y=-165 Z=-101 |B|=415 (raw -4604 -2066 -1264)  fifo 2/3/6  fails 0  bus 1358 us
+s4 t=326.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +738 -7089)  mag mG X=-370 Y=-164 Z=-101 |B|=417 (raw -4619 -2056 -1265)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=326.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1320 +739 -7089)  mag mG X=-370 Y=-164 Z=-101 |B|=417 (raw -4630 -2056 -1265)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=327.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +740 -7089)  mag mG X=-369 Y=-164 Z=-101 |B|=416 (raw -4611 -2052 -1267)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=327.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1316 +742 -7088)  mag mG X=-370 Y=-164 Z=-102 |B|=417 (raw -4626 -2046 -1274)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=327.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1311 +735 -7079] [-1303 +744 -7094] [-1321 +769 -7098] [-1322 +758 -7087]
+s4 t=328.0 @1e acc mg X=-160 Y=+91 Z=-865 |a|=884 (raw -1314 +743 -7088)  mag mG X=-369 Y=-165 Z=-102 |B|=416 (raw -4615 -2061 -1274)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=328.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1320 +740 -7089)  mag mG X=-369 Y=-164 Z=-102 |B|=416 (raw -4615 -2053 -1281)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=329.0 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1314 +740 -7089)  mag mG X=-368 Y=-164 Z=-103 |B|=415 (raw -4602 -2052 -1283)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=329.5 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +738 -7091)  mag mG X=-369 Y=-164 Z=-103 |B|=416 (raw -4617 -2050 -1288)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=330.0 @1e acc mg X=-161 Y=+90 Z=-864 |a|=883 (raw -1318 +739 -7084)  mag mG X=-370 Y=-166 Z=-104 |B|=418 (raw -4623 -2071 -1296)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=330.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=330.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=330.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=330.0 i2c: 83266 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7772 scan probes not counted)
+s4 t=330.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +738 -7090)  mag mG X=-369 Y=-164 Z=-104 |B|=416 (raw -4610 -2049 -1296)  fifo 1/3/7  fails 0  bus 1503 us
+s4 t=331.0 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +740 -7090)  mag mG X=-369 Y=-165 Z=-104 |B|=417 (raw -4614 -2065 -1295)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=331.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +739 -7089)  mag mG X=-369 Y=-164 Z=-104 |B|=416 (raw -4613 -2054 -1300)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=332.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +736 -7090)  mag mG X=-371 Y=-164 Z=-105 |B|=419 (raw -4633 -2054 -1307)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=332.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1317 +739 -7092)  mag mG X=-369 Y=-166 Z=-104 |B|=417 (raw -4616 -2071 -1306)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=332.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=333.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +737 -7091)  mag mG X=-369 Y=-163 Z=-105 |B|=416 (raw -4616 -2038 -1307)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=333.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +739 -7092)  mag mG X=-370 Y=-166 Z=-105 |B|=418 (raw -4626 -2076 -1307)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=334.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1320 +739 -7087)  mag mG X=-372 Y=-165 Z=-104 |B|=420 (raw -4650 -2061 -1301)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=334.5 @1e acc mg X=-161 Y=+90 Z=-866 |a|=885 (raw -1319 +741 -7095)  mag mG X=-371 Y=-166 Z=-104 |B|=419 (raw -4635 -2073 -1303)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=335.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +741 -7090)  mag mG X=-370 Y=-166 Z=-104 |B|=418 (raw -4629 -2069 -1305)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=335.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=335.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=335.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=335.0 i2c: 84526 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (7888 scan probes not counted)
+s4 t=335.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +740 -7092)  mag mG X=-371 Y=-165 Z=-104 |B|=419 (raw -4639 -2060 -1306)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=336.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1317 +741 -7091)  mag mG X=-370 Y=-166 Z=-105 |B|=418 (raw -4626 -2078 -1310)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=336.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +738 -7088)  mag mG X=-371 Y=-165 Z=-105 |B|=419 (raw -4643 -2061 -1314)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=337.0 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +739 -7091)  mag mG X=-372 Y=-164 Z=-105 |B|=419 (raw -4649 -2052 -1316)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=337.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1316 +742 -7089)  mag mG X=-370 Y=-164 Z=-105 |B|=418 (raw -4623 -2054 -1307)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=337.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1293 +729 -7087] [-1303 +736 -7096] [-1313 +766 -7077] [-1317 +743 -7064]
+s4 t=338.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1319 +743 -7090)  mag mG X=-368 Y=-162 Z=-104 |B|=415 (raw -4606 -2027 -1302)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=338.5 @1e acc mg X=-160 Y=+91 Z=-865 |a|=884 (raw -1312 +742 -7090)  mag mG X=-368 Y=-162 Z=-103 |B|=415 (raw -4605 -2026 -1285)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=339.0 @1e acc mg X=-160 Y=+91 Z=-865 |a|=884 (raw -1315 +742 -7090)  mag mG X=-368 Y=-163 Z=-102 |B|=415 (raw -4598 -2040 -1278)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=339.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +739 -7088)  mag mG X=-368 Y=-163 Z=-103 |B|=415 (raw -4599 -2034 -1289)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=340.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1317 +743 -7089)  mag mG X=-368 Y=-162 Z=-104 |B|=415 (raw -4600 -2031 -1297)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=340.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=340.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=340.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=340.0 i2c: 85787 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8004 scan probes not counted)
+s4 t=340.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +741 -7091)  mag mG X=-368 Y=-162 Z=-103 |B|=415 (raw -4603 -2029 -1291)  fifo 1/3/6  fails 0  bus 1352 us
+s4 t=341.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1319 +742 -7089)  mag mG X=-366 Y=-163 Z=-103 |B|=413 (raw -4580 -2033 -1291)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=341.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +736 -7089)  mag mG X=-367 Y=-162 Z=-103 |B|=414 (raw -4588 -2021 -1290)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=342.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +740 -7088)  mag mG X=-367 Y=-162 Z=-103 |B|=414 (raw -4585 -2028 -1287)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=342.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +739 -7092)  mag mG X=-366 Y=-163 Z=-102 |B|=413 (raw -4570 -2035 -1276)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=342.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=343.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +736 -7087)  mag mG X=-367 Y=-163 Z=-101 |B|=414 (raw -4591 -2039 -1265)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=343.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1321 +743 -7090)  mag mG X=-368 Y=-163 Z=-101 |B|=414 (raw -4594 -2034 -1261)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=344.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1320 +740 -7089)  mag mG X=-369 Y=-164 Z=-101 |B|=416 (raw -4616 -2047 -1259)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=344.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +741 -7093)  mag mG X=-369 Y=-164 Z=-101 |B|=416 (raw -4611 -2044 -1263)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=345.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1317 +736 -7089)  mag mG X=-368 Y=-164 Z=-101 |B|=415 (raw -4604 -2045 -1268)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=345.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=345.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=345.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=345.0 i2c: 87047 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8120 scan probes not counted)
+s4 t=345.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +741 -7088)  mag mG X=-370 Y=-162 Z=-101 |B|=416 (raw -4620 -2023 -1264)  fifo 2/3/6  fails 0  bus 1355 us
+s4 t=346.0 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +740 -7087)  mag mG X=-367 Y=-164 Z=-102 |B|=414 (raw -4588 -2044 -1272)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=346.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +740 -7091)  mag mG X=-368 Y=-163 Z=-102 |B|=415 (raw -4600 -2032 -1274)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=347.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1317 +742 -7091)  mag mG X=-368 Y=-163 Z=-101 |B|=414 (raw -4597 -2039 -1267)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=347.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +737 -7092)  mag mG X=-368 Y=-162 Z=-101 |B|=414 (raw -4594 -2024 -1265)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=347.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=348.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +739 -7088)  mag mG X=-368 Y=-163 Z=-102 |B|=415 (raw -4601 -2042 -1272)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=348.5 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1317 +742 -7088)  mag mG X=-368 Y=-163 Z=-102 |B|=415 (raw -4598 -2036 -1274)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=349.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +739 -7090)  mag mG X=-368 Y=-162 Z=-102 |B|=414 (raw -4599 -2024 -1271)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=349.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1320 +738 -7092)  mag mG X=-368 Y=-164 Z=-102 |B|=415 (raw -4600 -2056 -1272)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=350.0 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +740 -7090)  mag mG X=-369 Y=-160 Z=-102 |B|=414 (raw -4612 -2003 -1273)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=350.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=350.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=350.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=350.0 i2c: 88307 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8236 scan probes not counted)
+s4 t=350.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +740 -7091)  mag mG X=-370 Y=-164 Z=-102 |B|=417 (raw -4621 -2049 -1275)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=351.0 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +736 -7092)  mag mG X=-366 Y=-163 Z=-102 |B|=413 (raw -4570 -2033 -1272)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=351.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +740 -7092)  mag mG X=-368 Y=-164 Z=-101 |B|=415 (raw -4601 -2048 -1268)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=352.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +741 -7093)  mag mG X=-369 Y=-162 Z=-102 |B|=415 (raw -4610 -2025 -1277)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=352.5 @1e acc mg X=-161 Y=+90 Z=-864 |a|=883 (raw -1318 +738 -7086)  mag mG X=-368 Y=-162 Z=-102 |B|=414 (raw -4604 -2024 -1271)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=352.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1323 +719 -7074] [-1323 +724 -7112] [-1323 +708 -7100] [-1322 +724 -7092]
+s4 t=353.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +737 -7087)  mag mG X=-369 Y=-162 Z=-102 |B|=415 (raw -4614 -2024 -1269)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=353.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1320 +740 -7089)  mag mG X=-370 Y=-162 Z=-102 |B|=416 (raw -4627 -2026 -1274)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=354.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +737 -7091)  mag mG X=-369 Y=-162 Z=-102 |B|=415 (raw -4610 -2031 -1275)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=354.5 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +737 -7090)  mag mG X=-370 Y=-164 Z=-102 |B|=417 (raw -4621 -2044 -1276)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=355.0 @1e acc mg X=-161 Y=+91 Z=-865 |a|=884 (raw -1319 +742 -7091)  mag mG X=-371 Y=-165 Z=-102 |B|=418 (raw -4641 -2068 -1279)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=355.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=355.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=355.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=355.0 i2c: 89569 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8352 scan probes not counted)
+s4 t=355.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +738 -7089)  mag mG X=-372 Y=-164 Z=-103 |B|=419 (raw -4645 -2052 -1284)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=356.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +735 -7093)  mag mG X=-370 Y=-165 Z=-102 |B|=417 (raw -4623 -2057 -1269)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=356.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +738 -7089)  mag mG X=-371 Y=-166 Z=-103 |B|=419 (raw -4636 -2076 -1284)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=357.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +739 -7094)  mag mG X=-372 Y=-168 Z=-103 |B|=420 (raw -4646 -2097 -1288)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=357.5 @1e acc mg X=-160 Y=+90 Z=-865 |a|=884 (raw -1315 +738 -7089)  mag mG X=-369 Y=-165 Z=-104 |B|=417 (raw -4615 -2065 -1300)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=357.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1313 +723 -7109] [-1316 +727 -7074] [-1313 +742 -7067] [-1352 +744 -7082]
+s4 t=358.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1316 +740 -7090)  mag mG X=-370 Y=-167 Z=-105 |B|=419 (raw -4619 -2091 -1318)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=358.5 @1e acc mg X=-160 Y=+90 Z=-864 |a|=883 (raw -1313 +737 -7085)  mag mG X=-371 Y=-167 Z=-105 |B|=420 (raw -4637 -2082 -1316)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=359.0 @1e acc mg X=-161 Y=+90 Z=-866 |a|=885 (raw -1316 +739 -7099)  mag mG X=-370 Y=-165 Z=-105 |B|=418 (raw -4627 -2067 -1312)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=359.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +741 -7089)  mag mG X=-371 Y=-165 Z=-105 |B|=419 (raw -4632 -2063 -1311)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=360.0 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1318 +736 -7088)  mag mG X=-371 Y=-168 Z=-104 |B|=420 (raw -4637 -2098 -1301)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=360.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=360.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=360.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=360.0 i2c: 90830 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8468 scan probes not counted)
+s4 t=360.5 @1e acc mg X=-161 Y=+90 Z=-865 |a|=884 (raw -1319 +735 -7089)  mag mG X=-370 Y=-167 Z=-104 |B|=419 (raw -4627 -2091 -1303)  fifo 1/3/7  fails 0  bus 1504 us
+s4 t=361.0 @1e acc mg X=-161 Y=+90 Z=-866 |a|=885 (raw -1320 +736 -7095)  mag mG X=-370 Y=-168 Z=-105 |B|=419 (raw -4625 -2095 -1307)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=361.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1317 +733 -7094)  mag mG X=-372 Y=-166 Z=-104 |B|=420 (raw -4644 -2081 -1298)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=362.0 @1e acc mg X=-161 Y=+89 Z=-864 |a|=883 (raw -1322 +728 -7086)  mag mG X=-370 Y=-168 Z=-105 |B|=419 (raw -4630 -2104 -1317)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=362.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1316 +733 -7089)  mag mG X=-370 Y=-167 Z=-105 |B|=419 (raw -4631 -2089 -1312)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=362.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1282 +704 -7107] [-1282 +719 -7120] [-1308 +717 -7104] [-1325 +721 -7077]
+s4 t=363.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1320 +732 -7089)  mag mG X=-371 Y=-165 Z=-105 |B|=419 (raw -4639 -2060 -1308)  fifo 1/3/4  fails 0  bus 1066 us
+s4 t=363.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1318 +730 -7091)  mag mG X=-370 Y=-168 Z=-105 |B|=419 (raw -4624 -2095 -1315)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=364.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1318 +732 -7091)  mag mG X=-371 Y=-166 Z=-105 |B|=419 (raw -4642 -2077 -1315)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=364.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1322 +730 -7087)  mag mG X=-372 Y=-165 Z=-105 |B|=420 (raw -4645 -2059 -1316)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=365.0 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +729 -7090)  mag mG X=-372 Y=-168 Z=-105 |B|=421 (raw -4651 -2097 -1314)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=365.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=365.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=365.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=365.0 i2c: 92092 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8584 scan probes not counted)
+s4 t=365.5 @1e acc mg X=-161 Y=+89 Z=-864 |a|=883 (raw -1320 +732 -7085)  mag mG X=-372 Y=-166 Z=-105 |B|=420 (raw -4653 -2076 -1316)  fifo 1/3/7  fails 0  bus 1509 us
+s4 t=366.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1322 +731 -7090)  mag mG X=-372 Y=-167 Z=-104 |B|=420 (raw -4649 -2089 -1306)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=366.5 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +726 -7089)  mag mG X=-370 Y=-166 Z=-105 |B|=418 (raw -4624 -2077 -1308)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=367.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1319 +730 -7090)  mag mG X=-369 Y=-166 Z=-104 |B|=417 (raw -4615 -2074 -1302)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=367.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1319 +730 -7089)  mag mG X=-371 Y=-168 Z=-104 |B|=420 (raw -4633 -2100 -1303)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=367.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1311 +741 -7045] [-1313 +719 -7068] [-1316 +745 -7060] [-1317 +744 -7069]
+s4 t=368.0 @1e acc mg X=-161 Y=+89 Z=-864 |a|=883 (raw -1318 +728 -7086)  mag mG X=-369 Y=-167 Z=-104 |B|=418 (raw -4607 -2088 -1302)  fifo 0/3/4  fails 0  bus 1058 us
+s4 t=368.5 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1314 +733 -7088)  mag mG X=-367 Y=-164 Z=-104 |B|=415 (raw -4587 -2051 -1302)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=369.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1317 +730 -7091)  mag mG X=-368 Y=-166 Z=-104 |B|=416 (raw -4604 -2071 -1299)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=369.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1316 +730 -7088)  mag mG X=-366 Y=-166 Z=-105 |B|=415 (raw -4574 -2070 -1314)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=370.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1319 +727 -7089)  mag mG X=-367 Y=-166 Z=-105 |B|=416 (raw -4589 -2069 -1310)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=370.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=370.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=370.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=370.0 i2c: 93353 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8700 scan probes not counted)
+s4 t=370.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1316 +732 -7091)  mag mG X=-367 Y=-165 Z=-105 |B|=415 (raw -4585 -2062 -1308)  fifo 2/3/6  fails 0  bus 1356 us
+s4 t=371.0 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1313 +729 -7090)  mag mG X=-367 Y=-165 Z=-104 |B|=415 (raw -4591 -2063 -1303)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=371.5 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +732 -7093)  mag mG X=-367 Y=-165 Z=-104 |B|=415 (raw -4586 -2062 -1301)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=372.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1317 +732 -7089)  mag mG X=-368 Y=-165 Z=-105 |B|=416 (raw -4594 -2059 -1308)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=372.5 @1e acc mg X=-161 Y=+89 Z=-864 |a|=883 (raw -1319 +730 -7085)  mag mG X=-366 Y=-166 Z=-104 |B|=415 (raw -4579 -2071 -1298)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=372.5 fifo burst check: 4 samples in one read, level 4 -> 1: wraps, burst OK  [-1333 +711 -7102] [-1334 +699 -7121] [-1328 +710 -7088] [-1309 +741 -7106]
+s4 t=373.0 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +731 -7092)  mag mG X=-368 Y=-165 Z=-105 |B|=416 (raw -4598 -2061 -1312)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=373.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1320 +732 -7088)  mag mG X=-367 Y=-166 Z=-104 |B|=416 (raw -4586 -2071 -1306)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=374.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1318 +731 -7088)  mag mG X=-368 Y=-163 Z=-105 |B|=415 (raw -4599 -2037 -1308)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=374.5 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +730 -7092)  mag mG X=-368 Y=-165 Z=-105 |B|=416 (raw -4597 -2063 -1315)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=375.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1316 +731 -7089)  mag mG X=-369 Y=-165 Z=-106 |B|=417 (raw -4611 -2067 -1319)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=375.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=375.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=375.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=375.0 i2c: 94615 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8816 scan probes not counted)
+s4 t=375.5 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1316 +728 -7089)  mag mG X=-370 Y=-166 Z=-105 |B|=418 (raw -4619 -2072 -1315)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=376.0 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +731 -7090)  mag mG X=-369 Y=-165 Z=-105 |B|=417 (raw -4609 -2064 -1318)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=376.5 @1e acc mg X=-161 Y=+89 Z=-864 |a|=883 (raw -1317 +730 -7085)  mag mG X=-370 Y=-166 Z=-105 |B|=418 (raw -4620 -2071 -1315)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=377.0 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1313 +733 -7090)  mag mG X=-369 Y=-166 Z=-105 |B|=418 (raw -4614 -2071 -1314)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=377.5 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1312 +729 -7091)  mag mG X=-369 Y=-166 Z=-105 |B|=418 (raw -4613 -2069 -1316)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=377.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1392 +704 -7043] [-1404 +726 -7059] [-1339 +767 -7070] [-1305 +780 -7063]
+s4 t=378.0 @1e acc mg X=-161 Y=+89 Z=-865 |a|=884 (raw -1316 +733 -7088)  mag mG X=-368 Y=-167 Z=-106 |B|=417 (raw -4601 -2083 -1322)  fifo 0/3/4  fails 0  bus 1066 us
+s4 t=378.5 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1315 +732 -7088)  mag mG X=-370 Y=-169 Z=-106 |B|=420 (raw -4630 -2108 -1320)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=379.0 @1e acc mg X=-162 Y=+90 Z=-865 |a|=884 (raw -1325 +734 -7092)  mag mG X=-378 Y=-195 Z=-101 |B|=437 (raw -4722 -2442 -1263)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=379.5 @1e acc mg X=-165 Y=+87 Z=-864 |a|=883 (raw -1354 +712 -7081)  mag mG X=-385 Y=-235 Z=-96 |B|=461 (raw -4810 -2933 -1201)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=380.0 @1e acc mg X=-160 Y=+89 Z=-865 |a|=884 (raw -1309 +727 -7090)  mag mG X=-380 Y=-267 Z=-102 |B|=475 (raw -4755 -3334 -1275)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=380.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=380.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=380.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=380.0 i2c: 95876 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (8932 scan probes not counted)
+s4 t=380.5 @1e acc mg X=-158 Y=+87 Z=-865 |a|=883 (raw -1293 +717 -7094)  mag mG X=-374 Y=-303 Z=-108 |B|=493 (raw -4675 -3784 -1356)  fifo 1/3/7  fails 0  bus 1508 us
+s4 t=381.0 @1e acc mg X=-163 Y=+87 Z=-864 |a|=883 (raw -1336 +715 -7084)  mag mG X=-366 Y=-325 Z=-113 |B|=502 (raw -4576 -4068 -1412)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=381.5 @1e acc mg X=-161 Y=+85 Z=-866 |a|=884 (raw -1316 +695 -7096)  mag mG X=-355 Y=-354 Z=-118 |B|=515 (raw -4440 -4430 -1470)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=382.0 @1e acc mg X=-166 Y=+88 Z=-864 |a|=884 (raw -1357 +725 -7082)  mag mG X=-346 Y=-368 Z=-122 |B|=519 (raw -4321 -4606 -1523)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=382.5 @1e acc mg X=-156 Y=+89 Z=-866 |a|=884 (raw -1282 +732 -7100)  mag mG X=-324 Y=-395 Z=-128 |B|=526 (raw -4044 -4939 -1599)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=382.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1497 +980 -7041] [-1531 +1042 -7094] [-1530 +911 -7069] [-1463 +835 -7121]
+s4 t=383.0 @1e acc mg X=-158 Y=+89 Z=-866 |a|=884 (raw -1293 +726 -7097)  mag mG X=-305 Y=-414 Z=-131 |B|=530 (raw -3807 -5169 -1636)  fifo 0/3/4  fails 0  bus 1072 us
+s4 t=383.5 @1e acc mg X=-156 Y=+90 Z=-867 |a|=885 (raw -1280 +737 -7104)  mag mG X=-281 Y=-431 Z=-135 |B|=531 (raw -3517 -5384 -1691)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=384.0 @1e acc mg X=-158 Y=+92 Z=-865 |a|=884 (raw -1298 +753 -7093)  mag mG X=-259 Y=-444 Z=-139 |B|=532 (raw -3240 -5549 -1738)  fifo 3/3/4  fails 0  bus 1071 us
+s4 t=384.5 @1e acc mg X=-152 Y=+92 Z=-867 |a|=885 (raw -1243 +754 -7106)  mag mG X=-238 Y=-455 Z=-139 |B|=531 (raw -2981 -5689 -1733)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=385.0 @1e acc mg X=-155 Y=+93 Z=-867 |a|=885 (raw -1271 +766 -7106)  mag mG X=-242 Y=-452 Z=-139 |B|=531 (raw -3022 -5655 -1734)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=385.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=385.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=385.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=385.0 i2c: 97137 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9048 scan probes not counted)
+s4 t=385.5 @1e acc mg X=-154 Y=+94 Z=-867 |a|=885 (raw -1265 +771 -7105)  mag mG X=-242 Y=-454 Z=-139 |B|=532 (raw -3022 -5678 -1732)  fifo 2/3/6  fails 0  bus 1354 us
+s4 t=386.0 @1e acc mg X=-158 Y=+94 Z=-866 |a|=885 (raw -1293 +767 -7095)  mag mG X=-235 Y=-457 Z=-139 |B|=532 (raw -2939 -5713 -1742)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=386.5 @1e acc mg X=-152 Y=+94 Z=-867 |a|=885 (raw -1250 +773 -7106)  mag mG X=-208 Y=-467 Z=-140 |B|=530 (raw -2594 -5841 -1749)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=387.0 @1e acc mg X=-148 Y=+96 Z=-868 |a|=885 (raw -1214 +787 -7115)  mag mG X=-178 Y=-474 Z=-137 |B|=524 (raw -2220 -5925 -1713)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=387.5 @1e acc mg X=-153 Y=+97 Z=-867 |a|=885 (raw -1255 +798 -7108)  mag mG X=-155 Y=-482 Z=-136 |B|=524 (raw -1941 -6027 -1694)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=387.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1417 +869 -7004] [-1478 +847 -6930] [-1534 +796 -6843] [-1471 +720 -6853]
+s4 t=388.0 @1e acc mg X=-149 Y=+101 Z=-868 |a|=886 (raw -1223 +830 -7112)  mag mG X=-127 Y=-483 Z=-135 |B|=517 (raw -1592 -6035 -1684)  fifo 0/3/4  fails 0  bus 1067 us
+s4 t=388.5 @1e acc mg X=-129 Y=+102 Z=-874 |a|=889 (raw -1061 +833 -7163)  mag mG X=-99 Y=-483 Z=-132 |B|=510 (raw -1232 -6034 -1649)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=389.0 @1e acc mg X=-156 Y=+123 Z=-865 |a|=887 (raw -1282 +1010 -7094)  mag mG X=-79 Y=-476 Z=-139 |B|=502 (raw -986 -5954 -1740)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=389.5 @1e acc mg X=-153 Y=+125 Z=-869 |a|=891 (raw -1254 +1023 -7122)  mag mG X=-60 Y=-469 Z=-145 |B|=494 (raw -744 -5857 -1812)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=390.0 @1e acc mg X=-166 Y=+121 Z=-860 |a|=884 (raw -1364 +993 -7047)  mag mG X=-31 Y=-461 Z=-147 |B|=484 (raw -393 -5758 -1835)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=390.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=390.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=390.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=390.0 i2c: 98398 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9164 scan probes not counted)
+s4 t=390.5 @1e acc mg X=-164 Y=+113 Z=-865 |a|=887 (raw -1346 +923 -7091)  mag mG X=-31 Y=-457 Z=-148 |B|=481 (raw -389 -5718 -1854)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=391.0 @1e acc mg X=-171 Y=+127 Z=-863 |a|=888 (raw -1401 +1038 -7073)  mag mG X=-36 Y=-456 Z=-152 |B|=482 (raw -449 -5704 -1895)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=391.5 @1e acc mg X=-184 Y=+127 Z=-857 |a|=885 (raw -1512 +1041 -7022)  mag mG X=-42 Y=-459 Z=-148 |B|=484 (raw -528 -5740 -1853)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=392.0 @1e acc mg X=-149 Y=+101 Z=-869 |a|=887 (raw -1225 +829 -7120)  mag mG X=-68 Y=-483 Z=-118 |B|=501 (raw -852 -6043 -1479)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=392.5 @1e acc mg X=-157 Y=+106 Z=-867 |a|=887 (raw -1283 +872 -7105)  mag mG X=-43 Y=-469 Z=-133 |B|=489 (raw -538 -5860 -1665)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=392.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1124 +1397 -6813] [-1127 +1433 -6911] [-1010 +1470 -6863] [-1096 +1379 -6894]
+s4 t=393.0 @1e acc mg X=-130 Y=+100 Z=-875 |a|=890 (raw -1067 +821 -7170)  mag mG X=-2 Y=-445 Z=-142 |B|=467 (raw -20 -5564 -1771)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=393.5 @1e acc mg X=-167 Y=+106 Z=-863 |a|=885 (raw -1371 +869 -7070)  mag mG X=+50 Y=-405 Z=-144 |B|=432 (raw +627 -5066 -1794)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=394.0 @1e acc mg X=-173 Y=+95 Z=-863 |a|=885 (raw -1417 +778 -7076)  mag mG X=+74 Y=-383 Z=-140 |B|=414 (raw +929 -4786 -1748)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=394.5 @1e acc mg X=-166 Y=+94 Z=-865 |a|=885 (raw -1360 +771 -7091)  mag mG X=+112 Y=-320 Z=-135 |B|=364 (raw +1400 -3998 -1684)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=395.0 @1e acc mg X=-174 Y=+98 Z=-862 |a|=884 (raw -1424 +800 -7065)  mag mG X=+133 Y=-248 Z=-122 |B|=306 (raw +1668 -3105 -1521)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=395.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=395.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=395.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=395.0 i2c: 99659 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9280 scan probes not counted)
+s4 t=395.5 @1e acc mg X=-175 Y=+91 Z=-863 |a|=885 (raw -1438 +750 -7070)  mag mG X=+130 Y=-157 Z=-109 |B|=231 (raw +1631 -1964 -1361)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=396.0 @1e acc mg X=-192 Y=+91 Z=-860 |a|=885 (raw -1570 +745 -7053)  mag mG X=+89 Y=-69 Z=-101 |B|=151 (raw +1110 -866 -1266)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=396.5 @1e acc mg X=-203 Y=+68 Z=-854 |a|=880 (raw -1663 +554 -7000)  mag mG X=-17 Y=-2 Z=-100 |B|=101 (raw -208 -27 -1246)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=397.0 @1e acc mg X=-214 Y=+25 Z=-843 |a|=870 (raw -1755 +201 -6906)  mag mG X=-138 Y=+6 Z=-93 |B|=166 (raw -1725 +71 -1167)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=397.5 @1e acc mg X=-223 Y=+29 Z=-846 |a|=875 (raw -1825 +237 -6934)  mag mG X=-182 Y=+0 Z=-88 |B|=202 (raw -2275 +5 -1105)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=397.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1984 -465 -6629] [-1938 -255 -6550] [-1789 -270 -6671] [-1933 +174 -6717]
+s4 t=398.0 @1e acc mg X=-198 Y=+65 Z=-859 |a|=883 (raw -1622 +533 -7042)  mag mG X=-209 Y=-8 Z=-76 |B|=222 (raw -2615 -98 -948)  fifo 0/3/4  fails 0  bus 1066 us
+s4 t=398.5 @1e acc mg X=-201 Y=+54 Z=-850 |a|=875 (raw -1649 +445 -6964)  mag mG X=-216 Y=-9 Z=-72 |B|=227 (raw -2704 -114 -902)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=399.0 @1e acc mg X=-154 Y=+97 Z=-870 |a|=888 (raw -1260 +798 -7129)  mag mG X=-217 Y=-10 Z=-69 |B|=227 (raw -2708 -125 -866)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=399.5 @1e acc mg X=-173 Y=+96 Z=-861 |a|=883 (raw -1420 +785 -7056)  mag mG X=-272 Y=-40 Z=-52 |B|=279 (raw -3396 -495 -654)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=400.0 @1e acc mg X=-165 Y=+94 Z=-864 |a|=884 (raw -1356 +773 -7084)  mag mG X=-332 Y=-103 Z=-33 |B|=349 (raw -4151 -1286 -410)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=400.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=400.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=400.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=400.0 i2c: 100920 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9396 scan probes not counted)
+s4 t=400.5 @1e acc mg X=-165 Y=+96 Z=-864 |a|=884 (raw -1353 +787 -7083)  mag mG X=-364 Y=-163 Z=-22 |B|=399 (raw -4556 -2038 -273)  fifo 1/3/6  fails 0  bus 1358 us
+s4 t=401.0 @1e acc mg X=-166 Y=+95 Z=-864 |a|=884 (raw -1358 +781 -7082)  mag mG X=-367 Y=-163 Z=-21 |B|=402 (raw -4583 -2033 -264)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=401.5 @1e acc mg X=-165 Y=+96 Z=-864 |a|=884 (raw -1354 +788 -7083)  mag mG X=-365 Y=-163 Z=-20 |B|=400 (raw -4558 -2038 -256)  fifo 3/3/4  fails 0  bus 1060 us
+s4 t=402.0 @1e acc mg X=-165 Y=+95 Z=-864 |a|=884 (raw -1354 +780 -7080)  mag mG X=-365 Y=-161 Z=-21 |B|=399 (raw -4568 -2017 -260)  fifo 3/3/4  fails 0  bus 1060 us
+s4 t=402.5 @1e acc mg X=-165 Y=+95 Z=-864 |a|=884 (raw -1355 +780 -7084)  mag mG X=-365 Y=-160 Z=-21 |B|=399 (raw -4562 -2006 -259)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=402.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1377 +787 -7095] [-1345 +770 -7063] [-1366 +761 -7099] [-1356 +785 -7106]
+s4 t=403.0 @1e acc mg X=-165 Y=+95 Z=-864 |a|=884 (raw -1351 +782 -7079)  mag mG X=-363 Y=-159 Z=-21 |B|=396 (raw -4542 -1985 -258)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=403.5 @1e acc mg X=-169 Y=+96 Z=-863 |a|=884 (raw -1382 +786 -7070)  mag mG X=-366 Y=-161 Z=-19 |B|=400 (raw -4575 -2016 -240)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=404.0 @1e acc mg X=-164 Y=+96 Z=-865 |a|=885 (raw -1347 +791 -7087)  mag mG X=-368 Y=-177 Z=-20 |B|=408 (raw -4606 -2210 -244)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=404.5 @1e acc mg X=-176 Y=+98 Z=-861 |a|=884 (raw -1441 +805 -7059)  mag mG X=-377 Y=-226 Z=-17 |B|=439 (raw -4710 -2823 -215)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=405.0 @1e acc mg X=-160 Y=+97 Z=-868 |a|=887 (raw -1308 +793 -7112)  mag mG X=-372 Y=-282 Z=-19 |B|=467 (raw -4655 -3520 -236)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=405.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=405.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=405.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=405.0 i2c: 102181 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9512 scan probes not counted)
+s4 t=405.5 @1e acc mg X=-173 Y=+99 Z=-862 |a|=884 (raw -1416 +815 -7063)  mag mG X=-360 Y=-329 Z=-23 |B|=488 (raw -4506 -4109 -286)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=406.0 @1e acc mg X=-167 Y=+100 Z=-864 |a|=885 (raw -1372 +820 -7082)  mag mG X=-329 Y=-395 Z=-32 |B|=515 (raw -4113 -4937 -399)  fifo 3/3/4  fails 0  bus 1056 us
+s4 t=406.5 @1e acc mg X=-161 Y=+98 Z=-865 |a|=885 (raw -1322 +802 -7090)  mag mG X=-268 Y=-458 Z=-46 |B|=532 (raw -3348 -5727 -581)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=407.0 @1e acc mg X=-157 Y=+98 Z=-867 |a|=886 (raw -1290 +805 -7108)  mag mG X=-236 Y=-478 Z=-56 |B|=536 (raw -2954 -5981 -697)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=407.5 @1e acc mg X=-165 Y=+98 Z=-865 |a|=886 (raw -1353 +803 -7088)  mag mG X=-162 Y=-504 Z=-77 |B|=534 (raw -2027 -6295 -960)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=407.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1090 +299 -7137] [-1151 +479 -7081] [-1233 +741 -7056] [-1317 +931 -7080]
+s4 t=408.0 @1e acc mg X=-170 Y=+101 Z=-862 |a|=884 (raw -1392 +825 -7065)  mag mG X=-99 Y=-503 Z=-94 |B|=521 (raw -1238 -6288 -1177)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=408.5 @1e acc mg X=-167 Y=+99 Z=-866 |a|=887 (raw -1367 +808 -7098)  mag mG X=-43 Y=-494 Z=-90 |B|=503 (raw -537 -6180 -1122)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=409.0 @1e acc mg X=-164 Y=+105 Z=-865 |a|=886 (raw -1343 +864 -7090)  mag mG X=+17 Y=-476 Z=-81 |B|=483 (raw +212 -5956 -1007)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=409.5 @1e acc mg X=-165 Y=+104 Z=-864 |a|=885 (raw -1353 +849 -7086)  mag mG X=+29 Y=-472 Z=-77 |B|=479 (raw +368 -5906 -968)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=410.0 @1e acc mg X=-175 Y=+107 Z=-862 |a|=886 (raw -1436 +873 -7063)  mag mG X=+27 Y=-469 Z=-81 |B|=476 (raw +339 -5859 -1010)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=410.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=410.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=410.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=410.0 i2c: 103443 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9628 scan probes not counted)
+s4 t=410.5 @1e acc mg X=-183 Y=+132 Z=-859 |a|=888 (raw -1499 +1082 -7045)  mag mG X=+25 Y=-466 Z=-86 |B|=474 (raw +307 -5822 -1081)  fifo 2/3/6  fails 0  bus 1356 us
+s4 t=411.0 @1e acc mg X=-145 Y=+107 Z=-860 |a|=878 (raw -1187 +874 -7048)  mag mG X=+83 Y=-424 Z=-74 |B|=438 (raw +1036 -5295 -920)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=411.5 @1e acc mg X=-160 Y=+97 Z=-865 |a|=885 (raw -1315 +799 -7088)  mag mG X=+90 Y=-406 Z=-84 |B|=424 (raw +1131 -5072 -1046)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=412.0 @1e acc mg X=-161 Y=+98 Z=-865 |a|=885 (raw -1319 +802 -7088)  mag mG X=+92 Y=-407 Z=-86 |B|=426 (raw +1153 -5091 -1079)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=412.5 @1e acc mg X=-161 Y=+96 Z=-865 |a|=885 (raw -1319 +785 -7091)  mag mG X=+87 Y=-405 Z=-87 |B|=423 (raw +1087 -5065 -1092)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=412.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1317 +772 -7126] [-1316 +755 -7093] [-1330 +740 -7054] [-1337 +756 -7056]
+s4 t=413.0 @1e acc mg X=-161 Y=+97 Z=-865 |a|=885 (raw -1322 +792 -7093)  mag mG X=+90 Y=-405 Z=-87 |B|=423 (raw +1131 -5064 -1085)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=413.5 @1e acc mg X=-161 Y=+97 Z=-865 |a|=885 (raw -1323 +798 -7087)  mag mG X=+94 Y=-405 Z=-88 |B|=424 (raw +1173 -5065 -1101)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=414.0 @1e acc mg X=-163 Y=+96 Z=-865 |a|=885 (raw -1333 +785 -7087)  mag mG X=+97 Y=-397 Z=-90 |B|=418 (raw +1215 -4963 -1131)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=414.5 @1e acc mg X=-172 Y=+95 Z=-862 |a|=884 (raw -1407 +777 -7065)  mag mG X=+120 Y=-363 Z=-91 |B|=393 (raw +1502 -4541 -1133)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=415.0 @1e acc mg X=-175 Y=+97 Z=-863 |a|=885 (raw -1431 +799 -7071)  mag mG X=+144 Y=-322 Z=-78 |B|=361 (raw +1803 -4020 -978)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=415.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=415.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=415.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=415.0 i2c: 104704 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9744 scan probes not counted)
+s4 t=415.5 @1e acc mg X=-168 Y=+92 Z=-863 |a|=884 (raw -1378 +754 -7074)  mag mG X=+163 Y=-219 Z=-63 |B|=280 (raw +2039 -2735 -782)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=416.0 @1e acc mg X=-168 Y=+90 Z=-864 |a|=884 (raw -1373 +734 -7084)  mag mG X=+139 Y=-128 Z=-57 |B|=197 (raw +1733 -1605 -718)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=416.5 @1e acc mg X=-179 Y=+81 Z=-861 |a|=883 (raw -1465 +667 -7059)  mag mG X=+113 Y=-94 Z=-60 |B|=158 (raw +1410 -1175 -754)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=417.0 @1e acc mg X=-169 Y=+97 Z=-864 |a|=885 (raw -1387 +792 -7080)  mag mG X=+25 Y=-35 Z=-63 |B|=76 (raw +309 -443 -782)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=417.5 @1e acc mg X=-174 Y=+75 Z=-861 |a|=881 (raw -1424 +611 -7060)  mag mG X=-133 Y=-17 Z=-76 |B|=154 (raw -1663 -216 -944)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=417.5 fifo burst check: not run (er -17, 3 waiting)
+s4 t=418.0 @1e acc mg X=-174 Y=+81 Z=-862 |a|=883 (raw -1427 +665 -7064)  mag mG X=-205 Y=-47 Z=-83 |B|=226 (raw -2566 -586 -1034)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=418.5 @1e acc mg X=-167 Y=+88 Z=-863 |a|=883 (raw -1368 +722 -7077)  mag mG X=-256 Y=-89 Z=-87 |B|=284 (raw -3198 -1107 -1084)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=419.0 @1e acc mg X=-164 Y=+92 Z=-865 |a|=885 (raw -1348 +751 -7087)  mag mG X=-297 Y=-139 Z=-94 |B|=341 (raw -3707 -1742 -1179)  fifo 3/3/4  fails 0  bus 1059 us
+s4 t=419.5 @1e acc mg X=-169 Y=+88 Z=-862 |a|=882 (raw -1384 +719 -7068)  mag mG X=-314 Y=-175 Z=-101 |B|=373 (raw -3920 -2193 -1268)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=420.0 @1e acc mg X=-167 Y=+93 Z=-864 |a|=884 (raw -1371 +762 -7083)  mag mG X=-314 Y=-175 Z=-104 |B|=374 (raw -3921 -2183 -1297)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=420.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=420.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=420.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=420.0 i2c: 105964 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9860 scan probes not counted)
+s4 t=420.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +754 -7077)  mag mG X=-313 Y=-175 Z=-104 |B|=373 (raw -3916 -2182 -1304)  fifo 2/3/6  fails 0  bus 1355 us
+s4 t=421.0 @1e acc mg X=-166 Y=+92 Z=-864 |a|=884 (raw -1363 +755 -7082)  mag mG X=-315 Y=-174 Z=-102 |B|=374 (raw -3933 -2173 -1277)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=421.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +757 -7076)  mag mG X=-315 Y=-173 Z=-103 |B|=373 (raw -3932 -2164 -1282)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=422.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1367 +758 -7076)  mag mG X=-313 Y=-174 Z=-102 |B|=372 (raw -3916 -2170 -1274)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=422.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1367 +753 -7074)  mag mG X=-316 Y=-172 Z=-102 |B|=373 (raw -3947 -2149 -1279)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=422.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1351 +757 -7076] [-1382 +772 -7094] [-1388 +749 -7046] [-1389 +735 -7058]
+s4 t=423.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1367 +757 -7077)  mag mG X=-313 Y=-173 Z=-101 |B|=371 (raw -3917 -2159 -1266)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=423.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1366 +755 -7076)  mag mG X=-315 Y=-175 Z=-102 |B|=374 (raw -3935 -2188 -1275)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=424.0 @1e acc mg X=-168 Y=+93 Z=-864 |a|=885 (raw -1373 +760 -7080)  mag mG X=-314 Y=-174 Z=-102 |B|=373 (raw -3922 -2174 -1274)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=424.5 @1e acc mg X=-168 Y=+93 Z=-863 |a|=884 (raw -1374 +761 -7076)  mag mG X=-314 Y=-176 Z=-101 |B|=373 (raw -3928 -2199 -1264)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=425.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1369 +754 -7075)  mag mG X=-314 Y=-174 Z=-101 |B|=372 (raw -3922 -2179 -1262)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=425.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=425.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=425.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=425.0 i2c: 107226 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (9976 scan probes not counted)
+s4 t=425.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1370 +757 -7078)  mag mG X=-315 Y=-173 Z=-102 |B|=373 (raw -3934 -2158 -1270)  fifo 2/3/6  fails 0  bus 1355 us
+s4 t=426.0 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1369 +759 -7078)  mag mG X=-315 Y=-173 Z=-102 |B|=373 (raw -3943 -2159 -1278)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=426.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +758 -7077)  mag mG X=-314 Y=-173 Z=-102 |B|=372 (raw -3931 -2163 -1273)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=427.0 @1e acc mg X=-167 Y=+93 Z=-864 |a|=884 (raw -1372 +761 -7079)  mag mG X=-316 Y=-173 Z=-102 |B|=374 (raw -3955 -2164 -1269)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=427.5 @1e acc mg X=-167 Y=+93 Z=-864 |a|=884 (raw -1371 +759 -7079)  mag mG X=-315 Y=-174 Z=-102 |B|=374 (raw -3932 -2171 -1271)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=427.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1372 +740 -7078] [-1363 +737 -7083] [-1378 +747 -7101] [-1389 +742 -7114]
+s4 t=428.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1369 +756 -7080)  mag mG X=-315 Y=-174 Z=-102 |B|=374 (raw -3937 -2180 -1280)  fifo 1/3/4  fails 0  bus 1069 us
+s4 t=428.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1367 +757 -7075)  mag mG X=-315 Y=-175 Z=-102 |B|=374 (raw -3932 -2187 -1278)  fifo 3/3/4  fails 0  bus 1062 us
+s4 t=429.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1369 +757 -7075)  mag mG X=-316 Y=-176 Z=-103 |B|=376 (raw -3954 -2194 -1289)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=429.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +758 -7076)  mag mG X=-316 Y=-173 Z=-102 |B|=374 (raw -3955 -2164 -1277)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=430.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1367 +758 -7074)  mag mG X=-314 Y=-173 Z=-102 |B|=372 (raw -3931 -2168 -1272)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=430.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=430.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=430.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=430.0 i2c: 108488 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (10092 scan probes not counted)
+s4 t=430.5 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1371 +762 -7075)  mag mG X=-314 Y=-172 Z=-102 |B|=372 (raw -3931 -2152 -1270)  fifo 1/3/7  fails 0  bus 1509 us
+s4 t=431.0 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1368 +761 -7074)  mag mG X=-316 Y=-175 Z=-103 |B|=375 (raw -3948 -2187 -1293)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=431.5 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1365 +760 -7075)  mag mG X=-315 Y=-177 Z=-104 |B|=375 (raw -3937 -2211 -1295)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=432.0 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1367 +761 -7073)  mag mG X=-318 Y=-175 Z=-104 |B|=377 (raw -3974 -2187 -1302)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=432.5 @1e acc mg X=-166 Y=+93 Z=-864 |a|=884 (raw -1364 +761 -7079)  mag mG X=-318 Y=-177 Z=-107 |B|=379 (raw -3972 -2215 -1333)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=432.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1331 +765 -7071] [-1347 +751 -7069] [-1352 +762 -7070] [-1373 +773 -7091]
+s4 t=433.0 @1e acc mg X=-167 Y=+93 Z=-864 |a|=884 (raw -1365 +760 -7079)  mag mG X=-317 Y=-175 Z=-105 |B|=377 (raw -3968 -2189 -1317)  fifo 0/3/4  fails 0  bus 1056 us
+s4 t=433.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1365 +757 -7078)  mag mG X=-319 Y=-176 Z=-105 |B|=379 (raw -3983 -2202 -1308)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=434.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1368 +757 -7079)  mag mG X=-317 Y=-176 Z=-104 |B|=377 (raw -3960 -2195 -1302)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=434.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1369 +757 -7078)  mag mG X=-317 Y=-176 Z=-104 |B|=377 (raw -3966 -2199 -1301)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=435.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1372 +757 -7081)  mag mG X=-316 Y=-174 Z=-105 |B|=375 (raw -3949 -2179 -1307)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=435.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=435.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=435.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=435.0 i2c: 109749 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (10208 scan probes not counted)
+s4 t=435.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1370 +756 -7075)  mag mG X=-316 Y=-176 Z=-104 |B|=376 (raw -3954 -2206 -1295)  fifo 1/3/7  fails 0  bus 1506 us
+s4 t=436.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1372 +753 -7074)  mag mG X=-319 Y=-176 Z=-103 |B|=378 (raw -3982 -2200 -1288)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=436.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +755 -7076)  mag mG X=-315 Y=-175 Z=-104 |B|=375 (raw -3938 -2186 -1298)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=437.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1365 +758 -7076)  mag mG X=-317 Y=-174 Z=-104 |B|=376 (raw -3963 -2181 -1296)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=437.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1367 +756 -7077)  mag mG X=-318 Y=-176 Z=-103 |B|=377 (raw -3975 -2198 -1283)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=437.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1416 +789 -7108] [-1411 +731 -7062] [-1307 +741 -7024] [-1303 +779 -6978]
+s4 t=438.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1365 +757 -7079)  mag mG X=-317 Y=-174 Z=-100 |B|=375 (raw -3964 -2181 -1253)  fifo 0/3/4  fails 0  bus 1068 us
+s4 t=438.5 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1366 +759 -7076)  mag mG X=-314 Y=-174 Z=-101 |B|=372 (raw -3930 -2180 -1265)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=439.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1372 +757 -7076)  mag mG X=-314 Y=-173 Z=-99 |B|=371 (raw -3929 -2165 -1240)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=439.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1365 +754 -7072)  mag mG X=-317 Y=-174 Z=-102 |B|=375 (raw -3959 -2179 -1278)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=440.0 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1367 +759 -7076)  mag mG X=-315 Y=-174 Z=-105 |B|=374 (raw -3940 -2170 -1308)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=440.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=440.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=440.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=440.0 i2c: 111010 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (10324 scan probes not counted)
+s4 t=440.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1372 +753 -7074)  mag mG X=-316 Y=-174 Z=-100 |B|=374 (raw -3950 -2175 -1254)  fifo 2/3/6  fails 0  bus 1357 us
+s4 t=441.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1370 +758 -7080)  mag mG X=-315 Y=-173 Z=-101 |B|=373 (raw -3935 -2167 -1263)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=441.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1371 +757 -7076)  mag mG X=-317 Y=-175 Z=-101 |B|=375 (raw -3965 -2185 -1264)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=442.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1370 +758 -7078)  mag mG X=-317 Y=-176 Z=-101 |B|=376 (raw -3962 -2195 -1265)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=442.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1366 +756 -7077)  mag mG X=-315 Y=-174 Z=-102 |B|=374 (raw -3938 -2175 -1272)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=442.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1347 +732 -7068] [-1340 +735 -7074] [-1351 +759 -7098] [-1349 +785 -7073]
+s4 t=443.0 @1e acc mg X=-168 Y=+92 Z=-863 |a|=884 (raw -1373 +758 -7078)  mag mG X=-317 Y=-176 Z=-102 |B|=376 (raw -3961 -2204 -1275)  fifo 1/3/4  fails 0  bus 1068 us
+s4 t=443.5 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1370 +758 -7080)  mag mG X=-317 Y=-176 Z=-101 |B|=376 (raw -3968 -2202 -1261)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=444.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1366 +758 -7080)  mag mG X=-318 Y=-178 Z=-101 |B|=378 (raw -3974 -2225 -1262)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=444.5 @1e acc mg X=-167 Y=+93 Z=-864 |a|=884 (raw -1372 +761 -7079)  mag mG X=-317 Y=-176 Z=-103 |B|=376 (raw -3968 -2201 -1286)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=445.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1370 +757 -7079)  mag mG X=-316 Y=-175 Z=-101 |B|=375 (raw -3950 -2187 -1266)  fifo 3/3/4  fails 0  bus 1069 us
+s4 t=445.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=445.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=445.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=445.0 i2c: 112272 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (10440 scan probes not counted)
+s4 t=445.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1369 +758 -7075)  mag mG X=-316 Y=-176 Z=-102 |B|=375 (raw -3944 -2202 -1275)  fifo 1/3/6  fails 0  bus 1356 us
+s4 t=446.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1369 +756 -7079)  mag mG X=-318 Y=-173 Z=-102 |B|=376 (raw -3979 -2162 -1273)  fifo 3/3/4  fails 0  bus 1058 us
+s4 t=446.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +753 -7077)  mag mG X=-316 Y=-176 Z=-100 |B|=375 (raw -3950 -2204 -1254)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=447.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1370 +757 -7081)  mag mG X=-317 Y=-174 Z=-102 |B|=375 (raw -3966 -2170 -1278)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=447.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1370 +755 -7072)  mag mG X=-315 Y=-173 Z=-102 |B|=373 (raw -3932 -2164 -1281)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=447.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1357 +754 -7063] [-1383 +769 -7075] [-1372 +772 -7090] [-1371 +774 -7092]
+s4 t=448.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1370 +758 -7075)  mag mG X=-318 Y=-175 Z=-103 |B|=377 (raw -3979 -2184 -1288)  fifo 1/3/4  fails 0  bus 1070 us
+s4 t=448.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1372 +757 -7078)  mag mG X=-318 Y=-175 Z=-104 |B|=377 (raw -3976 -2193 -1305)  fifo 3/3/4  fails 0  bus 1068 us
+s4 t=449.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1370 +756 -7080)  mag mG X=-318 Y=-176 Z=-104 |B|=378 (raw -3974 -2203 -1306)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=449.5 @1e acc mg X=-167 Y=+93 Z=-864 |a|=884 (raw -1371 +759 -7081)  mag mG X=-316 Y=-175 Z=-102 |B|=375 (raw -3950 -2185 -1277)  fifo 3/3/4  fails 0  bus 1065 us
+s4 t=450.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1372 +756 -7075)  mag mG X=-317 Y=-177 Z=-102 |B|=377 (raw -3959 -2214 -1272)  fifo 3/3/4  fails 0  bus 1066 us
+s4 t=450.0 scan I2C1 (GP2 SDA, GP3 SCL): 0x1e  (1 found)
+s4 t=450.0 id: WHO_AM_I (0Fh) at 0x1d = 00 (er -57), at 0x1e = 49 (er 0), want 49 -> LSM303D OK at 0x1e (SA0 low)
+s4 t=450.0 cfg (er 0): CTRL0-7 40 8f c8 00 00 74 00 00  FIFO_CTRL 40  (want 40 8f c8 00 00 74 00 00, 40)
+s4 t=450.0 i2c: 113534 transfers to the IMU, 0 failed (0 no-ack, 0 timeout), 0 bus clears, 1 FIFO overruns, longest 1900 us (10556 scan probes not counted)
+s4 t=450.5 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1368 +759 -7077)  mag mG X=-316 Y=-175 Z=-103 |B|=375 (raw -3955 -2190 -1284)  fifo 1/3/6  fails 0  bus 1354 us
+s4 t=451.0 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1368 +757 -7075)  mag mG X=-318 Y=-174 Z=-101 |B|=376 (raw -3975 -2180 -1267)  fifo 3/3/4  fails 0  bus 1070 us
+s4 t=451.5 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1370 +756 -7079)  mag mG X=-318 Y=-177 Z=-102 |B|=377 (raw -3976 -2209 -1273)  fifo 3/3/4  fails 0  bus 1057 us
+s4 t=452.0 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1370 +759 -7078)  mag mG X=-319 Y=-177 Z=-104 |B|=379 (raw -3982 -2211 -1294)  fifo 3/3/4  fails 0  bus 1063 us
+s4 t=452.5 @1e acc mg X=-167 Y=+92 Z=-863 |a|=883 (raw -1371 +757 -7076)  mag mG X=-317 Y=-174 Z=-103 |B|=375 (raw -3967 -2171 -1286)  fifo 3/3/4  fails 0  bus 1067 us
+s4 t=452.5 fifo burst check: 4 samples in one read, level 4 -> 0: wraps, burst OK  [-1365 +742 -7063] [-1376 +748 -7051] [-1367 +746 -7066] [-1356 +765 -7079]
+s4 t=453.0 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1366 +759 -7074)  mag mG X=-319 Y=-177 Z=-103 |B|=379 (raw -3988 -2207 -1289)  fifo 0/3/4  fails 0  bus 1070 us
+s4 t=453.5 @1e acc mg X=-167 Y=+93 Z=-863 |a|=883 (raw -1370 +759 -7077)  mag mG X=-316 Y=-175 Z=-101 |B|=375 (raw -3952 -2191 -1263)  fifo 3/3/4  fails 0  bus 1064 us
+s4 t=454.0 @1e acc mg X=-167 Y=+92 Z=-864 |a|=884 (raw -1369 +758 -7079)  mag mG X=-316 Y=-174 Z=-102 |B|=374 (raw -3949 -2180 -1275)  fifo 3/3/4  fails 0  bus 1065 us

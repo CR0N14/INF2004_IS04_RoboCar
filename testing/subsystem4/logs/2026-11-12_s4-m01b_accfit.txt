@@ -1,0 +1,116 @@
+# python3 testing/subsystem4/tools/accfit.py logs/2026-11-12_s4-m01b_stage2.txt --expect flat,front-up,flat,back-up,flat,left-up,flat,right-up,flat,front-up90,front-down90,left-down90,right-down90,upside-down,flat --mag-skip 0-57
+== Log
+811 readout lines, t = 0.5 to 454.0 s
+address: 0x1e in every readout line
+chip identified 81 times, 0 failures
+failed reads at the end: 0
+GAP: no readout from t = 8.5 to 57.5 s (97 lines missing)
+     I2C transfers across the gap: 252/s (5.0 to 60.0 s), elsewhere 252/s: the firmware kept running, the text was lost between the Pico and the file
+JOINED: text lost inside one line: s4 t=9.0 @1e ... s4 t=57.5 @1, after byte 4415
+     = what the Pico's USB console holds while no host reads (4095-byte ring + 256 + 64 in TinyUSB): the capture started late, and the Pico dropped what it printed until then
+settings read back 81 times: all production (CTRL0-7 40 8f c8 00 00 74 00 00, FIFO_CTRL 40)
+FIFO burst check: 67 ran, 67 wrap OK, 0 do NOT wrap, 15 not run
+     not run: er -17, 3 waiting (fewer samples waiting than the check reads; no read was attempted)
+most common FIFO min/avg/max per 10 ms: 3/3/4 (663 of 811 lines)
+
+== Still windows: 20 (each line within 10 mg and 15 mG of its neighbours, 4+ lines)
+  #   t from-to      n  orient  acc mg X Y Z (as logged)  |a| log  |a| fit  class        tilt
+  0    1.0-8.0     15     0     -160    +97   -865      885      999   flat           0.0
+  1   58.0-134.0  153     0     -165    +91   -864      884     1000   flat           0.4
+  2  136.5-145.0   18     1     +201    +84   -889      915     1003   front-up      20.9
+  3  147.5-155.5   17     0     -162    +92   -865      885     1000   flat           0.3
+  4  158.0-165.5   16     2     -480    +14   -720      866      998   back-up       21.1
+  5  168.0-180.0   25     0     -164    +93   -864      884      999   flat           0.3
+  6  184.5-193.5   19     3      -51   -411   -741      849     1002   left-up       31.9
+  7  196.0-204.0   17     0     -161    +91   -865      884     1000   flat           0.4
+  8  207.5-218.0   22     4      -53   +636   -718      961      997   right-up      34.2
+  9  220.5-259.0   78     0     -162    +96   -864      885      999   flat           0.1
+ 10  263.0-271.5   18     5    +1070    +71     +5     1072     1000   front-up90    99.7
+ 11  277.0-285.5   18     6     -917    +80   +120      928     1001   back-up90     78.8
+ 12  290.0-293.0    7     7      +97  +1068    +32     1073     1001   right-up90    87.9
+ 13  294.5-299.5   11     7     +134  +1067    +41     1077     1001   right-up90    88.9
+ 14  304.5-306.5    5     8      +90   -866     -7      871      999   left-up90     85.3
+ 15  315.5-321.0   12     9     +277    +88  +1024     1064     1000   upside-down  177.6
+ 16  326.0-378.0  105     0     -161    +90   -865      884     1000   flat           0.4
+ 17  401.0-403.0    5     0     -165    +95   -864      885     1000   flat           0.3
+ 18  412.0-413.5    4     0     -161    +97   -865      885     1000   flat           0.1
+ 19  420.0-453.5   68     0     -167    +92   -863      884      999   flat           0.5
+
+== Accelerometer fit: 10 orientations (one point each), production settings
+sensor axes   zero-g mg            scale per mille
+  X             +78.0 +-  1.6         995.2 +-  1.7
+  Y             +98.9 +-  1.5         969.3 +-  1.7
+  Z             +75.1 +-  1.4         968.8 +-  1.5
+residual |a| - 1 g over the orientations: RMS 1.6 mg, largest 2.6 mg
+residual over all 633 still lines: RMS 1.1 mg, largest -5.1 mg
+body axes (+X, -Y, -Z): zero-g  +78.0  -98.9  -75.1 mg, scale 995.2 969.3 968.8 per mille
+
+Same points, other models:
+  offsets only, scale 1000:        offsets  +76.8  +98.9  +96.5 mg, residual RMS 22.1 mg, largest 51.1
+  Z 7 % low (930), others 1000:     offsets  +76.8  +98.1  +58.1 mg, residual RMS 25.6 mg, largest 57.7
+  full fit (offsets and scale):    residual RMS 1.6 mg
+
+|a| at rest (flat windows) after correction: 999, 1000, 1000, 999, 1000, 999, 1000, 1000, 1000, 999 mg
+board at rest (first flat window), after correction: pitch -13.8 deg (nose down), roll +0.1 deg (left side up); the self-test's at-rest rotation takes this out
+
+== Axis mapping (+X, -Y, -Z) and labels
+holds found: flat (1-134 s), front-up (136-145 s), flat (148-156 s), back-up (158-166 s), flat (168-180 s), left-up (184-194 s), flat (196-204 s), right-up (208-218 s), flat (220-259 s), front-up90 (263-272 s), back-up90 (277-286 s), right-up90 (290-300 s), left-up90 (304-306 s), upside-down (316-321 s), flat (326-454 s)
+every hold matches its label: YES
+right-handed mappings (of 24) that fit every label: (+X, -Y, -Z)
+
+== Magnetometer, motors off
+Sphere fit (hard iron, every orientation): 153 points (19 still-window means, 134 slow moving lines), skipping t = 0-57
+  centre, sensor axes X -118.5 Y -241.5 Z +106.2 mG (+- 7.0 7.6 5.6); body axes -118.5 +241.5 -106.2
+  field |B| 353 mG; residual RMS 39.6 mG, largest 157.7 mG (a uniform field and a sound sensor give under about 10)
+
+Field in each still window, after the sphere centre (vertical = along the accelerometer's 'up'):
+    58.0-134.0  flat         |B|  384  vertical  +330  horizontal  197 mG
+   136.5-145.0  front-up     |B|  501  vertical  +443  horizontal  233 mG
+   147.5-155.5  flat         |B|  387  vertical  +333  horizontal  197 mG
+   158.0-165.5  back-up      |B|  325  vertical  +223  horizontal  236 mG
+   168.0-180.0  flat         |B|  391  vertical  +336  horizontal  201 mG
+   184.5-193.5  left-up      |B|  387  vertical  +314  horizontal  227 mG
+   196.0-204.0  flat         |B|  384  vertical  +328  horizontal  199 mG
+   207.5-218.0  right-up     |B|  388  vertical  +273  horizontal  275 mG
+   220.5-259.0  flat         |B|  385  vertical  +328  horizontal  200 mG
+   263.0-271.5  front-up90   |B|  393  vertical  +286  horizontal  270 mG
+   277.0-285.5  back-up90    |B|  366  vertical  +108  horizontal  350 mG
+   290.0-293.0  right-up90   |B|  382  vertical  +111  horizontal  365 mG
+   294.5-299.5  right-up90   |B|  381  vertical  +112  horizontal  364 mG
+   304.5-306.5  left-up90    |B|  362  vertical   +96  horizontal  349 mG
+   315.5-321.0  upside-down  |B|  321  vertical   +33  horizontal  319 mG
+   326.0-378.0  flat         |B|  336  vertical  +263  horizontal  209 mG
+   401.0-403.0  flat         |B|  289  vertical  +183  horizontal  223 mG
+   412.0-413.5  flat         |B|  329  vertical  +138  horizontal  298 mG
+   420.0-453.5  flat         |B|  295  vertical  +250  horizontal  156 mG
+  vertical field spread 410 mG (+33 to +443): NOT uniform: the field at the sensor changed between holds
+
+Flat stretches (heading from the sphere centre):
+  325.0-454.0 s: heading -714 deg (anticlockwise seen from above), vertical (level z) +22 to +203 mG
+
+Flat turns, level frame (the horizontal field is what heading uses):
+  turn 1: circle centre x  -95.4 y +231.1, horizontal field 250 mG, residual RMS 5.8 mG (48 lines)
+  turn 2: circle centre x  -84.0 y +262.6, horizontal field 248 mG, residual RMS 16.2 mG (28 lines)
+  all turns: circle centre x  -90.1 y +241.7, horizontal field 250 mG, residual RMS 17.0 mG, largest 48.0
+  axis-aligned ellipse: semi-axes x 259, y 243 mG (ratio 0.940), residual RMS 16.2 mG; left uncorrected it costs up to 1.7 deg of heading -> IMU_MAG_SCALE_BX/BY_PERMIL keep 1000 (not worth correcting, or the ellipse fits no better than the circle)
+
+Candidate offsets, scored on the flat turns (spread of the horizontal field; heading error up to asin(spread / field)):
+  sphere centre                  body -118.5 +241.5 -106.2 mG: field 244, spread RMS 39.5, largest 88.5 mG (up to 21 deg)
+  turn circle + sphere vertical  body  -69.7 +241.5  -94.2 mG: field 250, spread RMS 17.0, largest 47.5 mG (up to 11 deg)
+-> turn circle + sphere vertical: the field was not uniform, so use the offsets that keep the flat-turn heading steadiest
+   body  -69.7 +241.5  -94.2 mG = sensor  -69.7 -241.5  +94.2 mG
+
+Range: largest single-axis reading (500 ms mean) 504 mG (6295 counts) at t = 407.5 s; worst case any orientation (|offset| + |B| per axis) +423 +594 +447 mG; full scale +-2000 mG
+-> S4-M07 range check (any axis above 1600 mG: switch to +-4 gauss): PASS, +-2 gauss stays
+   (the worst case above is an estimate; the check uses the largest reading)
+
+== imu_params.h
+#define IMU_ACC_ZG_X_MG         78
+#define IMU_ACC_ZG_Y_MG         99
+#define IMU_ACC_ZG_Z_MG         75
+#define IMU_ACC_SCALE_X_PERMIL  995
+#define IMU_ACC_SCALE_Y_PERMIL  969
+#define IMU_ACC_SCALE_Z_PERMIL  969
+#define IMU_MAG_OFF_BX_MG       -70
+#define IMU_MAG_OFF_BY_MG       242
+#define IMU_MAG_OFF_BZ_MG       -94
