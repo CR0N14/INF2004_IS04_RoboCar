@@ -1,6 +1,10 @@
 /* Subsystem 5, student 2303571: basic servo scan and ultrasonic demo. */
 
 #include "subsystem5.h"
+#include "../demo_config.h"
+#if ENCODER_FREE_DEMO
+#include "demo_profile.h"
+#endif
 #include "drv_servo.h"
 #include "drv_ultrasonic.h"
 #include "../subsystem1/state_machine.h"
@@ -20,6 +24,17 @@
 #define PROFILE_SAFE_CLEAR_CM   40u
 #define PROFILE_ALL_POINTS      7u
 #define PROFILE_TIMEOUT_MS      10000u /* Protocol liveness, not a clearance. */
+
+/* Core 1 (TP_PRC2): the CYW43 WiFi service task is pinned to core 0 at a
+   higher priority and polls every 2 ms.  The echo IRQ is enabled on the core
+   that runs s5_ultrasonic_init(), so "any core" let boot timing decide
+   whether echo timing shared core 0 with WiFi (logged as whole boots of no
+   echo after cold power-up, never after a warm reflash). */
+#if TK_SUPPORT_SMP
+#define S5_TASK_CORE            TP_PRC2
+#else
+#define S5_TASK_CORE            0u
+#endif
 
 /* Private to the owning task; sideways samples never affect these latches. */
 typedef struct
@@ -184,7 +199,11 @@ static void publish_profile(s5_tlm_t const *profile)
     g_tlm.right_clear_cm = profile->right_clear_cm;
     g_tlm.closest_cm = profile->closest_cm;
     g_tlm.bearing_deg = profile->bearing_deg;
+#if ENCODER_FREE_DEMO
+    g_tlm.width_cm = profile->width_cm;
+#else
     g_tlm.width_cm = 0u; /* Three samples cannot support a precise width. */
+#endif
     er = tk_unl_mtx(g_mtx_tlm);
     CHECK(er, "S5 profile telemetry unlock");
 }
@@ -389,6 +408,56 @@ static void scan_position(s5_detection_t *detection, UINT angle)
     tk_dly_tsk(SCAN_PAUSE_MS);
 }
 
+#if ENCODER_FREE_DEMO
+static bool demo_hold(void){uint32_t s=sm_status_word();return SM_STATUS_STATE(s)==SM_STATE_OBSTACLE_AVOIDANCE&&SM_STATUS_NAV(s)==SM_NAV_HOLD;}
+static void demo_scan(void){
+ uint16_t d[25]={0};s5_tlm_t p={0};p.recommendation=SM_AVOID_STOP;publish_profile(&p);
+ for(UINT i=0;i<25;i++){
+  if(!demo_hold())goto finish;
+  UINT angle=30u+5u*i;
+  if(s5_servo_set_angle(angle)!=E_OK)goto fault;
+  publish_tlm(S5_SCAN_SCANNING,angle,S5_NO_ECHO_CM);
+  tk_dly_tsk(i?120:500);
+  if(!demo_hold())goto finish;
+  d[i]=s5_ultrasonic_read_cm();publish_tlm(S5_SCAN_SCANNING,angle,d[i]);
+ }
+ uint16_t width=0;
+ if(!demo_profile_width(d,&width))goto fault;
+ p.b_profile=1;p.width_cm=width;p.closest_cm=d[12];p.bearing_deg=90;
+ p.left_clear_cm=d[3]>255?255:d[3];p.right_clear_cm=d[21]>255?255:d[21];
+ if(d[3]>=40&&d[3]>=d[21])p.recommendation=SM_AVOID_LEFT;
+ else if(d[21]>=40)p.recommendation=SM_AVOID_RIGHT;
+ publish_profile(&p);
+ if(demo_hold())sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
+ goto finish;
+ fault: if(demo_hold())sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
+ finish: s5_servo_set_angle(90);tk_dly_tsk(500);
+}
+static void demo_ultrasound_loop(void){
+ unsigned near=0,missing=0;bool scan_done=false;
+ s5_servo_set_angle(90);tk_dly_tsk(500);
+ for(;;){
+  uint32_t st=sm_status_word();
+  if(demo_hold()){
+   if(!scan_done){demo_scan();scan_done=true;}
+   else { /* STOP profiles remain stopped; rescan after a bounded pause. */
+    tk_dly_tsk(500);if(demo_hold())demo_scan();
+   }
+  }else{
+   scan_done=false;UINT d=s5_ultrasonic_read_cm();publish_tlm(S5_SCAN_MONITORING,90,d);
+   bool moving=SM_STATUS_STATE(st)==SM_STATE_NAVIGATING||SM_STATUS_STATE(st)==SM_STATE_OBSTACLE_AVOIDANCE;
+   if(moving){
+    if(d==S5_NO_ECHO_CM){if(++missing>=3)sm_post_event(SM_EVT_FAULT,SM_FAULT_NO_ECHO);}
+    else {missing=0;if(d<25){if(++near>=2){
+      if(SM_STATUS_NAV(st)==SM_NAV_BYPASS||SM_STATUS_NAV(st)==SM_NAV_RECOVERY)sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
+      else sm_post_event(SM_EVT_OBSTACLE,0);
+    }}else near=0;}
+   }else {near=0;missing=0;}
+   tk_dly_tsk(100);
+  }
+ }
+}
+#endif
 static void ultrasound_task(INT stacd, void *exinf)
 {
     static UINT const angles[] = {45u, 90u, 135u, 90u};
@@ -401,6 +470,9 @@ static void ultrasound_task(INT stacd, void *exinf)
         tk_ext_tsk();
         return;
     }
+#if ENCODER_FREE_DEMO
+    demo_ultrasound_loop();
+#endif
     for (;;) {
         for (i = 0u; i < sizeof(angles) / sizeof(angles[0]); ++i) {
             scan_position(&detection, angles[i]);
@@ -424,6 +496,6 @@ EXPORT ER subsystem5_start(void)
     if (g_mtx_tlm <= 0) {
         return E_OBJ;
     }
-    tid = app_start_task((FP)ultrasound_task, S5_PRI_MAIN, 0, "Ultrasound");
+    tid = app_start_task((FP)ultrasound_task, S5_PRI_MAIN, S5_TASK_CORE, "Ultrasound");
     return (tid < E_OK) ? tid : E_OK;
 }

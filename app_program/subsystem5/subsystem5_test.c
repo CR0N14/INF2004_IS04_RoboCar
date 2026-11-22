@@ -119,7 +119,7 @@ static ER mock_unlock(ID id)
 static ID mock_start(FP entry, PRI priority, UW core, const char *name)
 {
     mock.ok = mock.ok && entry == (FP)ultrasound_task &&
-        priority == S5_PRI_MAIN && core == 0u && name != NULL;
+        priority == S5_PRI_MAIN && core == S5_TASK_CORE && name != NULL;
     ++mock.starts;
     return 8; /* Never run the infinite task from a test. */
 }

@@ -36,6 +36,12 @@
 #include "drv_motor.h"
 #include "drv_encoder.h"
 #include "motion_logic.h"
+#include "../demo_config.h"
+#if ENCODER_FREE_DEMO
+#include "demo_motion.h"
+#include "../subsystem3/demo_ir.h"
+#include "../subsystem4/demo_imu.h"
+#endif
 
 /* ---- Constants ------------------------------------------------------- */
 
@@ -113,6 +119,10 @@ typedef struct
 
 /* ---- Kernel objects and shared data ---------------------------------- */
 
+static ID   g_bench_flags;
+static uint32_t g_bench_deadline;
+static UINT g_bench_wheel;
+static bool g_bench_active;
 static ID   g_tid_motion;
 static ID   g_cyc_motion;
 static ID   g_mtx_tlm;      /* protects g_tlm                           */
@@ -122,6 +132,7 @@ static motion_ctx_t g_ctx;  /* task-only, so no lock needed             */
 
 /* IF-07 snapshot: written only by the Motion Control task */
 static s2_tlm_t g_tlm;
+static uint32_t g_tlm_ms;
 
 /* Steering input: written only through s2_set_steering() */
 static int8_t   g_steer_pct;
@@ -196,7 +207,7 @@ read_steering(int32_t *p_steer, uint32_t now)
         (void)tk_unl_mtx(g_mtx_steer);
     }
     *p_steer = g_steer_cached_pct;
-    return g_b_steer_cached && ((now - g_steer_cached_ms) <= STEER_STALE_MS);
+    return g_b_steer_cached && ((now - g_steer_cached_ms) <= 30u);
 }
 
 /* ---- Statechart transitions ------------------------------------------ */
@@ -461,7 +472,7 @@ drive(motion_ctx_t *p_c, sm_nav_mode_t nav, uint32_t now)
             }
             else
             {
-                set_targets(p_c, RECOVERY_SPEED_MMPS, RECOVERY_SPEED_MMPS);
+                set_targets(p_c, 0, 0); /* Await an authorised fresh search target. */
             }
             break;
 
@@ -788,6 +799,7 @@ publish(motion_ctx_t const *p_c)
     if (E_OK == tk_loc_mtx(g_mtx_tlm, TMO_POL))
     {
         g_tlm = t;
+        g_tlm_ms = now_ms();
         (void)tk_unl_mtx(g_mtx_tlm);
     }
 }
@@ -817,6 +829,99 @@ debug_print(motion_ctx_t *p_c)
 #endif
 }
 
+/* Request bits are atomically consumed by the sole motor owner. */
+static bool
+bench_cycle(uint32_t status, uint32_t now)
+{
+    UINT requests = 0u;
+    (void)tk_wai_flg(g_bench_flags, 7u, TWF_ORW | TWF_BITCLR,
+                     &requests, TMO_POL);
+    if ((0u != (requests & 4u)) ||
+        (SM_STATE_STANDBY != SM_STATUS_STATE(status)) ||
+        (0u != (SM_STATUS_FAULTS(status) & ~SM_FAULT_NON_FATAL_MASK)))
+    {
+        if (g_bench_active) { drv_motor_brake_all(); }
+        g_bench_active = false;
+        return false;
+    }
+    if (g_bench_active && ((int32_t)(now - g_bench_deadline) >= 0))
+    {
+        g_bench_active = false;
+        drv_motor_brake_all();
+        return false;
+    }
+    if (!g_bench_active && ((requests == 1u) || (requests == 2u)))
+    {
+        g_bench_wheel = (requests == 1u) ? 0u : 1u;
+        g_bench_deadline = now + 500u;
+        g_bench_active = true;
+    }
+    if (g_bench_active)
+    {
+        drv_motor_brake((wheel_t)(1u - g_bench_wheel));
+        drv_motor_set((wheel_t)g_bench_wheel, 20);
+    }
+    return g_bench_active;
+}
+
+EXPORT ER
+s2_bench_request(UINT wheel)
+{
+    if (ENCODER_FREE_DEMO || !MOTION_MQTT_BENCH || wheel > 1u ||
+        SM_STATUS_STATE(sm_status_word()) != SM_STATE_STANDBY)
+    {
+        return E_PAR;
+    }
+    return tk_set_flg(g_bench_flags, 1u << wheel);
+}
+
+EXPORT ER
+s2_bench_cancel(void)
+{
+    return tk_set_flg(g_bench_flags, 4u);
+}
+
+static int g_demo_left, g_demo_right;
+static uint32_t g_demo_stamp;
+ER s2_demo_duty(int *left,int *right,uint32_t *stamp){
+ ER e=tk_loc_mtx(g_mtx_tlm,TMO_POL);
+ if(e==E_OK){*left=g_demo_left;*right=g_demo_right;*stamp=g_demo_stamp;tk_unl_mtx(g_mtx_tlm);}return e;
+}
+#if ENCODER_FREE_DEMO
+static void demo_cycle(void){
+ static demo_motion_t ctx;
+ static sm_evt_code_t pending;static uint16_t arg;
+ static sm_nav_mode_t previous_nav;
+ static demo_line_t line;
+ static demo_imu_t imu;
+ uint8_t cmds[SM_NAV_QUEUE_LEN]={0};uint32_t flags,status;
+ INT n=read_inputs(cmds,SM_NAV_QUEUE_LEN,&flags,&status);
+ uint32_t now=now_ms();
+ sm_nav_mode_t nav=SM_STATUS_NAV(status);
+ if(nav!=previous_nav&&pending!=SM_EVT_FAULT)pending=SM_EVT_NONE;
+ previous_nav=nav;
+ (void)demo_ir_read(&line);
+ (void)demo_imu_read(&imu);
+ now=now_ms(); /* Snapshots may have been published during the reads. */
+ bool pickup=!DEMO_IGNORE_IMU && imu.latched;
+ demo_output_t o=demo_motion_step(&ctx,now,status,&line,n?cmds[n-1]:0,pickup);
+ if(!DEMO_IGNORE_IMU && !pickup && (!imu.ready||now-imu.time_ms>100u)) {
+  o.left=0;o.right=0;
+  if(SM_STATUS_STATE(status)==SM_STATE_NAVIGATING ||
+     SM_STATUS_STATE(status)==SM_STATE_OBSTACLE_AVOIDANCE) {
+   ctx.failed=true;ctx.failure=SM_FAULT_IMU;
+   o.event=SM_EVT_FAULT;o.arg=SM_FAULT_IMU;
+  }
+ }
+ /* STOP/error/HOLD decisions take effect at the sole motor owner. */
+ if(!(flags&SM_FLG_MOTORS_ENABLED)){o.left=0;o.right=0;pending=SM_EVT_NONE;}
+ if(o.event!=SM_EVT_NONE){pending=o.event;arg=o.arg;}
+ if(o.left)drv_motor_set(WHEEL_LEFT,o.left);else drv_motor_brake(WHEEL_LEFT);
+ if(o.right)drv_motor_set(WHEEL_RIGHT,o.right);else drv_motor_brake(WHEEL_RIGHT);
+ if(pending!=SM_EVT_NONE&&sm_post_event(pending,arg)==E_OK)pending=SM_EVT_NONE;
+ if(tk_loc_mtx(g_mtx_tlm,TMO_POL)==E_OK){g_demo_left=o.left;g_demo_right=o.right;g_demo_stamp=now;tk_unl_mtx(g_mtx_tlm);}
+}
+#endif
 static void
 motion_cycle(motion_ctx_t *p_c)
 {
@@ -825,6 +930,10 @@ motion_cycle(motion_ctx_t *p_c)
     uint32_t status;
     uint32_t const now = now_ms();
 
+#if ENCODER_FREE_DEMO
+    (void)p_c;(void)cmds;(void)flags;(void)status;(void)now;
+    demo_cycle();return;
+#endif
     /* 1. Measure */
     measure(p_c);
 
@@ -859,8 +968,11 @@ motion_cycle(motion_ctx_t *p_c)
             break;
     }
 
-    /* 4. Speed control + PWM (+ stall check) */
-    control_wheels(p_c);
+    /* Bench override remains owned by this task and expires after 500 ms. */
+    if (!bench_cycle(status, now))
+    {
+        control_wheels(p_c);
+    }
 
     /* 5. Outputs */
     send_events(p_c);
@@ -901,6 +1013,9 @@ motion_task(INT stacd, void *exinf)
 EXPORT ER
 s2_get_tlm(s2_tlm_t *p_tlm)
 {
+#if ENCODER_FREE_DEMO
+    (void)p_tlm; return E_NOSPT; /* No fabricated speed, distance or counts. */
+#endif
     ER er;
 
     if (NULL == p_tlm)
@@ -942,16 +1057,49 @@ s2_set_steering(INT steer_pct)
 }
 
 EXPORT ER
+s2_set_line_target(INT steer_pct, uint32_t acquired_ms, BOOL valid)
+{
+    ER er = tk_loc_mtx(g_mtx_steer, TMO_POL);
+    if (E_OK != er) { return er; }
+    g_b_steer_set = valid && ((now_ms() - acquired_ms) <= 30u);
+    g_steer_pct = (int8_t)((steer_pct > 100) ? 100 :
+                          ((steer_pct < -100) ? -100 : steer_pct));
+    g_steer_ms = acquired_ms;
+    (void)tk_unl_mtx(g_mtx_steer);
+    return E_OK;
+}
+
+EXPORT ER
+s2_get_motion_sample(s2_tlm_t *p_tlm, uint32_t *p_acquired_ms)
+{
+    if ((NULL == p_tlm) || (NULL == p_acquired_ms)) { return E_PAR; }
+    ER er = tk_loc_mtx(g_mtx_tlm, TMO_POL);
+    if (E_OK != er) { return er; }
+    *p_tlm = g_tlm;
+    *p_acquired_ms = g_tlm_ms;
+    (void)tk_unl_mtx(g_mtx_tlm);
+    return E_OK;
+}
+
+EXPORT ER
 subsystem2_init(void)
 {
     T_CMTX  cmtx = {0};
     T_CCYC  ccyc = {0};
     ER      er;
 
+    T_CFLG bench = {0};
+    bench.flgatr = TA_TFIFO;
+    g_bench_flags = tk_cre_flg(&bench);
+    if (g_bench_flags < E_OK) { return g_bench_flags; }
+
     /* Motors first: hold them braked as early as possible */
     drv_motor_init();
 
+    er = E_OK;
+#if !ENCODER_FREE_DEMO
     er = drv_encoder_init();
+#endif
     if (er < E_OK)
     {
         return er;

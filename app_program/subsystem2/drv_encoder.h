@@ -45,4 +45,11 @@ INT drv_encoder_qdec(uint8_t prev, uint8_t now);
 /* TRUE if the interrupt is enabled for all four encoder pins.  For tests. */
 BOOL drv_encoder_irq_enabled(void);
 
+#if MOTION_MQTT_BENCH
+void drv_encoder_diag(uint8_t *out);
+#if MOTION_GPIO_SELFTEST
+void drv_encoder_selftest_start(void);
+#endif
+#endif
+
 #endif /* DRV_ENCODER_H */

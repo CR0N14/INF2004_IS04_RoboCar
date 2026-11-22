@@ -5,14 +5,16 @@
 #define DRV_IR_H
 #include "../app.h"
 #include "ir_frame.h"
+
 typedef struct
 {
-    ID adc;
+    ID   adc;
     bool b_clock_failed;
 } drv_ir_t;
-ER drv_ir_open (drv_ir_t * p_driver);
+
+ER       drv_ir_open (drv_ir_t * p_driver);
 uint16_t drv_ir_clock (void * p_context);
-bool drv_ir_read (void * p_context, uint8_t channel, uint16_t * p_raw);
+bool     drv_ir_read (void * p_context, uint8_t channel, uint16_t * p_raw);
 #endif
 /* End of file. */
 

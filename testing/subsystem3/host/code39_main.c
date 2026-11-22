@@ -95,8 +95,7 @@ static bool replay_symbol (char const * p_bits, bool b_reverse,
         if (BARCODE_NONE != result.outcome)
         {
             if ((BARCODE_UNBOUND != result.outcome) ||
-                (expected != result.symbol) ||
-                (time != 110u + length * 10u))
+                (expected != result.symbol) || (time != 110u + length * 10u))
             {
                 return false;
             }

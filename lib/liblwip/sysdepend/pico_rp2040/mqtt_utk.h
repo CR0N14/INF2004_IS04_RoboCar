@@ -33,7 +33,9 @@
 #define MQTT_UTK_TOPIC_TLM	0u
 #define MQTT_UTK_TOPIC_HB	1u
 #define MQTT_UTK_TOPIC_EVT	2u
-#define MQTT_UTK_TOPIC_COUNT	3u
+#define MQTT_UTK_TOPIC_DIAG	3u
+#define MQTT_UTK_TOPIC_DEMO	4u
+#define MQTT_UTK_TOPIC_COUNT	5u
 
 /* Largest payload either way (bytes) */
 #define MQTT_UTK_MAX_PAYLOAD	64u

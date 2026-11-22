@@ -73,6 +73,10 @@ static encoder_hw_t const g_enc[WHEEL_COUNT] =
 static volatile int32_t  g_counts[WHEEL_COUNT];
 static volatile uint32_t g_errors[WHEEL_COUNT];
 static volatile uint8_t  g_last_state[WHEEL_COUNT];
+#if MOTION_MQTT_BENCH
+static volatile uint32_t g_irq_calls;
+static volatile uint32_t g_valid_steps[WHEEL_COUNT];
+#endif
 
 /* Our pins' edge bits in each of the 4 IO_BANK0 interrupt registers.
  * Built once in drv_encoder_init(), read by the handler. */
@@ -112,6 +116,9 @@ static void
 encoder_isr(UINT intno)
 {
     (void)intno;
+#if MOTION_MQTT_BENCH
+    g_irq_calls++;
+#endif
 
     /* 1. Acknowledge OUR pins' edges, and only ours: these bits are
           "write 1 to clear", so writing our mask leaves other pins'
@@ -140,6 +147,9 @@ encoder_isr(UINT intno)
         }
         else if (0 != step)
         {
+#if MOTION_MQTT_BENCH
+            g_valid_steps[w]++;
+#endif
             g_counts[w] += step * g_enc[w].direction;
         }
         g_last_state[w] = now;
@@ -245,3 +255,66 @@ drv_encoder_irq_enabled(void)
     }
     return TRUE;
 }
+
+#if MOTION_MQTT_BENCH
+/* Version 1: ten little-endian uint32 words. Individual counters are
+ * atomic reads; this is a best-effort snapshot across the two cores.
+ * GPIO levels are sampled, not a logic-analyser edge capture. */
+#if MOTION_GPIO_SELFTEST
+static UINT g_test_phase;
+static UINT g_test_ticks;
+static UW g_test_saved[4];
+static UINT const g_test_pins[4] = {ENC_L_PIN_A, ENC_L_PIN_B, ENC_R_PIN_A, ENC_R_PIN_B};
+void drv_encoder_selftest_start(void)
+{
+    if (g_test_phase != 0u && g_test_phase != 9u) return;
+    for (UINT i = 0; i < 4u; ++i) g_test_saved[i] = in_w(GPIO(g_test_pins[i]));
+    g_test_phase = 1u;
+    g_test_ticks = 0u;
+}
+/* Called only by Networking. Change only weak pulls, never output drive.
+ * Each phase lasts ten telemetry intervals; restore exact pad settings. */
+static void selftest_step(void)
+{
+    if (g_test_phase == 0u || g_test_phase == 9u) return;
+    UINT pin = g_test_pins[(g_test_phase - 1u) / 2u];
+    if (g_test_ticks == 0u) {
+        if (g_test_phase & 1u) {
+            clr_w(GPIO(pin), GPIO_PUE);
+            set_w(GPIO(pin), GPIO_PDE);
+        } else {
+            out_w(GPIO(pin), g_test_saved[(g_test_phase - 1u) / 2u]);
+        }
+    }
+    if (++g_test_ticks >= 10u) { g_test_ticks = 0u; ++g_test_phase; }
+}
+#endif
+void drv_encoder_diag(uint8_t *out)
+{
+    uint32_t words[16] = {
+        1u, in_w(GPIO_IN), g_irq_calls,
+        (uint32_t)g_counts[0], (uint32_t)g_counts[1],
+        g_valid_steps[0], g_valid_steps[1], g_errors[0], g_errors[1],
+        (uint32_t)drv_encoder_irq_enabled() |
+        ((g_inte_base == IO_BANK0_PROC1_INTE(0u) ? 1u : 0u) << 1)
+    };
+    UINT word_count = 10u;
+#if MOTION_GPIO_SELFTEST
+    UINT pin = g_test_pins[(g_test_phase >= 1u && g_test_phase <= 8u) ? (g_test_phase - 1u) / 2u : 0u];
+    words[0] = 2u;
+    words[10] = g_test_phase;
+    words[11] = pin;
+    words[12] = in_w(GPIO_CTRL(pin));
+    words[13] = in_w(GPIO(pin));
+    words[14] = in_w(IO_BANK0_INTR(GPIO_EVT_REG(pin)));
+    /* NVIC register is local to the reading core. Bit 31 records that core. */
+    words[15] = (in_w(0xe000e100u) & (1u << IO_IRQ_BANK0)) |
+                (in_w(SIO_CPUID_ADDR) << 31);
+    word_count = 16u;
+    selftest_step();
+#endif
+    for (UINT i = 0; i < word_count; ++i)
+        for (UINT b = 0; b < 4u; ++b)
+            out[i * 4u + b] = (uint8_t)(words[i] >> (8u * b));
+}
+#endif

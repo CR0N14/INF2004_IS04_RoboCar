@@ -48,6 +48,8 @@ static const char * const tx_topics[MQTT_UTK_TOPIC_COUNT] = {
 	MQTT_TOPIC_ROOT "/tlm",		/* MQTT_UTK_TOPIC_TLM */
 	MQTT_TOPIC_ROOT "/hb",		/* MQTT_UTK_TOPIC_HB  */
 	MQTT_TOPIC_ROOT "/evt",		/* MQTT_UTK_TOPIC_EVT */
+	MQTT_TOPIC_ROOT "/diag",		/* MQTT_UTK_TOPIC_DIAG */
+	MQTT_TOPIC_ROOT "/demo",		/* MQTT_UTK_TOPIC_DEMO */
 };
 
 static const u8_t status_online  = MQTT_UTK_STATUS_ONLINE;

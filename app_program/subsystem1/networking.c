@@ -1,3 +1,10 @@
+#include "../subsystem2/subsystem2.h"
+#include "../subsystem2/drv_encoder.h"
+#include "../demo_config.h"
+#if ENCODER_FREE_DEMO
+#include "../subsystem3/demo_ir.h"
+#include "../subsystem4/demo_imu.h"
+#endif
 /*
  *  networking.c
  *  Networking task: telemetry, heartbeat, events and commands over MQTT.
@@ -30,6 +37,8 @@
 #define MQTT_UTK_TOPIC_TLM      0u
 #define MQTT_UTK_TOPIC_HB       1u
 #define MQTT_UTK_TOPIC_EVT      2u
+#define MQTT_UTK_TOPIC_DIAG     3u
+#define MQTT_UTK_TOPIC_DEMO     4u
 #define MQTT_UTK_MAX_PAYLOAD    64u
 #endif
 
@@ -152,8 +161,13 @@ track_run(uint32_t payload, uint32_t now)
             secs = SM_FIELD_MASK(11u);
         }
         g_b_run_active = false;
+#if !ENCODER_FREE_DEMO
         ring_push(NET_EVT_RUN_SUMMARY, (peak << 25u) | (dist << 11u) | secs,
                   now);
+#else
+        /* Existing event has no validity bit: omit it rather than claim 0 cm. */
+        (void)now;
+#endif
         tm_printf((UB *)"net: run summary: peak %u mm, %u cm, %u s\n",
                   (unsigned int)peak, (unsigned int)dist,
                   (unsigned int)secs);
@@ -209,6 +223,17 @@ queue_tx(uint8_t topic, uint16_t payload_len)
     }
 }
 
+#if ENCODER_FREE_DEMO
+static void send_demo(void){
+ demo_line_t ir={0};demo_imu_t imu={0};int l=0,r=0;uint32_t stamp=0,now=now_ms();
+ bool ir_ok=demo_ir_read(&ir)==E_OK,imu_ok=demo_imu_read(&imu)==E_OK;
+ s2_demo_duty(&l,&r,&stamp);
+ uint32_t words[16]={1,1u|(DEMO_IGNORE_IMU?128u:0u)|((ir_ok&&ir.calibrated)?2u:0u)|((ir_ok&&ir.valid&&now-ir.time_ms<=DEMO_STALE_MS)?4u:0u)|((imu_ok&&imu.ready&&now-imu.time_ms<=100u)?8u:0u)|(imu.latched?16u:0u)|((!DEMO_IGNORE_IMU&&imu.height_valid)?32u:0u)|((l||r)?64u:0u),now,ir.mask,
+ ir.raw[0],ir.raw[1],ir.raw[2],ir.white[0],ir.white[1],ir.white[2],ir.black[0],ir.black[1],ir.black[2],(uint16_t)l|((uint32_t)(uint16_t)r<<16),imu.peak_mm|((uint32_t)ir.cal_phase<<16),stamp};
+ for(UINT i=0;i<16;i++)for(UINT b=0;b<4;b++)g_tx_buf[1+i*4+b]=(uint8_t)(words[i]>>(8*b));
+ queue_tx(MQTT_UTK_TOPIC_DEMO,64);
+}
+#endif
 static void
 send_telemetry(void)
 {
@@ -336,6 +361,29 @@ handle_commands(uint32_t now)
         net_cmd_t   cmd;
         ER          er = E_OK;
 
+#if MOTION_GPIO_SELFTEST
+        if (len == 1 && g_rx_buf[0] == 0xb0u) {
+            drv_encoder_selftest_start();
+            continue;
+        }
+        /* This dedicated build never accepts motor bench or START commands. */
+        if (len == 1 && (g_rx_buf[0] == 0xa0u || g_rx_buf[0] == 0xa1u || g_rx_buf[0] == 0x20u)) {
+            reply(g_rx_buf[0] >> 5, false, now);
+            continue;
+        }
+#endif
+#if ENCODER_FREE_DEMO
+        if(len==1&&(g_rx_buf[0]==0xb1u||g_rx_buf[0]==0xb2u||g_rx_buf[0]==0xb3u)){
+            ER result=g_rx_buf[0]==0xb3u?demo_imu_zero():demo_ir_calibrate(g_rx_buf[0]-0xb1u);
+            reply(5u,result==E_OK,now);continue;
+        }
+#endif
+        /* Bench opcode 5: exactly A0=left or A1=right, fixed 20%, 500 ms. */
+        if ((len == 1) && ((g_rx_buf[0] == 0xa0u) || (g_rx_buf[0] == 0xa1u)))
+        {
+            reply(5u, E_OK == s2_bench_request(g_rx_buf[0] & 1u), now);
+            continue;
+        }
         if (!net_codec_cmd(g_rx_buf, (uint16_t)len, &cmd))
         {
             tm_printf((UB *)"net: malformed command (op %u, %d bytes)\n",
@@ -349,10 +397,17 @@ handle_commands(uint32_t now)
         switch ((net_op_t)cmd.op)
         {
             case NET_OP_START:
+#if ENCODER_FREE_DEMO
+                {demo_line_t ir={0};if(demo_ir_read(&ir)!=E_OK||!ir.calibrated||!ir.valid||now_ms()-ir.time_ms>DEMO_STALE_MS||(!DEMO_IGNORE_IMU&&!demo_imu_ready())){
+                    reply(cmd.op,false,now);break;
+                }}
+#endif
+                (void)s2_bench_cancel();
                 er = sm_post_event(SM_EVT_CMD_START, 0u);
                 break;
 
             case NET_OP_STOP:
+                (void)s2_bench_cancel();
                 er = sm_post_event(SM_EVT_CMD_STOP, 0u);
                 break;
 
@@ -412,6 +467,13 @@ net_task(INT stacd, void *exinf)
             if (g_b_online)
             {
                 send_telemetry();
+#if ENCODER_FREE_DEMO
+                send_demo();
+#endif
+#if MOTION_MQTT_BENCH
+                drv_encoder_diag(&g_tx_buf[1]);
+                queue_tx(MQTT_UTK_TOPIC_DIAG, MOTION_GPIO_SELFTEST ? 64u : 40u);
+#endif
             }
         }
         if (++hb_cycles >= NET_HB_CYCLES)

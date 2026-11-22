@@ -9,8 +9,8 @@
 #define IR_CONTRAST 200u
 #define IR_PERSIST_MS 50u
 #define IR_RECOVERY_MS 3000u
-void ir_config_line (ir_calibration_t const * p_calibration,
-                      ir_config_t * p_line);
+void             ir_config_line (ir_calibration_t const * p_calibration,
+                                 ir_config_t *            p_line);
 barcode_config_t ir_config_barcode (ir_calibration_t calibration);
 #endif
 /* End of file. */

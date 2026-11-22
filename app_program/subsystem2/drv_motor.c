@@ -65,6 +65,19 @@ set_levels(motor_hw_t const *p_m, UW level_fwd, UW level_rev)
 void
 drv_motor_init(void)
 {
+    /* USE_PTMR=0 leaves PWM in reset. Release it before configuring motors.
+       Never assert the shared reset because slice 6 belongs to the servo. */
+    clr_w(RESETS_RESET, RESETS_RESET_PWM);
+    UW const reset_started = in_w(TIMER_TIMERAWL);
+    while (0u == (in_w(RESETS_RESET_DONE) & RESETS_RESET_PWM))
+    {
+        if ((UW)(in_w(TIMER_TIMERAWL) - reset_started) >= 10000u)
+        {
+            tm_printf((UB *)"s2: PWM reset release timed out\n");
+            return;
+        }
+    }
+
     /* TOP for the wanted frequency: 125 000 000 / (1 * 20 000) - 1 = 6249 */
     g_pwm_top = (PWM_SRC_CLK_HZ / (PWM_CLKDIV * PWM_FREQ_HZ)) - 1u;
 

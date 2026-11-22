@@ -18,6 +18,10 @@
 #ifndef MOTION_CONFIG_H
 #define MOTION_CONFIG_H
 
+/* Set to 1 only for wheels-raised, supervised MQTT encoder diagnosis. */
+#define MOTION_MQTT_BENCH 0
+#define MOTION_GPIO_SELFTEST 0
+
 /* ------------------------------------------------------------------------- */
 /* Which wheel.  Used by every S2 file so they all index wheels the same way. */
 /* ------------------------------------------------------------------------- */

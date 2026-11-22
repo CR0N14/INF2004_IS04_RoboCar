@@ -3,13 +3,15 @@
  */
 #include "ir_junction.h"
 #include "ir_config.h"
+
 void ir_junction_reset (ir_junction_t * p_junction)
 {
     ir_junction_t const empty = {0};
-    *p_junction = empty;
+    *p_junction               = empty;
 }
-void ir_junction_observe (ir_junction_t * p_junction, bool b_line,
-                          bool b_lost, uint16_t time_ms)
+
+void ir_junction_observe (ir_junction_t * p_junction, bool b_line, bool b_lost,
+                          uint16_t time_ms)
 {
     if (b_lost)
     {
@@ -32,5 +34,6 @@ void ir_junction_observe (ir_junction_t * p_junction, bool b_line,
         p_junction->b_active = false;
     }
 }
+
 /* End of file. */
 

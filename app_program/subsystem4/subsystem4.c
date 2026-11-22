@@ -1,29 +1,29 @@
 /*
- *	subsystem4.c
- *	Subsystem 4 -- IMU-Based Motion and Terrain Monitoring.  EMPTY TEMPLATE.
+ *  subsystem4.c
+ *  Subsystem 4 -- IMU-Based Motion and Terrain Monitoring.
  *
- *	subsystem4_init():  create this subsystem's kernel objects
- *	                    (semaphores, mailboxes, ...).  Do not start
- *	                    tasks here.
- *	subsystem4_start(): create and start this subsystem's tasks, e.g.
- *	    ID tid = app_start_task(my_task, S4_PRI_MAIN, 0, "my_task");
- *	    return (tid < E_OK) ? tid : E_OK;
+ *  One task (imu_task.c, priority PRI_IMU) owns the GY-511 on I2C1
+ *  (drv_imu.c).  Its pure processing (tilt, heading, turn rate, motion
+ *  class, humps, collision, tip-over) is in imu_logic.c, with integer
+ *  maths in imu_fixmath.c, so it can be unit-tested on a PC
+ *  (testing/subsystem4/host/).
  *
- *	Drivers for this subsystem's hardware go in this folder as
- *	drv_IMU-Based Motion and Terrain Monitoring.c / drv_IMU-Based Motion and Terrain Monitoring.h, called only from the task that owns
- *	the peripheral (TEAM.md section 3).
- *
- *	Record every pin, task, object and interface in TEAM.md.
+ *  Kernel objects: 1 task, 1 cyclic handler (10 ms), 1 mutex (snapshot).
+ *  Build switches: imu_cfg.h.  Values that need the real car:
+ *  imu_params.h.
  */
 
 #include "subsystem4.h"
+#include "imu_task.h"
 
-EXPORT ER subsystem4_init(void)
+EXPORT ER
+subsystem4_init(void)
 {
-	return E_OK;
+    return imu_task_init();
 }
 
-EXPORT ER subsystem4_start(void)
+EXPORT ER
+subsystem4_start(void)
 {
-	return E_OK;
+    return imu_task_start();
 }

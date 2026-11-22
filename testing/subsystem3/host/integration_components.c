@@ -8,14 +8,17 @@
 
 static unsigned int g_checks;
 static unsigned int g_failures;
-static void check (bool b_passed, char const * p_description);
-static void test_configuration (void);
-static void test_approach (void);
+static void         check (bool b_passed, char const * p_description);
+static void         test_configuration (void);
+static void         test_approach (void);
 
 static void check (bool b_passed, char const * p_description)
 {
     ++g_checks;
-    if (!b_passed) { ++g_failures; }
+    if (!b_passed)
+    {
+        ++g_failures;
+    }
     printf("%s %s\n", b_passed ? "PASS" : "FAIL", p_description);
 }
 
@@ -23,17 +26,17 @@ static void test_configuration (void)
 {
     ir_calibration_t calibration[IR_CHANNEL_COUNT] = {
         {180u, 3200u}, {3200u, 180u}, {200u, 3300u}};
-    ir_config_t line = {0};
-    ir_processing_t processor = {0};
-    barcode_decoder_t decoder = {0};
+    ir_config_t       line      = {0};
+    ir_processing_t   processor = {0};
+    barcode_decoder_t decoder   = {0};
     ir_config_line(calibration, &line);
     barcode_config_t code = ir_config_barcode(calibration[2]);
     check(ir_processing_init(&processor, &line) &&
               barcode_decoder_init(&decoder, &code),
           "IC01 measured three-sensor production configuration accepted");
     uint16_t darkness = 0u;
-    check(ir_processing_normalise(line.calibration[1], 180u,
-                                   IR_CONTRAST, &darkness) &&
+    check(ir_processing_normalise(line.calibration[1], 180u, IR_CONTRAST,
+                                  &darkness) &&
               (IR_ADC_MAX == darkness),
           "IC02 factory preserves independently reversed centre polarity");
     check((0u == line.left_channel) && (1u == line.centre_channel) &&
@@ -46,7 +49,7 @@ static void test_configuration (void)
           "IC04 inadequate physical tracker contrast rejects configuration");
     calibration[2].white = 1000u;
     calibration[2].black = 1199u;
-    code = ir_config_barcode(calibration[2]);
+    code                 = ir_config_barcode(calibration[2]);
     check(!barcode_decoder_init(&decoder, &code),
           "IC05 inadequate right-sensor contrast rejects decoder readiness");
 }
@@ -90,9 +93,10 @@ int main (void)
 {
     test_configuration();
     test_approach();
-    printf("Integration component checks: %u; failures: %u\n",
-           g_checks, g_failures);
+    printf("Integration component checks: %u; failures: %u\n", g_checks,
+           g_failures);
     return (0u == g_failures) ? 0 : 1;
 }
+
 /* End of file. */
 

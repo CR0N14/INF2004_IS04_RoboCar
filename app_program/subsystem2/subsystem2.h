@@ -15,6 +15,7 @@
 #define SUBSYSTEM2_H
 
 #include "../app.h"
+#include <stdint.h>
 
 #define S2_PRI_MAIN	PRI_MOTION_CONTROL	/* app.h priority map */
 
@@ -77,5 +78,13 @@ ER s2_get_tlm(s2_tlm_t *p_tlm);
 #define S2_STEER_MAX_PCT    100
 
 ER s2_set_steering(INT steer_pct);
+
+/* Acquisition-associated input and motion snapshot for the IR service. */
+ER s2_set_line_target(INT steer_pct, uint32_t acquired_ms, BOOL valid);
+ER s2_get_motion_sample(s2_tlm_t *p_tlm, uint32_t *p_acquired_ms);
+
+ER s2_bench_request(UINT wheel);
+ER s2_bench_cancel(void);
+ER s2_demo_duty(int *left, int *right, uint32_t *stamp);
 
 #endif /* SUBSYSTEM2_H */

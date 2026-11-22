@@ -2,6 +2,10 @@
  * @brief Application lifecycle and protected IF-07 adapter for the pure core.
  */
 #include "subsystem3.h"
+#include "../demo_config.h"
+#if ENCODER_FREE_DEMO
+#include "demo_ir.h"
+#endif
 #include "../subsystem1/state_machine.h"
 
 static ID                g_h_mutex         = 0;
@@ -52,6 +56,9 @@ ER subsystem3_init (void)
 
 ER subsystem3_start (void)
 {
+#if ENCODER_FREE_DEMO
+    return demo_ir_start();
+#endif
     ER const error = enter();
 
     if (E_OK != error)
@@ -278,6 +285,9 @@ ER subsystem3_get_target (uint16_t now_ms, ir_result_t * p_result)
 
 ER s3_get_tlm (s3_tlm_t * p_tlm)
 {
+#if ENCODER_FREE_DEMO
+    return demo_ir_tlm(p_tlm);
+#endif
     s3_tlm_t const empty = {0};
 
     if (NULL == p_tlm)
