@@ -10,8 +10,46 @@
 #if DEMO_IGNORE_IMU && !ENCODER_FREE_DEMO
 #error "DEMO_IGNORE_IMU requires ENCODER_FREE_DEMO"
 #endif
-#define DEMO_BASE_DUTY 20
+#ifndef DEMO_BASE_DUTY
+#define DEMO_BASE_DUTY 14
+#endif
+#ifndef DEMO_BARCODE_BENCH
+#define DEMO_BARCODE_BENCH 0
+#endif
+#if DEMO_BARCODE_BENCH && !ENCODER_FREE_DEMO
+#error "Barcode bench requires demo build"
+#endif
+/* Timed barcode drive test: START drives straight at DEMO_BASE_DUTY for this
+ * many ms, then the car posts its own STOP. Decodes are logged only and never
+ * turn the car. 0 disables the test. */
+#ifndef DEMO_BARCODE_DRIVE_MS
+#define DEMO_BARCODE_DRIVE_MS 0u
+#endif
+#ifndef DEMO_BARCODE_CLEAR_MS
+#define DEMO_BARCODE_CLEAR_MS 600u
+#endif
+/* IR sample period. 0 keeps the original tk_dly_tsk(10) loop, which the
+ * 10 ms kernel tick stretches to 20 ms. Nonzero wakes the IR task from a
+ * cyclic handler every DEMO_IR_PERIOD_MS (a multiple of the 10 ms tick). */
+#ifndef DEMO_IR_PERIOD_MS
+#define DEMO_IR_PERIOD_MS 10u
+#endif
+#if DEMO_BARCODE_DRIVE_MS && (DEMO_BARCODE_BENCH || !ENCODER_FREE_DEMO)
+#error "Barcode drive test requires a demo build without the bench"
+#endif
+#ifndef DEMO_JUNCTION_TEST
+#define DEMO_JUNCTION_TEST 0
+#endif
+#if DEMO_JUNCTION_TEST && (!ENCODER_FREE_DEMO || DEMO_BARCODE_BENCH || DEMO_BARCODE_DRIVE_MS)
+#error "Junction test requires an exclusive driving demo profile"
+#endif
 #define DEMO_MAX_DUTY 30
+#if DEMO_BASE_DUTY < 1 || DEMO_BASE_DUTY > DEMO_MAX_DUTY
+#error "Demo forward duty must be between 1 and DEMO_MAX_DUTY"
+#endif
+#if DEMO_IR_PERIOD_MS && ((DEMO_IR_PERIOD_MS % 10u) != 0u)
+#error "IR period must be zero or a multiple of the 10 ms kernel tick"
+#endif
 #define DEMO_LEFT_TRIM 0
 #define DEMO_RIGHT_TRIM 0
 #define DEMO_TURN_DUTY 20

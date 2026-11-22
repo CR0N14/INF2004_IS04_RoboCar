@@ -10,8 +10,8 @@ static unsigned checks;
 static uint32_t status(sm_nav_mode_t nav){return SM_STATE_NAVIGATING|((uint32_t)nav<<3);}
 static demo_output_t step(demo_motion_t *c,uint32_t t,sm_nav_mode_t nav,uint8_t mask,uint8_t cmd){demo_line_t s={.time_ms=t,.mask=mask,.calibrated=true,.valid=true,.steer=mask==1?-DEMO_LINE_CORRECTION:0};return demo_motion_step(c,t,status(nav),&s,cmd,false);}
 int main(void){
- demo_motion_t c={0};demo_output_t o=step(&c,0,SM_NAV_TRACKING,2,0);CHECK(o.left==20&&o.right==20);
- o=step(&c,10,SM_NAV_TRACKING,1,0);CHECK(o.left==10&&o.right==20);
+ demo_motion_t c={0};demo_output_t o=step(&c,0,SM_NAV_TRACKING,2,0);CHECK(o.left==14&&o.right==14);
+ o=step(&c,10,SM_NAV_TRACKING,1,0);CHECK(o.left==7&&o.right==14);
  o=step(&c,20,SM_NAV_HOLD,2,0);CHECK(o.left==0&&o.right==0);
  demo_line_t stale={.calibrated=true,.valid=true,.time_ms=0,.mask=2};c=(demo_motion_t){0};o=demo_motion_step(&c,100,status(SM_NAV_TRACKING),&stale,0,false);CHECK(o.fault&&o.arg==SM_FAULT_IR_SENSOR&&!o.left&&!o.right);
  c=(demo_motion_t){0};step(&c,0,SM_NAV_TRACKING,0,0);o=step(&c,100,SM_NAV_TRACKING,0,0);CHECK(o.event==SM_EVT_LINE_LOST&&!o.left&&!o.right);
@@ -55,5 +55,19 @@ int main(void){
  CHECK(demo_pickup_step(&pickup,150,5000,0,true,false));
  CHECK(demo_pickup_step(&pickup,160,0,0,false,false));
  pickup=(demo_pickup_t){0};CHECK(demo_pickup_step(&pickup,0,0,0,true,true));
+ /* All injected A bindings are stored until junction and consumed once. */
+ for(unsigned action=0;action<4;action++){
+  sm_logic_init(&sm,&act);sm_logic_step(&sm,SM_EVT_CHECK,0,&act);
+  sm_logic_step(&sm,SM_EVT_CMD_START,0,&act);
+  sm_logic_step(&sm,SM_EVT_BARCODE,SM_BARCODE_ARG(0,action),&act);
+  CHECK(sm.b_pending&&sm.pending==action&&sm.nav_mode==SM_NAV_TRACKING);
+  sm_logic_step(&sm,SM_EVT_JUNCTION,0,&act);
+  CHECK(!sm.b_pending&&sm.nav_mode==SM_NAV_MANOEUVRE&&act.b_nav_cmd);
+  sm_logic_step(&sm,SM_EVT_TURN_DONE,0,&act);
+  sm_logic_step(&sm,SM_EVT_JUNCTION,0,&act);
+  CHECK(sm.nav_mode==SM_NAV_TRACKING&&!act.b_nav_cmd);
+  sm_logic_step(&sm,SM_EVT_CMD_STOP,0,&act);
+  CHECK(sm.state==SM_STATE_STANDBY&&!sm.b_pending);
+ }
  printf("Encoder-free demo: %u assertions passed\n",checks);
 }

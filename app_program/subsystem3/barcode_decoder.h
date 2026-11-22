@@ -101,6 +101,7 @@ typedef struct
     unsigned int     state         : 2;
     unsigned int     count         : 6;
     unsigned int     direction     : 2;
+    unsigned int     slides        : 2;
     bool             b_initialised : 1;
     bool             b_have_frame  : 1;
     bool             b_dark        : 1;

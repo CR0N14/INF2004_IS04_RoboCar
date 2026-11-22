@@ -1,4 +1,4 @@
-﻿Debug
+Debug
 Release
 
 # Build artifacts
@@ -24,3 +24,10 @@ config/wifi_secrets.h
 
 # macOS
 .DS_Store
+
+# Local captures and Python caches (keep generated data out of commits).
+/local-only/
+*.jsonl
+*.barcode.csv
+__pycache__/
+*.pyc

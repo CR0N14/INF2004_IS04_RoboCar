@@ -3,7 +3,7 @@ import struct
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/"tools"))
-from demo_station import decode_demo, start_blockers, status_line
+from demo_station import decode_ir_diag, decode_demo, start_blockers, status_line
 import base_station
 class DemoProtocol(unittest.TestCase):
  def test_frame(self):
@@ -34,6 +34,18 @@ class DemoProtocol(unittest.TestCase):
  def test_no_echo_display(self):
   self.assertIn("sonar=no echo/pending", status_line({}, {"ultrasound":{"distance_cm":511}}))
   self.assertIn("sonar=30cm", status_line({}, {"ultrasound":{"distance_cm":30}}))
+ def test_ir_diag(self):
+  frame=struct.pack("<16I",0x31425249,*([100,1234|(2500<<16),4|8|16|(2<<5)|(12<<9)|(10<<21),20|(18<<16),42]*3))
+  d=decode_ir_diag(frame)[0]
+  self.assertEqual(d["raw_right"],1234)
+  self.assertEqual(d["darkness"],2500)
+  self.assertEqual(d["outcome"],"motion_invalid_or_changed")
+  self.assertEqual(d["runs_before"],12)
+  self.assertEqual(d["duty_right"],18)
+ def test_stationary_bench(self):
+  d=decode_demo(struct.pack("<16I",1,256|2|4|8,0,0,0,0,0,0,0,0,0,0,0,0,0,0))
+  self.assertTrue(d["barcode_bench"])
+  self.assertIn("START disabled",start_blockers(d,{"state":"STANDBY"})[0])
  def test_missing_telemetry(self):
   self.assertEqual(len(start_blockers({},{})),2)
   self.assertIn("IR=?",status_line({},{}))

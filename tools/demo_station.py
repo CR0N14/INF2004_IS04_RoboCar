@@ -19,6 +19,8 @@ def decode_demo(data):
     signed = lambda n: n - 65536 if n & 32768 else n
     return dict(mode="encoder_free_open_loop", encoder_available=False,
                 imu_ignored=bool(w[1] & 128),
+                barcode_bench=bool(w[1] & 256),
+                junction_test=bool(w[1] & 512),
                 ir_calibrated=bool(w[1] & 2), ir_fresh=bool(w[1] & 4),
                 imu_ready=bool(w[1] & 8), pickup_latched=bool(w[1] & 16),
                 height_valid=bool(w[1] & 32), commanded_motion=bool(w[1] & 64),
@@ -30,8 +32,32 @@ def decode_demo(data):
                 motion_timestamp_ms=w[15], speed_mm_s=None, distance_cm=None)
 
 
+BARCODE_REASONS = ["none","accepted","unsupported_codebook","invalid_code","unbound",
+                   "sample_gap","stale","sensor_fault","timeout","overflow",
+                   "motion_invalid_or_changed","interrupted","incomplete"]
+def decode_ir_diag(data):
+    if len(data)!=64: raise ValueError("IR diagnostic frame must be 64 bytes")
+    w=struct.unpack("<16I",data)
+    if w[0]!=0x31425249: raise ValueError("Unknown IR diagnostic schema")
+    signed=lambda x:x-65536 if x&32768 else x
+    samples=[]
+    for i in range(3):
+        t,adc,flags,duty,seq=w[1+i*5:6+i*5]
+        outcome=(flags>>21)&15
+        samples.append(dict(time_ms=t,raw_right=adc&65535,darkness=adc>>16,
+            mask=flags&7,enabled=bool(flags&8),motion_valid=bool(flags&16),
+            state_before=(flags>>5)&3,state_after=(flags>>7)&3,
+            runs_before=(flags>>9)&63,runs_after=(flags>>15)&63,
+            symbol=chr(65+((flags>>25)&31)) if outcome in (1,4) else None,
+            action=["left","right","straight","uturn"][(flags>>30)&3] if outcome==1 else None,
+            outcome=BARCODE_REASONS[outcome] if outcome<len(BARCODE_REASONS) else "not_processed",
+            duty_left=signed(duty&65535),duty_right=signed(duty>>16),sequence=seq))
+    return samples
+
+
 def start_blockers(demo, tlm):
     reasons = []
+    if demo.get("barcode_bench"): reasons.append("Stationary barcode test: START disabled; slide paper by hand")
     if not demo:
         reasons.append("No live demo telemetry")
     else:
@@ -104,6 +130,7 @@ def main():
             tail = msg.topic.rsplit("/",1)[-1]
             try:
                 if tail == "demo": row["decoded"] = decode_demo(msg.payload)
+                elif tail == "diag" and msg.payload[:4] == b"IRB1": row["decoded"] = decode_ir_diag(msg.payload)
                 elif tail in ("tlm","hb","evt"): row["decoded"] = getattr(base_station,"decode_"+tail)(msg.payload)
                 if tail in ("demo", "tlm") and not msg.retain:
                     latest[tail] = (time.monotonic(), row["decoded"])
@@ -112,6 +139,10 @@ def main():
                         f = event.get("fields",{})
                         if event.get("type") == "CMD_ACK" and f.get("opcode") == expected:
                             result["accepted"] = bool(f["accepted"]); acked.set()
+                if tail == "diag" and msg.payload[:4] == b"IRB1":
+                    for sample in row.get("decoded",[]):
+                        if sample["outcome"] == "accepted" or (sample["state_before"] == 2 and sample["outcome"] != "none"):
+                            print("BARCODE", json.dumps(sample), flush=True)
                 if tail == "evt" or (args.command == "monitor" and args.raw and tail in ("demo","tlm")):
                     print(tail, json.dumps(row.get("decoded",row)), flush=True)
             except (ValueError, IndexError, KeyError) as exc: row["error"] = str(exc)

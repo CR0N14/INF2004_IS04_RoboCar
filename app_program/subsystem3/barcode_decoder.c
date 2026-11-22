@@ -5,6 +5,11 @@
 #include "code39.h"
 #include <stddef.h>
 
+/* A full frame that fails to decode is retried this many times, each time
+   dropping the oldest bar and space.  Stray edges before the first real bar
+   (paper edge, glare) then cost one retry instead of the whole scan. */
+#define BARCODE_MAX_SLIDES 3u
+
 static bool              motion_matches (barcode_decoder_t const * p_decoder,
                                          ir_sample_t const *       p_sample,
                                          barcode_motion_t          motion);
@@ -19,6 +24,7 @@ static barcode_outcome_t recognise (barcode_decoder_t * p_decoder,
                                     barcode_result_t *  p_result);
 static void clear_encounter (barcode_decoder_t * p_decoder, bool b_dark,
                              uint16_t time_ms);
+static void slide_window (barcode_decoder_t * p_decoder);
 static barcode_outcome_t capture_step (barcode_decoder_t * p_decoder,
                                        bool b_dark, uint16_t time_ms,
                                        barcode_motion_t   motion,
@@ -36,6 +42,7 @@ void barcode_decoder_reset (barcode_decoder_t * p_decoder)
         p_decoder->count        = 0u;
         p_decoder->b_have_frame = false;
         p_decoder->b_clearing   = false;
+        p_decoder->slides       = 0u;
         /* Unknown reflectance cannot count as proven background. */
         p_decoder->b_dark = true;
     }
@@ -308,6 +315,20 @@ static void clear_encounter (barcode_decoder_t * p_decoder, bool b_dark,
     }
 }
 
+/** Drop the oldest bar/space pair so the frame starts on a later bar. */
+static void slide_window (barcode_decoder_t * p_decoder)
+{
+    uint8_t const count = (uint8_t)p_decoder->count;
+
+    for (uint8_t index = 2u; index < count; ++index)
+    {
+        p_decoder->runs[index - 2u] = p_decoder->runs[index];
+    }
+
+    p_decoder->count  = (unsigned int)(count - 2u) & 0x3fu;
+    p_decoder->slides = (p_decoder->slides + 1u) & 0x3u;
+}
+
 /** Advance a capture by one sample, with bounded work and storage. */
 static barcode_outcome_t capture_step (barcode_decoder_t * p_decoder,
                                        bool b_dark, uint16_t time_ms,
@@ -339,7 +360,14 @@ static barcode_outcome_t capture_step (barcode_decoder_t * p_decoder,
         (NULL == p_decoder->config.p_recognise) &&
         (CODE39_RUN_COUNT == p_decoder->count))
     {
-        return recognise(p_decoder, p_result);
+        outcome = recognise(p_decoder, p_result);
+        if ((BARCODE_INVALID_CODE == outcome) &&
+            (p_decoder->slides < BARCODE_MAX_SLIDES))
+        {
+            slide_window(p_decoder);
+            return BARCODE_NONE;
+        }
+        return outcome;
     }
 
     if ((BARCODE_NONE == outcome) && (!b_dark) &&
@@ -372,6 +400,7 @@ static barcode_outcome_t advance (barcode_decoder_t * p_decoder, bool b_dark,
                 p_decoder->edge_ms    = p_sample->time_ms;
                 p_decoder->direction  = motion.direction;
                 p_decoder->count      = 0u;
+                p_decoder->slides     = 0u;
                 p_decoder->b_dark     = true;
             }
         break;

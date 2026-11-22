@@ -18,6 +18,8 @@
  */
 
 #include "lwip/apps/mqtt.h"
+#include "lwip/apps/mqtt_priv.h"	/* client->conn, for TCP_NODELAY */
+#include "lwip/altcp.h"
 #include "lwip/ip_addr.h"
 #include "lwip/timeouts.h"
 #include "wifi_secrets.h"
@@ -162,6 +164,13 @@ static void connection_cb(mqtt_client_t *c, void *arg, mqtt_connection_status_t 
 		connecting = 0;
 
 		tm_printf((UB*)"mqtt: connected to " MQTT_BROKER_IP "\n");
+
+		/* Send each publish immediately. With Nagle on, small publishes
+		 * wait for the previous segment's ACK (often delayed by the
+		 * broker host), which throttles the diagnostic stream. */
+		if(client != NULL && client->conn != NULL) {
+			altcp_nagle_disable(client->conn);
+		}
 
 		/* Callbacks must be registered before subscribing, or the
 		 * first delivery has nowhere to go. */

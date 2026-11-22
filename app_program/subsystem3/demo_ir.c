@@ -9,6 +9,39 @@ static ID          lock, requests;
 static demo_line_t published;
 static s3_tlm_t    published_tlm;
 
+/* Full-rate right IR diagnostics, buffered independently of MQTT.
+   512 samples hold 5 s at 10 ms, enough to ride out a WiFi stall. */
+#define DIAG_RING 512u
+static uint32_t diag_ring[DIAG_RING][5], diag_next[5];
+static unsigned diag_head, diag_tail;
+static uint32_t diag_sequence;
+
+ER demo_ir_diag (uint8_t * out)
+{
+    if (lock <= 0)
+        return E_OBJ;
+    ER e = tk_loc_mtx(lock, TMO_POL);
+    if (e != E_OK)
+        return e;
+    if (diag_head - diag_tail < 3u)
+    {
+        tk_unl_mtx(lock);
+        return E_OBJ;
+    }
+    uint32_t w[16] = {0x31425249u}; /* IRB1 */
+    for (unsigned i = 0; i < 3; i++)
+    {
+        for (unsigned j = 0; j < 5; j++)
+            w[1 + i * 5 + j] = diag_ring[diag_tail % DIAG_RING][j];
+        ++diag_tail;
+    }
+    tk_unl_mtx(lock);
+    for (unsigned i = 0; i < 16; i++)
+        for (unsigned b = 0; b < 4; b++)
+            out[i * 4 + b] = (uint8_t)(w[i] >> (8 * b));
+    return E_OK;
+}
+
 static uint32_t clock_ms (void)
 {
     SYSTIM t;
@@ -82,7 +115,8 @@ static uint16_t      pending_arg = 0;
 
 static void context_step (uint32_t status, sm_nav_mode_t nav)
 {
-    uint32_t context = status & 63u;
+    uint32_t previous = last_status;
+    uint32_t context  = status & 63u;
     sm_get_bindings(&bound, &actions);
     if (bound != old_bound || actions != old_actions)
     {
@@ -106,6 +140,22 @@ static void context_step (uint32_t status, sm_nav_mode_t nav)
              SM_STATUS_STATE(status) != SM_STATE_OBSTACLE_AVOIDANCE) ||
             nav == SM_NAV_MANOEUVRE)
             route = false;
+    }
+    if (DEMO_JUNCTION_TEST && previous != context)
+    {
+        sm_action_t action;
+        if (SM_STATUS_STATE(previous) == SM_STATE_STANDBY &&
+            SM_STATUS_STATE(status) == SM_STATE_NAVIGATING &&
+            sm_barcode_lookup(0u, &action))
+        {
+            pending         = SM_EVT_BARCODE;
+            pending_arg     = SM_BARCODE_ARG(0u, action);
+            route           = true;
+            tlm.last_symbol = 0u;
+            tlm.last_action = action;
+            /* Synthetic instruction: do not claim optical decoding. */
+            tlm.b_barcode = 0u;
+        }
     }
 }
 
@@ -162,6 +212,15 @@ static void finish_calibration (void)
             ir_calibration_t cal = {.white = s.white[2], .black = s.black[2]};
             barcode_config_t config = ir_config_barcode(cal);
             config.p_bind           = bind;
+            if (DEMO_BARCODE_BENCH)
+            {
+                config.clearance_ms   = 2000u;
+                config.max_capture_ms = 30000u;
+            }
+            if (DEMO_BARCODE_DRIVE_MS)
+            {
+                config.clearance_ms = DEMO_BARCODE_CLEAR_MS;
+            }
             barcode_decoder_init(&decoder, &config);
             s.cal_phase = 3;
         }
@@ -253,30 +312,61 @@ static void process_frame (ir_frame_t const * frame, uint32_t now,
     s.steer      = (s.mask & 3u) == 1u ? -DEMO_LINE_CORRECTION : 0;
     bool enabled = SM_STATUS_STATE(status) == SM_STATE_NAVIGATING &&
                    nav == SM_NAV_TRACKING;
+    if (DEMO_JUNCTION_TEST)
+    {
+        junction_step(enabled, now);
+        tlm.decoder_state = S3_DECODER_IDLE;
+        return;
+    }
+    bool bench =
+        DEMO_BARCODE_BENCH && SM_STATUS_STATE(status) == SM_STATE_STANDBY;
+    enabled     = enabled || bench;
     int      dl = 0, dr = 0;
     uint32_t stamp = 0;
     s2_demo_duty(&dl, &dr, &stamp);
     ir_permission_t perm = {
         .generation = gen, .mode = IR_MODE_TRACKING, .b_enabled = enabled};
-    barcode_motion_t motion = {.time_ms    = (uint16_t)stamp,
-                               .generation = gen,
-                               .direction  = BARCODE_FORWARD,
-                               .b_valid    = enabled && dl > 0 && dr > 0 &&
-                                          clock_ms() - stamp <= DEMO_STALE_MS};
+    bool moving =
+        enabled && dl > 0 && dr > 0 && clock_ms() - stamp <= DEMO_STALE_MS;
+    if (bench)
+    {
+        moving = true;
+        stamp  = s.time_ms;
+    }
+    barcode_motion_t motion       = {.time_ms    = (uint16_t)stamp,
+                                     .generation = gen,
+                                     .direction  = BARCODE_FORWARD,
+                                     .b_valid    = moving};
+    unsigned         before_state = decoder.state, before_count = decoder.count;
     barcode_result_t result = barcode_decoder_step(
         &decoder, frame, perm, binding, motion, (uint16_t)clock_ms());
+    uint16_t darkness = 0;
+    ir_processing_normalise(decoder.config.calibration, s.raw[2], 200,
+                            &darkness);
+    diag_next[0] = now;
+    diag_next[1] = s.raw[2] | ((uint32_t)darkness << 16);
+    diag_next[2] =
+        (s.mask & 7u) | (enabled ? 8u : 0u) | (motion.b_valid ? 16u : 0u) |
+        (before_state << 5) | ((uint32_t)decoder.state << 7) |
+        (before_count << 9) | ((uint32_t)decoder.count << 15) |
+        ((uint32_t)result.outcome << 21) | ((uint32_t)result.symbol << 25) |
+        ((uint32_t)result.action << 30);
+    diag_next[3] = (uint16_t)dl | ((uint32_t)(uint16_t)dr << 16);
+    /* Bench and timed drive tests log decodes but never act on them. */
+    bool const log_only = bench || (DEMO_BARCODE_DRIVE_MS != 0u);
     if (result.outcome == BARCODE_ACCEPTED && pending == SM_EVT_NONE)
     {
-        pending         = SM_EVT_BARCODE;
+        if (!log_only)
+            pending = SM_EVT_BARCODE;
         pending_arg     = SM_BARCODE_ARG(result.symbol, result.action);
-        route           = true;
+        route           = !log_only;
         qualified       = false;
         approaching     = false;
         tlm.last_symbol = result.symbol;
         tlm.last_action = result.action;
         tlm.b_barcode   = 1;
     }
-    junction_step(enabled, now);
+    junction_step(enabled && !log_only, now);
     tlm.decoder_state =
         decoder.state == BARCODE_CAPTURING
             ? S3_DECODER_CAPTURING
@@ -301,6 +391,12 @@ static void publish_frame (bool valid, sm_nav_mode_t nav)
     tlm.b_line_left = s.steer < 0;
     if (tk_loc_mtx(lock, TMO_POL) == E_OK)
     {
+        diag_next[4] = diag_sequence++;
+        if (diag_head - diag_tail >= DIAG_RING)
+            ++diag_tail;
+        for (unsigned j = 0; j < 5; j++)
+            diag_ring[diag_head % DIAG_RING][j] = diag_next[j];
+        ++diag_head;
         published     = s;
         published_tlm = tlm;
         tk_unl_mtx(lock);
@@ -339,15 +435,35 @@ static void task (INT code, void * arg)
                 s.raw[i] = sample.raw[i];
             }
         }
+        /* Include invalid/unconfigured samples instead of hiding gaps. */
+        diag_next[0] = now;
+        diag_next[1] = s.raw[2];
+        diag_next[2] = 15u << 21;
+        diag_next[3] = 0;
         calibration_step(valid, now, status);
         if (valid && s.calibrated)
         {
             process_frame(&frame, now, status, nav);
         }
         publish_frame(valid, nav);
+#if DEMO_IR_PERIOD_MS
+        (void)tk_slp_tsk(TMO_FEVR);
+        (void)tk_can_wup(TSK_SELF); /* skip a missed period, never burst */
+#else
         tk_dly_tsk(10);
+#endif
     }
 }
+
+#if DEMO_IR_PERIOD_MS
+static ID ir_task_id;
+
+static void ir_cyclic (void * exinf)
+{
+    (void)exinf;
+    (void)tk_wup_tsk(ir_task_id);
+}
+#endif
 
 ER demo_ir_start (void)
 {
@@ -362,7 +478,20 @@ ER demo_ir_start (void)
     if (requests < 0)
         return requests;
     ID id = app_start_task((FP)task, PRI_LINE_FOLLOWING, 0, "demo_ir");
-    return id < 0 ? id : E_OK;
+    if (id < 0)
+        return id;
+#if DEMO_IR_PERIOD_MS
+    ir_task_id   = id;
+    T_CCYC ccyc  = {0};
+    ccyc.cycatr  = TA_HLNG | TA_STA;
+    ccyc.cychdr  = (FP)ir_cyclic;
+    ccyc.cyctim  = DEMO_IR_PERIOD_MS;
+    ccyc.cycphs  = DEMO_IR_PERIOD_MS;
+    ID const cyc = tk_cre_cyc(&ccyc);
+    if (cyc < 0)
+        return cyc;
+#endif
+    return E_OK;
 }
 #else
 typedef int demo_ir_disabled_translation_unit_t;

@@ -55,7 +55,7 @@
 #define NET_EVT_QUEUE_LEN   16u
 #define NET_EVT_RING_LEN    32u     /* kept while offline, oldest dropped */
 #define NET_TX_MSG_MAX      (MQTT_UTK_MAX_PAYLOAD + 1u)
-#define NET_TX_QUEUE_BYTES  256u
+#define NET_TX_QUEUE_BYTES  1024u   /* room for IR diag beside events */
 #define NET_RX_QUEUE_LEN    2u
 #define NET_LOST_MAX        255u    /* semaphore used as a loss counter  */
 
@@ -228,11 +228,26 @@ static void send_demo(void){
  demo_line_t ir={0};demo_imu_t imu={0};int l=0,r=0;uint32_t stamp=0,now=now_ms();
  bool ir_ok=demo_ir_read(&ir)==E_OK,imu_ok=demo_imu_read(&imu)==E_OK;
  s2_demo_duty(&l,&r,&stamp);
- uint32_t words[16]={1,1u|(DEMO_IGNORE_IMU?128u:0u)|((ir_ok&&ir.calibrated)?2u:0u)|((ir_ok&&ir.valid&&now-ir.time_ms<=DEMO_STALE_MS)?4u:0u)|((imu_ok&&imu.ready&&now-imu.time_ms<=100u)?8u:0u)|(imu.latched?16u:0u)|((!DEMO_IGNORE_IMU&&imu.height_valid)?32u:0u)|((l||r)?64u:0u),now,ir.mask,
+ uint32_t words[16]={1,1u|(DEMO_JUNCTION_TEST?512u:0u)|(DEMO_BARCODE_BENCH?256u:0u)|(DEMO_IGNORE_IMU?128u:0u)|((ir_ok&&ir.calibrated)?2u:0u)|((ir_ok&&ir.valid&&now-ir.time_ms<=DEMO_STALE_MS)?4u:0u)|((imu_ok&&imu.ready&&now-imu.time_ms<=100u)?8u:0u)|(imu.latched?16u:0u)|((!DEMO_IGNORE_IMU&&imu.height_valid)?32u:0u)|((l||r)?64u:0u),now,ir.mask,
  ir.raw[0],ir.raw[1],ir.raw[2],ir.white[0],ir.white[1],ir.white[2],ir.black[0],ir.black[1],ir.black[2],(uint16_t)l|((uint32_t)(uint16_t)r<<16),imu.peak_mm|((uint32_t)ir.cal_phase<<16),stamp};
  for(UINT i=0;i<16;i++)for(UINT b=0;b<4;b++)g_tx_buf[1+i*4+b]=(uint8_t)(words[i]>>(8*b));
  queue_tx(MQTT_UTK_TOPIC_DEMO,64);
+
 }
+/* Up to two packets (6 samples) per 10 ms wake, so a backlog drains even at
+ * 10 ms sampling; retain a packet if TX backpressure prevents enqueue. */
+static void send_ir_diagnostic(void){
+ static uint8_t packet[65];static bool pending;
+ for(UINT i=0;i<2u;i++){
+  if(!pending){
+   if(demo_ir_diag(&packet[1])!=E_OK)return;
+   packet[0]=MQTT_UTK_TOPIC_DIAG;pending=true;
+  }
+  if(tk_snd_mbf(g_mbf_tx,packet,65,TMO_POL)!=E_OK)return;
+  pending=false;
+ }
+}
+
 #endif
 static void
 send_telemetry(void)
@@ -397,8 +412,13 @@ handle_commands(uint32_t now)
         switch ((net_op_t)cmd.op)
         {
             case NET_OP_START:
+#if DEMO_JUNCTION_TEST
+                {sm_action_t a;if(!sm_barcode_lookup(0u,&a)){
+                    reply(cmd.op,false,now);break;
+                }}
+#endif
 #if ENCODER_FREE_DEMO
-                {demo_line_t ir={0};if(demo_ir_read(&ir)!=E_OK||!ir.calibrated||!ir.valid||now_ms()-ir.time_ms>DEMO_STALE_MS||(!DEMO_IGNORE_IMU&&!demo_imu_ready())){
+                {demo_line_t ir={0};if(DEMO_BARCODE_BENCH||demo_ir_read(&ir)!=E_OK||!ir.calibrated||!ir.valid||now_ms()-ir.time_ms>DEMO_STALE_MS||(!DEMO_IGNORE_IMU&&!demo_imu_ready())){
                     reply(cmd.op,false,now);break;
                 }}
 #endif
@@ -487,6 +507,9 @@ net_task(INT stacd, void *exinf)
         if (g_b_online)
         {
             send_events(now);
+#if ENCODER_FREE_DEMO
+            send_ir_diagnostic();
+#endif
         }
     }
 }

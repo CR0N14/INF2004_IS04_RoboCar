@@ -11,6 +11,7 @@ static demo_output_t fail(demo_motion_t *c,sm_fault_t reason){
 }
 demo_output_t demo_motion_step(demo_motion_t *c,uint32_t now,uint32_t status,demo_line_t const *s,uint8_t cmd,bool pickup){
  demo_output_t o={0};sm_state_t state=SM_STATUS_STATE(status);sm_nav_mode_t nav=SM_STATUS_NAV(status);
+ if(DEMO_BARCODE_BENCH)return o; /* Stationary decoder test: never drive. */
  bool running=state==SM_STATE_NAVIGATING||state==SM_STATE_OBSTACLE_AVOIDANCE;
  if(!running){*c=(demo_motion_t){0};return o;}
  if(pickup)return fail(c,SM_FAULT_COLLISION);
@@ -21,6 +22,12 @@ demo_output_t demo_motion_step(demo_motion_t *c,uint32_t now,uint32_t status,dem
  if(!s->calibrated||!s->valid||now-s->time_ms>DEMO_STALE_MS)return fail(c,SM_FAULT_IR_SENSOR);
  if(c->nav!=nav){c->nav=nav;c->entered=now;c->found_active=false;c->loss_active=false;c->cross_active=false;c->left_line=false;c->done=false;c->segment=0;}
  if(SM_NAV_CMD_CODE(cmd)==SM_NAV_CMD_TURN||SM_NAV_CMD_CODE(cmd)==SM_NAV_CMD_AVOID){c->action=SM_NAV_CMD_ARG(cmd);c->entered=now;c->segment=0;c->done=false;}
+ if(DEMO_BARCODE_DRIVE_MS){
+  /* Timed straight pass over a barcode, then stop. Brake in any other mode. */
+  if(nav!=SM_NAV_TRACKING||c->done)return o;
+  if(now-c->run_start>=DEMO_BARCODE_DRIVE_MS){c->done=true;o.event=SM_EVT_CMD_STOP;return o;}
+  straight(&o,0);return o;
+ }
  bool line=(s->mask&3u)==1u||(s->mask&3u)==2u;
  bool centred=(s->mask&3u)==2u;
  if(nav==SM_NAV_HOLD||nav==SM_NAV_DISABLED)return o;
