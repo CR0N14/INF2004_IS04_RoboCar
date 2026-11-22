@@ -42,12 +42,26 @@ typedef struct {
 } T_SETUP_REG;
 
 /*
+ * Watchdog tick generator (RP2040 datasheet 4.7.2).  It divides clk_ref to
+ * the 1 us tick that drives TIMER.  The watchdog block survives a watchdog
+ * reboot, so after a UF2 reflash the boot ROM's USB-mode setting carried
+ * over and TIMER ran at 1 MHz; on a cold boot nothing set it.  The Pico SDK
+ * does the same in clocks_init() (watchdog_start_tick(XOSC_MHz)).
+ */
+#define WATCHDOG_TICK_REG	(0x40058000 + 0x2c)
+#define WATCHDOG_TICK_ENABLE	(1 << 9)
+
+/*
  * Release peripheral’s reset
  */
 LOCAL const UW module_tbl[] = {
 	RESETS_RESET_IO_BANK0,		/* IO_BANK0 */
 	RESETS_RESET_PADS_BANK0,	/* PADS_BANK0 */
 	RESETS_RESET_UART0,		/* UART0 */
+	/* TIMER (1 MHz time base: time_us_64(), S5 sonar pulse timing).  Not
+	 * released anywhere else in this kernel; release it here so its state
+	 * never depends on what ran before (boot ROM USB mode or a cold boot). */
+	RESETS_RESET_TIMER,		/* TIMER */
 
 #if TM_WIFI_CYW43
 	/* The Pico W radio transport runs a PIO state machine with two DMA
@@ -186,6 +200,9 @@ EXPORT void knl_startup_hw(void)
 
 	/* Startup System Clock */
 	startup_clock(CLKATR_USB | CLKATR_ADC | CLKATR_RTC | CLKATR_PREI);
+
+	/* 1 us tick from clk_ref (= XOSC after startup_clock), on every boot */
+	out_w(WATCHDOG_TICK_REG, WATCHDOG_TICK_ENABLE | XOSC_MHz);
 
 	for(INT i = 0; (rst = module_tbl[i]); i++) {
 		set_w(RESETS_RESET, rst);
