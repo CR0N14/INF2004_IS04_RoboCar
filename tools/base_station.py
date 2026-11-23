@@ -15,9 +15,17 @@ app_program/subsystem1/net_codec.c.
     python tools/base_station.py stop
     python tools/base_station.py bind A=left B=right C=straight D=uturn
     python tools/base_station.py raw 20                # send raw hex bytes
+    python tools/base_station.py raw b1                # demo build: IR white
+    python tools/base_station.py raw b2                # demo build: IR black
+    python tools/base_station.py raw b3                # demo build: IMU zero
     python tools/base_station.py decode tlm 1f2c00...  # decode offline
 
 Options: --host (default localhost), --port (1883), --root (is04/car).
+
+Order for a run: monitor, ping, bind (nothing is bound at power-on), then
+start and stop. Demo builds also need the b1/b2/b3 calibration first. The
+diag and demo topics are bring-up packets and are not decoded here. See
+"Order of commands for a run" in docs/MQTT.md.
 """
 
 import argparse
@@ -35,7 +43,7 @@ FAULTS = ["MOTOR_STALL", "ENCODER", "IMU", "NO_ECHO", "WIFI_LOSS",
           "INIT_TIMEOUT", "SELF_TEST", "RADIO"]
 ACTIONS = ["left", "right", "straight", "uturn"]
 AVOID = ["continue", "stop", "left", "right", "reverse"]
-OPS = {1: "START", 2: "STOP", 3: "BIND", 4: "PING"}
+OPS = {1: "START", 2: "STOP", 3: "BIND", 4: "PING", 5: "BENCH/DEMO"}
 MOTION_STATES = ["DISABLED", "LINE_FOLLOWING", "TURNING", "AVOIDING",
                  "STALL_FAULT"]
 LINE_STATES = ["SELFTEST", "IDLE", "TRACKING", "SUSPENDED", "LOST",
