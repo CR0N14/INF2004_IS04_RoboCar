@@ -153,3 +153,52 @@ until evidence is captured on the robot; host PASS does not substitute for them.
 | 2026-11-12 | S5-U05–U14, U18–U21 | a993319 + dirty sources | Codex (host) | PASS: 14/14 | [Host output](logs/2026-11-12_fixes_host.txt), [source hashes](logs/2026-11-12_fixes_sources.txt) | Private real servo implementation and S1 statechart, mocked I/O only; no hardware claim |
 | 2026-11-12 | Normal full build | a993319 + dirty sources | Codex | PASS | [Build output](logs/2026-11-12_fixes_normal_build.txt) | make -j8 with installed SDK path; no warnings/errors |
 | 2026-11-12 | TEST=1 full build | a993319 + dirty sources | Codex | PASS | [Build output](logs/2026-11-12_fixes_test_build.txt) | make TEST=1 -j8 with installed SDK path; no warnings/errors; not flashed |
+
+## Obstacle width scan (demo build) — host simulation
+
+`demo_measure_width()` in `demo_profile.c` replaces the single 25-point sweep.
+It reads straight ahead, walks outward in 10 degree steps until a reading is off
+the obstacle, then steps back through that gap in 2 degree steps to place each
+corner. Width is the lateral distance between the corners, after taking the
+sensor's half beam angle (`DEMO_BEAM_HALF_DEG`) off each corner angle. A reading
+with no echo is repeated twice and then counts as background rather than failing
+the scan.
+
+Run from the repository root with `testing/subsystem5/run_width_tests.sh`. The
+simulation is a flat-faced box in front of a servo, a sensor that returns the
+nearest echo inside a 4 degree half-angle cone, and +/-1 cm of noise. It checks
+the algorithm, not the real sensor, servo or mounting.
+
+| ID | What is tested | Method / input | Expected result |
+|---|---|---|---|
+| S5-U22 | Accuracy | 48 cases: face at 15/20/25/30 cm, width 6/10/14/20 cm, centre offset 0/+2/-2 cm, wall at 80 cm | All measured; mean error <= 0.8 cm; worst <= 2 cm |
+| S5-U23 | Reading budget | Same 48 cases | At most 24 sensor readings per scan |
+| S5-U24 | Open background | 10 cm box at 20 cm, no wall (no echo beyond the box) | Measured within 1 cm |
+| S5-U25 | Corners and bearing | 14 cm box offset 4 cm right | Left corner < 90, right corner > 90, bearing right of 90, ahead about 20 cm |
+| S5-U26 | Dropped echoes | 10 cm box, 10 % of readings return no echo | Measured within 2 cm |
+| S5-U27 | Refusals | Box wider than the sweep; no echo ahead; box at 60 cm; null arguments | Scan refused; output unchanged |
+
+Simulated comparison with the previous 25-point sweep (same 48 cases, wall at
+80 cm), mean absolute width error:
+
+| Real beam half-angle | Previous sweep | Corner scan, `DEMO_BEAM_HALF_DEG` = 4 |
+|---|---|---|
+| 4 degrees | 1.2 cm | 0.4 cm |
+| 8 degrees | 3.8 cm | 2.9 cm |
+
+With no wall behind the box, or 20 % dropped echoes, the previous sweep failed
+every case (it required every one of its 25 readings to echo); the corner scan
+still measured them all.
+
+The beam half-angle is the limit on accuracy. The default of 4 degrees is a
+middle value, not a measurement of this car's sensor. If the real value is above
+about 4 degrees the width reads too wide by roughly 2 x range x tan(error), and
+below it the width reads too narrow.
+
+| ID | What is tested | Steps / evidence | Expected result |
+|---|---|---|---|
+| S5-U28 | Beam calibration on the car (manual) | Demo build, motors disabled, obstacle in HOLD. Place a box of known width square to the car at 20, 25 and 30 cm. Trigger a scan and read the `[S5] width:` line from USB. | Measured width within 1.5 cm of the true width at all three distances. If it reads wide or narrow, add atan((measured - true) / 2 / range) in degrees to `DEMO_BEAM_HALF_DEG` and repeat. |
+
+Also checked: the existing `run_host_tests.sh` still passes (14 of 14) and the
+firmware compiles for `make CONSOLE=uart WIFI=none DEMO=1`. The width cases above
+are not part of the on-target `TEST=1` image and no hardware result is claimed.
