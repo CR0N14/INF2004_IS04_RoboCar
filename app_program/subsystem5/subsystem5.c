@@ -2,9 +2,7 @@
 
 #include "subsystem5.h"
 #include "../demo_config.h"
-#if ENCODER_FREE_DEMO
 #include "demo_profile.h"
-#endif
 #include "drv_servo.h"
 #include "drv_ultrasonic.h"
 #include "../subsystem1/state_machine.h"
@@ -49,6 +47,8 @@ typedef struct
     bool profile_reported;
     bool obstacle_confirmed;      /* Observed S1 in obstacle avoidance. */
     bool scan_fault_reported;
+    bool width_done;              /* corner scan attempted this episode */
+    UINT width_cm;                /* 0 = not measured */
     sm_avoid_t last_recommendation;
     UW profile_started_ms;
 } s5_detection_t;
@@ -69,6 +69,8 @@ static void reset_episode(s5_detection_t *detection)
     detection->profile_new = false;
     detection->profile_reported = false;
     detection->scan_fault_reported = false;
+    detection->width_done = false;
+    detection->width_cm = 0u;
     detection->fresh_mask = 0u;
 }
 
@@ -199,11 +201,7 @@ static void publish_profile(s5_tlm_t const *profile)
     g_tlm.right_clear_cm = profile->right_clear_cm;
     g_tlm.closest_cm = profile->closest_cm;
     g_tlm.bearing_deg = profile->bearing_deg;
-#if ENCODER_FREE_DEMO
     g_tlm.width_cm = profile->width_cm;
-#else
-    g_tlm.width_cm = 0u; /* Three samples cannot support a precise width. */
-#endif
     er = tk_unl_mtx(g_mtx_tlm);
     CHECK(er, "S5 profile telemetry unlock");
 }
@@ -317,6 +315,8 @@ static void profile_sample(s5_detection_t *detection, UINT angle, UINT distance_
     profile.closest_cm = detection->latest_valid_cm[closest];
     /* Measured nearest point, not an inferred obstacle centre. */
     profile.bearing_deg = point_angles[closest];
+    /* 0 when the corner scan has not (or could not) measure it. */
+    profile.width_cm = (detection->width_cm > 127u) ? 127u : detection->width_cm;
     profile.recommendation = recommendation;
     publish_profile(&profile);
 
@@ -378,6 +378,84 @@ static ER initialize_hardware(void)
     return E_OK;
 }
 
+/* True while S1 is holding the car still for the obstacle profile. */
+static bool in_hold(void)
+{
+    uint32_t status = sm_status_word();
+
+    return (SM_STATUS_STATE(status) == SM_STATE_OBSTACLE_AVOIDANCE) &&
+           (SM_STATUS_NAV(status) == SM_NAV_HOLD);
+}
+
+typedef struct
+{
+    UINT angle;     /* where the servo is now */
+    bool aborted;   /* S1 left HOLD during the scan */
+    bool fault;     /* the servo rejected an angle */
+} width_scan_t;
+
+/* Range callback for demo_measure_width(). The settle time grows with the
+   move, and every reading waits at least 80 ms so triggers stay over 60 ms
+   apart. */
+static uint16_t width_scan_read(void *p_ctx, unsigned int angle)
+{
+    width_scan_t *p_s = (width_scan_t *)p_ctx;
+    uint16_t d;
+
+    if (p_s->aborted || p_s->fault) {
+        return S5_NO_ECHO_CM;
+    }
+    if (!in_hold()) {
+        p_s->aborted = true;
+        return S5_NO_ECHO_CM;
+    }
+    if (angle != p_s->angle) {
+        UINT moved = (angle > p_s->angle) ? (angle - p_s->angle) : (p_s->angle - angle);
+
+        if (s5_servo_set_angle(angle) != E_OK) {
+            p_s->fault = true;
+            return S5_NO_ECHO_CM;
+        }
+        p_s->angle = angle;
+        publish_tlm(S5_SCAN_SCANNING, angle, S5_NO_ECHO_CM);
+        tk_dly_tsk(80u + 3u * moved);
+    } else {
+        tk_dly_tsk(80u);
+    }
+    d = s5_ultrasonic_read_cm();
+    publish_tlm(S5_SCAN_SCANNING, angle, d);
+    return d;
+}
+
+
+/* Corner scan for the obstacle width. Runs once per obstacle episode, while
+   S1 holds the car still. The width only decorates the profile: if the scan
+   fails or S1 leaves HOLD, the width stays 0 and avoidance carries on. */
+static void measure_width(s5_detection_t *detection)
+{
+    width_scan_t scan = { 0u, false, false };
+    demo_width_t w = { 0 };
+
+    if (detection->width_done || !detection->obstacle_reported || !in_hold()) {
+        return;
+    }
+    detection->width_done = true;
+    if (demo_measure_width(width_scan_read, &scan, &w) &&
+        !scan.aborted && !scan.fault) {
+        detection->width_cm = w.width_cm;
+        tm_printf((UB*)"[S5] width: %u cm, corners %u..%u deg, ahead %u cm, %u readings\n",
+                  (unsigned int)w.width_cm, (unsigned int)w.left_deg,
+                  (unsigned int)w.right_deg, (unsigned int)w.ahead_cm,
+                  (unsigned int)w.readings);
+    } else {
+        tm_printf((UB*)"[S5] width: not measured\n");
+    }
+    (void)s5_servo_set_angle(FORWARD_ANGLE_DEG);
+    tk_dly_tsk(SERVO_SETTLE_MS);
+    /* The scan used some of the profile's liveness budget. */
+    detection->profile_started_ms = now_ms();
+}
+
 static void scan_position(s5_detection_t *detection, UINT angle)
 {
     UINT distance_cm;
@@ -409,74 +487,33 @@ static void scan_position(s5_detection_t *detection, UINT angle)
 }
 
 #if ENCODER_FREE_DEMO
-static bool demo_hold(void){uint32_t s=sm_status_word();return SM_STATUS_STATE(s)==SM_STATE_OBSTACLE_AVOIDANCE&&SM_STATUS_NAV(s)==SM_NAV_HOLD;}
-typedef struct
-{
-    UINT angle;     /* where the servo is now */
-    bool aborted;   /* S1 left HOLD during the scan */
-    bool fault;     /* the servo rejected an angle */
-} demo_scan_t;
-
-/* Range callback for demo_measure_width(). The settle time grows with the
-   move, and every reading waits at least 80 ms so triggers stay over 60 ms
-   apart. */
-static uint16_t demo_scan_read(void *p_ctx, unsigned int angle)
-{
-    demo_scan_t *p_s = (demo_scan_t *)p_ctx;
-    uint16_t d;
-
-    if (p_s->aborted || p_s->fault) {
-        return S5_NO_ECHO_CM;
-    }
-    if (!demo_hold()) {
-        p_s->aborted = true;
-        return S5_NO_ECHO_CM;
-    }
-    if (angle != p_s->angle) {
-        UINT moved = (angle > p_s->angle) ? (angle - p_s->angle) : (p_s->angle - angle);
-
-        if (s5_servo_set_angle(angle) != E_OK) {
-            p_s->fault = true;
-            return S5_NO_ECHO_CM;
-        }
-        p_s->angle = angle;
-        publish_tlm(S5_SCAN_SCANNING, angle, S5_NO_ECHO_CM);
-        tk_dly_tsk(80u + 3u * moved);
-    } else {
-        tk_dly_tsk(80u);
-    }
-    d = s5_ultrasonic_read_cm();
-    publish_tlm(S5_SCAN_SCANNING, angle, d);
-    return d;
-}
-
 /* Missing data is never read as clear: no echo after a retry gives 0. */
-static UINT demo_clearance(demo_scan_t *p_s, unsigned int angle)
+static UINT demo_clearance(width_scan_t *p_s, unsigned int angle)
 {
-    uint16_t d = demo_scan_read(p_s, angle);
+    uint16_t d = width_scan_read(p_s, angle);
 
     if (d == S5_NO_ECHO_CM) {
-        d = demo_scan_read(p_s, angle);
+        d = width_scan_read(p_s, angle);
     }
     return (d == S5_NO_ECHO_CM) ? 0u : d;
 }
 
 static void demo_scan(void){
- demo_scan_t scan={FORWARD_ANGLE_DEG,false,false};
+ width_scan_t scan={FORWARD_ANGLE_DEG,false,false};
  demo_width_t w={0};
  s5_tlm_t p={0};
  UINT left=0u,right=0u;
  bool ok;
 
  p.recommendation=SM_AVOID_STOP;publish_profile(&p);
- ok=demo_measure_width(demo_scan_read,&scan,&w);
+ ok=demo_measure_width(width_scan_read,&scan,&w);
  if(ok&&!scan.aborted&&!scan.fault){
   left=demo_clearance(&scan,PROFILE_LEFT_ANGLE_DEG);
   right=demo_clearance(&scan,PROFILE_RIGHT_ANGLE_DEG);
  }
  if(!scan.aborted){
   if(!ok||scan.fault){
-   if(demo_hold())sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
+   if(in_hold())sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
   }else{
    p.b_profile=1;p.width_cm=w.width_cm;p.closest_cm=w.ahead_cm;p.bearing_deg=w.bearing_deg;
    p.left_clear_cm=left>255u?255u:left;p.right_clear_cm=right>255u?255u:right;
@@ -486,7 +523,7 @@ static void demo_scan(void){
    tm_printf((UB*)"[S5] width: %u cm, corners %u..%u deg, ahead %u cm, clear L%u R%u, %u readings\n",
              (unsigned int)w.width_cm,(unsigned int)w.left_deg,(unsigned int)w.right_deg,
              (unsigned int)w.ahead_cm,(unsigned int)left,(unsigned int)right,(unsigned int)w.readings);
-   if(demo_hold())sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
+   if(in_hold())sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
   }
  }
  s5_servo_set_angle(90);tk_dly_tsk(500);
@@ -496,10 +533,10 @@ static void demo_ultrasound_loop(void){
  s5_servo_set_angle(90);tk_dly_tsk(500);
  for(;;){
   uint32_t st=sm_status_word();
-  if(demo_hold()){
+  if(in_hold()){
    if(!scan_done){demo_scan();scan_done=true;}
    else { /* STOP profiles remain stopped; rescan after a bounded pause. */
-    tk_dly_tsk(500);if(demo_hold())demo_scan();
+    tk_dly_tsk(500);if(in_hold())demo_scan();
    }
   }else{
    scan_done=false;UINT d=s5_ultrasonic_read_cm();publish_tlm(S5_SCAN_MONITORING,90,d);
@@ -533,6 +570,7 @@ static void ultrasound_task(INT stacd, void *exinf)
 #endif
     for (;;) {
         for (i = 0u; i < sizeof(angles) / sizeof(angles[0]); ++i) {
+            measure_width(&detection);
             scan_position(&detection, angles[i]);
         }
     }

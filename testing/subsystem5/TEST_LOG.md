@@ -154,9 +154,13 @@ until evidence is captured on the robot; host PASS does not substitute for them.
 | 2026-11-12 | Normal full build | a993319 + dirty sources | Codex | PASS | [Build output](logs/2026-11-12_fixes_normal_build.txt) | make -j8 with installed SDK path; no warnings/errors |
 | 2026-11-12 | TEST=1 full build | a993319 + dirty sources | Codex | PASS | [Build output](logs/2026-11-12_fixes_test_build.txt) | make TEST=1 -j8 with installed SDK path; no warnings/errors; not flashed |
 
-## Obstacle width scan (demo build) — host simulation
+## Obstacle width scan — host simulation
 
-`demo_measure_width()` in `demo_profile.c` replaces the single 25-point sweep.
+In every build (the DEMO flag is not needed), `measure_width()` in `subsystem5.c` runs
+`demo_measure_width()` once per obstacle episode while S1 holds the car in
+OBSTACLE_AVOIDANCE/HOLD, before the three-point profile. The width goes into the
+profile and telemetry; if the scan fails, `width_cm` stays 0 and avoidance carries
+on. `demo_measure_width()` in `demo_profile.c` replaces the single 25-point sweep.
 It reads straight ahead, walks outward in 10 degree steps until a reading is off
 the obstacle, then steps back through that gap in 2 degree steps to place each
 corner. Width is the lateral distance between the corners, after taking the
@@ -197,7 +201,7 @@ below it the width reads too narrow.
 
 | ID | What is tested | Steps / evidence | Expected result |
 |---|---|---|---|
-| S5-U28 | Beam calibration on the car (manual) | Demo build, motors disabled, obstacle in HOLD. Place a box of known width square to the car at 20, 25 and 30 cm. Trigger a scan and read the `[S5] width:` line from USB. | Measured width within 1.5 cm of the true width at all three distances. If it reads wide or narrow, add atan((measured - true) / 2 / range) in degrees to `DEMO_BEAM_HALF_DEG` and repeat. |
+| S5-U28 | Beam calibration on the car (manual) | Normal build, obstacle in HOLD. Place a box of known width square to the car at 20, 25 and 30 cm. Trigger a scan and read the `[S5] width:` line from USB. | Measured width within 1.5 cm of the true width at all three distances. If it reads wide or narrow, add atan((measured - true) / 2 / range) in degrees to `DEMO_BEAM_HALF_DEG` and repeat. |
 
 Also checked: the existing `run_host_tests.sh` still passes (14 of 14) and the
 firmware compiles for `make CONSOLE=uart WIFI=none DEMO=1`. The width cases above
