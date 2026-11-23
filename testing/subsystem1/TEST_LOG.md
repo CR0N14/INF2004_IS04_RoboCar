@@ -33,7 +33,7 @@ Define a test here before running it. Test IDs never change.
 | S1-U21 | events batch back to back at their exact width | FR2, CR1 | auto | `subsystem1_test.c` | `[TEST] S1-U21 PASS` |
 | S1-U22 | `net_post_event()` rejects bad type / oversized payload | IF-08 | auto | `subsystem1_test.c` | `[TEST] S1-U22 PASS` |
 | S1-U23 | connects to WiFi + MQTT, reaches STANDBY, publishes status/tlm/hb | FR1–FR3, NFR1 | manual | 1. Broker running, `wifi_secrets.h` set. 2. Flash `make NET=lwip MQTT=1`. 3. `python tools/base_station.py monitor` for 30 s. | `status online`; `tlm` at 5 Hz, `hb` at 1 Hz; `STATE INITIALISING->STANDBY` |
-| S1-U24 | start, stop, ping, bind acknowledged within 500 ms | FR4, NFR2 | manual | `base_station.py ping`, `start`, `stop`, `bind A=right`, in STANDBY and in NAVIGATING | ACKs as in docs/MQTT.md, ping round trip < 500 ms |
+| S1-U24 | start, stop, ping, bind acknowledged within 500 ms | FR4, NFR2 | manual | `base_station.py ping`, `bind A=right` (STANDBY), `start`, `stop`; repeat `bind` in NAVIGATING to see it rejected | ACKs as in docs/MQTT.md, ping round trip < 500 ms |
 | S1-U25 | broker restart: car reconnects within 10 s and keeps its state | FR1, FR6, NFR2 | manual | 1. Start a run. 2. Stop the broker 20 s. 3. Restart it. | `offline` then `online` within 10 s of restart; state still NAVIGATING; `DROPPED` only if > 32 events |
 | S1-U26 | malformed commands rejected without a state change | FR4 | manual | `base_station.py raw 21`, `raw 20 00`, `raw e0` | `CMD_ACK ... rejected`, state unchanged |
 
