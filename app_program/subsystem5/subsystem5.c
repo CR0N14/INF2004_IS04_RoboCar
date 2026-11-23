@@ -410,28 +410,86 @@ static void scan_position(s5_detection_t *detection, UINT angle)
 
 #if ENCODER_FREE_DEMO
 static bool demo_hold(void){uint32_t s=sm_status_word();return SM_STATUS_STATE(s)==SM_STATE_OBSTACLE_AVOIDANCE&&SM_STATUS_NAV(s)==SM_NAV_HOLD;}
+typedef struct
+{
+    UINT angle;     /* where the servo is now */
+    bool aborted;   /* S1 left HOLD during the scan */
+    bool fault;     /* the servo rejected an angle */
+} demo_scan_t;
+
+/* Range callback for demo_measure_width(). The settle time grows with the
+   move, and every reading waits at least 80 ms so triggers stay over 60 ms
+   apart. */
+static uint16_t demo_scan_read(void *p_ctx, unsigned int angle)
+{
+    demo_scan_t *p_s = (demo_scan_t *)p_ctx;
+    uint16_t d;
+
+    if (p_s->aborted || p_s->fault) {
+        return S5_NO_ECHO_CM;
+    }
+    if (!demo_hold()) {
+        p_s->aborted = true;
+        return S5_NO_ECHO_CM;
+    }
+    if (angle != p_s->angle) {
+        UINT moved = (angle > p_s->angle) ? (angle - p_s->angle) : (p_s->angle - angle);
+
+        if (s5_servo_set_angle(angle) != E_OK) {
+            p_s->fault = true;
+            return S5_NO_ECHO_CM;
+        }
+        p_s->angle = angle;
+        publish_tlm(S5_SCAN_SCANNING, angle, S5_NO_ECHO_CM);
+        tk_dly_tsk(80u + 3u * moved);
+    } else {
+        tk_dly_tsk(80u);
+    }
+    d = s5_ultrasonic_read_cm();
+    publish_tlm(S5_SCAN_SCANNING, angle, d);
+    return d;
+}
+
+/* Missing data is never read as clear: no echo after a retry gives 0. */
+static UINT demo_clearance(demo_scan_t *p_s, unsigned int angle)
+{
+    uint16_t d = demo_scan_read(p_s, angle);
+
+    if (d == S5_NO_ECHO_CM) {
+        d = demo_scan_read(p_s, angle);
+    }
+    return (d == S5_NO_ECHO_CM) ? 0u : d;
+}
+
 static void demo_scan(void){
- uint16_t d[25]={0};s5_tlm_t p={0};p.recommendation=SM_AVOID_STOP;publish_profile(&p);
- for(UINT i=0;i<25;i++){
-  if(!demo_hold())goto finish;
-  UINT angle=30u+5u*i;
-  if(s5_servo_set_angle(angle)!=E_OK)goto fault;
-  publish_tlm(S5_SCAN_SCANNING,angle,S5_NO_ECHO_CM);
-  tk_dly_tsk(i?120:500);
-  if(!demo_hold())goto finish;
-  d[i]=s5_ultrasonic_read_cm();publish_tlm(S5_SCAN_SCANNING,angle,d[i]);
+ demo_scan_t scan={FORWARD_ANGLE_DEG,false,false};
+ demo_width_t w={0};
+ s5_tlm_t p={0};
+ UINT left=0u,right=0u;
+ bool ok;
+
+ p.recommendation=SM_AVOID_STOP;publish_profile(&p);
+ ok=demo_measure_width(demo_scan_read,&scan,&w);
+ if(ok&&!scan.aborted&&!scan.fault){
+  left=demo_clearance(&scan,PROFILE_LEFT_ANGLE_DEG);
+  right=demo_clearance(&scan,PROFILE_RIGHT_ANGLE_DEG);
  }
- uint16_t width=0;
- if(!demo_profile_width(d,&width))goto fault;
- p.b_profile=1;p.width_cm=width;p.closest_cm=d[12];p.bearing_deg=90;
- p.left_clear_cm=d[3]>255?255:d[3];p.right_clear_cm=d[21]>255?255:d[21];
- if(d[3]>=40&&d[3]>=d[21])p.recommendation=SM_AVOID_LEFT;
- else if(d[21]>=40)p.recommendation=SM_AVOID_RIGHT;
- publish_profile(&p);
- if(demo_hold())sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
- goto finish;
- fault: if(demo_hold())sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
- finish: s5_servo_set_angle(90);tk_dly_tsk(500);
+ if(!scan.aborted){
+  if(!ok||scan.fault){
+   if(demo_hold())sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
+  }else{
+   p.b_profile=1;p.width_cm=w.width_cm;p.closest_cm=w.ahead_cm;p.bearing_deg=w.bearing_deg;
+   p.left_clear_cm=left>255u?255u:left;p.right_clear_cm=right>255u?255u:right;
+   if(left>=PROFILE_SAFE_CLEAR_CM&&left>=right)p.recommendation=SM_AVOID_LEFT;
+   else if(right>=PROFILE_SAFE_CLEAR_CM)p.recommendation=SM_AVOID_RIGHT;
+   publish_profile(&p);
+   tm_printf((UB*)"[S5] width: %u cm, corners %u..%u deg, ahead %u cm, clear L%u R%u, %u readings\n",
+             (unsigned int)w.width_cm,(unsigned int)w.left_deg,(unsigned int)w.right_deg,
+             (unsigned int)w.ahead_cm,(unsigned int)left,(unsigned int)right,(unsigned int)w.readings);
+   if(demo_hold())sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
+  }
+ }
+ s5_servo_set_angle(90);tk_dly_tsk(500);
 }
 static void demo_ultrasound_loop(void){
  unsigned near=0,missing=0;bool scan_done=false;
