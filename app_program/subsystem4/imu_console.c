@@ -735,10 +735,30 @@ static char const * const g_hump_name[] =
 {
     "FLAT", "CLIMB", "DESCEND"
 };
-static char const * const g_cal_name[] =
+/* imu_cal_result_t, then IMU_FAIL_* (imu_task.h) */
+static char const * const g_fail_name[] =
 {
-    "ok", "too few samples", "car moved", "not 1 g"
+    "ok", "too few samples", "car moved", "not 1 g", "reading impossible",
+    "not found", "set-up failed", "not responding"
 };
+typedef char imu_fail_name_check_t[((sizeof(g_fail_name) /
+                                     sizeof(g_fail_name[0])) ==
+                                    IMU_FAIL_REASONS) ? 1 : -1];
+
+static char const *
+fail_name(uint8_t reason)
+{
+    return (reason < IMU_FAIL_REASONS) ? g_fail_name[reason] : "?";
+}
+
+/* The 1 s average ran: its |g| belongs in the message */
+static bool
+fail_has_g(uint8_t reason)
+{
+    return ((uint8_t)IMU_CAL_MOVED == reason) ||
+           ((uint8_t)IMU_CAL_NOT_1G == reason) ||
+           ((uint8_t)IMU_CAL_IMPOSSIBLE == reason);
+}
 
 static void
 print_ms(uint32_t now_ms)
@@ -764,14 +784,20 @@ imu_console_selftest(bool b_ok, uint8_t cal_result, int32_t g_mg,
     print_ms(now_ms);
     if (b_ok)
     {
-        tm_printf((UB *)"IMU self-test passed: LSM303D at 0x%02x (|g| %d mg)\n",
-                  (unsigned int)addr, (int)g_mg);
+        tm_printf((UB *)"IMU self-test passed: LSM303D at 0x%02x "
+                  "(|g| %d mg%s)\n", (unsigned int)addr, (int)g_mg,
+                  ((uint8_t)IMU_CAL_MOVED == cal_result) ?
+                  ", car moving: not recalibrated" : "");
     }
     else
     {
-        tm_printf((UB *)"IMU self-test FAILED 3 times (last: %s, |g| %d mg, "
-                  "address %s%02x)%s\n",
-                  (cal_result < 4u) ? g_cal_name[cal_result] : "?", (int)g_mg,
+        tm_printf((UB *)"IMU self-test FAILED 3 times (last: %s",
+                  fail_name(cal_result));
+        if (fail_has_g(cal_result))
+        {
+            tm_printf((UB *)", |g| %d mg", (int)g_mg);
+        }
+        tm_printf((UB *)", address %s%02x)%s\n",
                   (DRV_IMU_NO_ADDR == addr) ? "none, " : "0x",
                   (unsigned int)addr,
                   S4_CFG_REPORT_ONLY ? ", report-only: car not stopped" : "");
@@ -779,11 +805,24 @@ imu_console_selftest(bool b_ok, uint8_t cal_result, int32_t g_mg,
 }
 
 EXPORT void
-imu_console_fault(ER er, uint32_t now_ms)
+imu_console_reload(uint8_t reason, int32_t g_mg, uint32_t now_ms)
 {
     print_ms(now_ms);
-    tm_printf((UB *)"IMU FAULT: not responding (er %d), data invalid, "
-              "retrying every 1 s\n", (int)er);
+    tm_printf((UB *)"IMU %s (|g| %d mg): reloading the chip's trimming "
+              "(CTRL0 BOOT), then trying again\n", fail_name(reason),
+              (int)g_mg);
+}
+
+EXPORT void
+imu_console_fault(ER er, uint8_t reason, uint32_t now_ms)
+{
+    print_ms(now_ms);
+    tm_printf((UB *)"IMU FAULT: %s", fail_name(reason));
+    if (reason >= IMU_FAIL_NOT_FOUND)
+    {
+        tm_printf((UB *)" (er %d)", (int)er);   /* what the bus said     */
+    }
+    tm_printf((UB *)", data invalid, retrying every 1 s\n");
 }
 
 EXPORT void

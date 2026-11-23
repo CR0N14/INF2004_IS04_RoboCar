@@ -194,7 +194,8 @@ typedef enum
     IMU_CAL_OK = 0,
     IMU_CAL_TOO_FEW,            /* not enough samples arrived            */
     IMU_CAL_MOVED,              /* car not still during the average      */
-    IMU_CAL_NOT_1G              /* |a| not 1 g: sensor or scale wrong    */
+    IMU_CAL_NOT_1G,             /* |a| not 1 g: sensor or scale wrong    */
+    IMU_CAL_IMPOSSIBLE          /* |a| cannot be the car even moving     */
 } imu_cal_result_t;
 
 typedef struct
@@ -221,12 +222,19 @@ typedef struct
 
 void    imu_cal_reset(imu_cal_t *p_cal);
 
-/* Body q2 samples, before alignment */
+/* Body q2 samples (before alignment for the self-test) */
 void    imu_cal_add(imu_cal_t *p_cal, int16_t const (*p_acc)[3], uint8_t n);
 
-/* Alignment that makes the resting reading (0, 0, 1 g); *p_g_mg = |a| */
+/* Alignment that makes the resting reading (0, 0, 1 g); *p_g_mg = |a|.
+   IMU_CAL_IMPOSSIBLE is decided before IMU_CAL_MOVED. */
 imu_cal_result_t imu_cal_finish(imu_cal_t const *p_cal, uint32_t want_n,
                                 imu_align_t *p_align, int32_t *p_g_mg);
+
+/* |mean| of the samples added so far, mg (0 if none) */
+int32_t imu_cal_mean_mg(imu_cal_t const *p_cal);
+
+/* false if a 1 s mean |a| cannot be the car (IMU_ST_IMPOSSIBLE_MG) */
+bool    imu_g_plausible(int32_t g_mg);
 
 void    imu_align_identity(imu_align_t *p_align);
 

@@ -69,6 +69,8 @@
 #define REG_FIFO_SRC        0x2Fu
 #define SUB_AUTO_INC        0x80u   /* SUB bit 7: multi-byte (6.1.1)     */
 
+#define CTRL0_BOOT          0x80u   /* reboot memory content (Table 33)  */
+
 /* CTRL0..CTRL7, written in this order and read back as a block */
 #define CTRL0_VAL           0x40u   /* FIFO_EN                           */
 #define CTRL1_VAL           0x8Fu   /* AODR 1000 = 400 Hz, BDU, Z Y X on */
@@ -566,6 +568,21 @@ drv_imu_configure(void)
     {
         er = E_IO;
     }
+    return er;
+}
+
+EXPORT ER
+drv_imu_reboot(void)
+{
+    uint8_t addr;
+    ER er = chip(&addr);
+
+    if (E_OK != er)
+    {
+        return er;                      /* never write to an unknown device */
+    }
+    er = write_reg(addr, REG_CTRL0, CTRL0_BOOT);
+    g_b_verify = true;                  /* identify it again before use  */
     return er;
 }
 

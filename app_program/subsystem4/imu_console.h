@@ -20,10 +20,12 @@ void    imu_console_raw(void (*tick)(void));
 /* Accelerometer diagnosis (S4_CONSOLE_ACCDIAG).  Never returns. */
 void    imu_console_accdiag(void (*tick)(void));
 
-/* Always printed (one line each, rare): self-test result, IMU lost */
+/* Always printed (one line each, rare): self-test result, trimming
+   reload, IMU lost.  reason: imu_cal_result_t or IMU_FAIL_*. */
 void    imu_console_selftest(bool b_ok, uint8_t cal_result, int32_t g_mg,
                              uint8_t addr, uint32_t now_ms);
-void    imu_console_fault(ER er, uint32_t now_ms);
+void    imu_console_reload(uint8_t reason, int32_t g_mg, uint32_t now_ms);
+void    imu_console_fault(ER er, uint8_t reason, uint32_t now_ms);
 
 /* Bench readout only (S4_CONSOLE_BENCH) */
 void    imu_console_status(imu_view_t const *p_view, uint8_t status,

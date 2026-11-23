@@ -86,6 +86,11 @@ uint8_t drv_imu_addr(void);
    drv_imu_find() has succeeded. */
 ER      drv_imu_configure(void);
 
+/* Reload the chip's factory trimming (CTRL0 BOOT): the software stand-in
+   for a power cycle.  Wait a few cycles, then call drv_imu_find() and
+   drv_imu_configure() again (the settings are rewritten and checked). */
+ER      drv_imu_reboot(void);
+
 /* Read up to max samples from the accelerometer FIFO.  *p_n = samples
    read (0 if none new), *p_b_ovr = the FIFO had overflowed. */
 ER      drv_imu_read_acc(drv_imu_raw_t *p_buf, uint8_t max, uint8_t *p_n,

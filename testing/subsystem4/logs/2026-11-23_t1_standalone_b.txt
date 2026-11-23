@@ -1,0 +1,28 @@
+--- record.sh: connected to /dev/cu.usbmodemMTK3PICO1 at 10:54:33 ---
+
+
+microT-Kernel Version 3.00
+
+
+=== micro T-Kernel on Raspberry Pi Pico W (spec 0x6300, product 0x0003) ===
+dual-core (SMP) build, usermain on core 0
+sm: INITIALISING -> INITIALISING (evt 0, faults 0x0000)
+all subsystems started
+
+wifi: cyw43_utk_task starting (proc 1)
+wifi: cyw43_init() ...
+wifi: cyw43_init() returned, bringing interface up ...
+wifi: joining "iPhone" ...
+wifi: link status -> joined AP, waiting for IP (1)
+wifi: link status -> joined AP, no IP yet (2)
+s4 5.03 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 5.03 IMU FAULT: not responding (er -57), data invalid, retrying every 1 s
+wifi: link up, ip=172.20.10.8
+mqtt: connected to 172.20.10.6
+sm: INITIALISING -> STANDBY (evt 4, faults 0x0004)
+net: MQTT online
+mqtt: subscribed to is04/car/cmd
+s4 10.24 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 16.28 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 22.32 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 28.36 IMU self-test passed: LSM303D at 0x1d (|g| 5156 mg)

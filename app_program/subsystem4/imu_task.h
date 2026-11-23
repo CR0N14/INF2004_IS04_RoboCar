@@ -23,6 +23,13 @@ typedef enum
     IMU_MODE_FAULT              /* SENSOR FAULT: data invalid, retrying  */
 } imu_mode_t;
 
+/* Why the last self-test attempt or the last run failed: an
+   imu_cal_result_t (the 1 s average), or one of these earlier steps */
+#define IMU_FAIL_NOT_FOUND      5u      /* no WHO_AM_I 49h at 0x1D, 0x1E */
+#define IMU_FAIL_SETUP          6u      /* settings not written/read back */
+#define IMU_FAIL_READ           7u      /* a read failed: not responding  */
+#define IMU_FAIL_REASONS        8u
+
 /* Counters for the on-target tests and the bench readout */
 typedef struct
 {
@@ -31,8 +38,10 @@ typedef struct
     bool     b_selftest_ok;     /* last self-test passed                 */
     bool     b_ready_sent;      /* SM_EVT_READY posted                   */
     bool     b_calibrated;      /* at-rest alignment done                */
-    int32_t  g_mg;              /* |g| measured at rest                  */
-    uint8_t  cal_result;        /* imu_cal_result_t of the last attempt  */
+    int32_t  g_mg;              /* |g| of the last 1 s average           */
+    uint8_t  cal_result;        /* last outcome: imu_cal_result_t or     */
+                                /*   IMU_FAIL_*                          */
+    uint32_t reloads;           /* chip trimming reloads (CTRL0 BOOT)    */
     uint32_t cycles;            /* 10 ms cycles run                      */
     uint32_t missed;            /* cycles lost to overload               */
     uint32_t read_fails;        /* failed read cycles since boot         */

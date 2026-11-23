@@ -209,6 +209,30 @@ imu_cal_add(imu_cal_t *p_cal, int16_t const (*p_acc)[3], uint8_t n)
     p_cal->cycles++;
 }
 
+int32_t
+imu_cal_mean_mg(imu_cal_t const *p_cal)
+{
+    int32_t mean[3];
+    uint32_t i;
+
+    if (0u == p_cal->n)
+    {
+        return 0;
+    }
+    for (i = 0u; i < 3u; i++)
+    {
+        mean[i] = imu_div_round(p_cal->sum[i], (int32_t)p_cal->n);
+    }
+    return imu_div_round((int32_t)norm3(mean[0], mean[1], mean[2]),
+                         IMU_Q2_PER_MG);
+}
+
+bool
+imu_g_plausible(int32_t g_mg)
+{
+    return imu_abs(g_mg - (IMU_Q2_1G / IMU_Q2_PER_MG)) <= IMU_ST_IMPOSSIBLE_MG;
+}
+
 imu_cal_result_t
 imu_cal_finish(imu_cal_t const *p_cal, uint32_t want_n, imu_align_t *p_align,
                int32_t *p_g_mg)
@@ -235,6 +259,10 @@ imu_cal_finish(imu_cal_t const *p_cal, uint32_t want_n, imu_align_t *p_align,
     }
     mag = (int32_t)norm3(mean[0], mean[1], mean[2]);
     *p_g_mg = imu_div_round(mag, IMU_Q2_PER_MG);
+    if (!imu_g_plausible(*p_g_mg))
+    {
+        return IMU_CAL_IMPOSSIBLE;      /* the chip, not the car         */
+    }
     if (b_moved)
     {
         return IMU_CAL_MOVED;

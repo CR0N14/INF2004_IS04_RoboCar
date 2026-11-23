@@ -115,6 +115,12 @@
 #define IMU_ST_G_TOL_MG         150     /* |a| must be 1 g +- this       */
 #define IMU_ST_STILL_MG         40      /* max - min of 10 ms means      */
 
+/* A 1 s mean |a| further than this from 1 g cannot be the car, moving
+   or not (starts and stops are about 0.15 g): the chip's data is wrong.
+   2026-11-23: a chip left powered read a steady 5156 mg until it was
+   powered off; the task now reloads its trimming (CTRL0 BOOT). */
+#define IMU_ST_IMPOSSIBLE_MG    500
+
 /* =====================================================================
  *  Geometry: IMU chip relative to the rear axle (hub centre).  Measured
  *  by hand 2026-11-04 (1.75 cm behind, 9.2 cm above).  [BENCH] re-check

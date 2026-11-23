@@ -1,0 +1,171 @@
+--- record.sh: connected to /dev/cu.usbmodemMTK3PICO1 at 11:00:57 ---
+
+
+microT-Kernel Version 3.00
+
+
+=== micro T-Kernel on Raspberry Pi Pico W (spec 0x6300, product 0x0003) ===
+dual-core (SMP) build, usermain on core 0
+sm: INITIALISING -> INITIALISING (evt 0, faults 0x0000)
+all subsystems started
+
+sm: INITIALISING -> STANDBY (evt 18, faults 0x0000)
+wifi: cyw43_utk_task starting (proc 1)
+wifi: cyw43_init() ...
+wifi: cyw43_init() returned, bringing interface up ...
+s4 0.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1135 us
+s4 0.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 0.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 1.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 1.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 1.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 1.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 2.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 2.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 2.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 2.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 3.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 3.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 3.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 3.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 4.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 4.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 4.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 4.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 5.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 5.03 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 5.03 IMU FAULT: not responding (er -57), data invalid, retrying every 1 s
+s4 5.25 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 5.50 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 5.75 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 6.00 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 6.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 6.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 6.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 7.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 7.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 7.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 7.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 8.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 8.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 8.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 8.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 9.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 9.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 9.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 9.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 10.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 10.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 10.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 10.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 11.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 11.07 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 11.25 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 11.50 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 11.75 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 12.00 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 12.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 12.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 12.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 13.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 13.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 13.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 13.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 14.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 14.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 14.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 14.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 15.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 15.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 15.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 15.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 16.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 16.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 16.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 16.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 17.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 17.11 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 17.25 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 17.50 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 17.75 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 18.00 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 18.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 18.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 18.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 19.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 19.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 19.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 19.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 20.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 20.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 20.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 20.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 21.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 21.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 21.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 21.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 22.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 22.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 22.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 22.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 23.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 23.15 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 23.25 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 23.50 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 23.75 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 24.00 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 24.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 24.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 24.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 25.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 25.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 25.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 25.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 26.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 26.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 26.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 26.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 27.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 27.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 27.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 27.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 28.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 28.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 28.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 28.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 29.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 29.19 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 29.25 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 29.50 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 29.75 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 30.00 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 30.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 30.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 30.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 31.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 31.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 31.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 31.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 32.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 32.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 32.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 32.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 33.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 33.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 33.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 33.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 34.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 34.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 34.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 34.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 35.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 35.23 IMU self-test FAILED 3 times (last: not 1 g, |g| 5156 mg, address 0x1d), report-only: car not stopped
+s4 35.25 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 35.50 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 35.75 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 36.00 FAULT pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 36.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 36.50 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 36.75 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 37.00 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us
+s4 37.25 SELFTEST pitch +0.0 roll +0.0 head +0.0 rate +0.0 STATIONARY FLAT peak 0/0 mm pk 0 mg vib 0 fwd +0 fails 0 cpu 0 us bus 1239 us

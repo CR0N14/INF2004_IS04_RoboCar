@@ -6,8 +6,15 @@
  *
  *  SELF-TEST --pass--> IDLE <--SENSORS_ENABLED--> MONITOR
  *  SELF-TEST --fails 3x--> FAULT;  MONITOR --5 failed reads--> FAULT
+ *  MONITOR --1 s mean |a| impossible for a car--> FAULT
  *  FAULT --every 1 s, sensor answers--> SELF-TEST (runtime)
  *  Any state --SM_FLG_INITIALISING rising--> SELF-TEST (initial)
+ *
+ *  Wrong data from a chip that answers (not 1 g at rest, or impossible)
+ *  makes the next attempt reload the chip's factory trimming (CTRL0
+ *  BOOT) first, and always run the 1 s average.  On 2026-11-23 a chip
+ *  left powered read a steady 5156 mg until a power cycle; BOOT is the
+ *  software stand-in for that power cycle.
  *
  *  Only a self-test started by INITIALISING (or at boot) may send
  *  SM_EVT_SELFTEST_FAIL, and only with S4_CFG_REPORT_ONLY 0.  A runtime
@@ -35,9 +42,16 @@
 typedef char imu_class_check_t[((int)S4_CLASS_SUDDEN_IMPACT ==
                                  (int)IMU_CLASS_SUDDEN_IMPACT) ? 1 : -1];
 
+/* IMU_FAIL_* continue imu_cal_result_t: one reason code for the console */
+typedef char imu_fail_check_t[(IMU_FAIL_NOT_FOUND ==
+                               ((unsigned int)IMU_CAL_IMPOSSIBLE + 1u)) ?
+                              1 : -1];
+
 #define ST_CYCLES           100u    /* 1 s at rest (FR20)                */
 #define ST_TRIES            3u      /* then "self-test failed"           */
 #define ST_MIN_SAMPLES      360u    /* of about 400 at 400 Hz            */
+#define RELOAD_CYCLES       5u      /* after CTRL0 BOOT, before set-up   */
+#define SANE_CYCLES         100u    /* MONITOR: |a| checked every 1 s    */
 #define FAIL_LIMIT          5u      /* failed reads in a row -> FAULT    */
 #define RETRY_CYCLES        100u    /* FAULT retry every 1 s             */
 #define CONSOLE_CYCLES      25u     /* bench readout 4 times a second    */
@@ -65,6 +79,10 @@ static imu_task_dbg_t g_dbg_pub; /* copy of g_dbg, under g_mtx_tlm        */
 static imu_task_dbg_t g_dbg;
 static imu_ctx_t    g_ctx;
 static imu_cal_t    g_cal;
+static imu_cal_t    g_sane;         /* MONITOR: the current 1 s of data  */
+static uint32_t     g_sane_cycles;
+static bool         g_b_bad_data;   /* last 1 s mean wrong: reload chip  */
+static bool         g_b_reloaded;   /* ... done in the current attempt   */
 static imu_align_t  g_align;
 static uint8_t      g_mode;
 static bool         g_b_initial;    /* this self-test came from INIT     */
@@ -184,6 +202,8 @@ enter_mode(imu_mode_t mode)
     if ((IMU_MODE_MONITOR == mode) && (IMU_MODE_MONITOR != g_mode))
     {
         imu_logic_restart(&g_ctx);
+        imu_cal_reset(&g_sane);
+        g_sane_cycles = 0u;
     }
     g_mode = (uint8_t)mode;
 }
@@ -195,11 +215,13 @@ start_selftest(bool b_initial)
     g_tries = 0u;
     g_st_cycle = 0u;
     g_wait = 0u;
+    g_b_reloaded = false;
     enter_mode(IMU_MODE_SELFTEST);
 }
 
+/* reason: imu_cal_result_t or IMU_FAIL_* (printed; er only for the bus) */
 static void
-enter_fault(ER er)
+enter_fault(ER er, uint8_t reason)
 {
     enter_mode(IMU_MODE_FAULT);
     g_wait = RETRY_CYCLES;
@@ -211,7 +233,7 @@ enter_fault(ER er)
         g_dbg.faults++;
         (void)net_post_event(NET_EVT_IMU_FAULT, 0u);
         post_sm(SM_EVT_FAULT, (uint16_t)SM_FAULT_IMU);  /* non-fatal, FR27 */
-        imu_console_fault(er, g_now_ms);
+        imu_console_fault(er, reason, g_now_ms);
     }
 }
 
@@ -220,6 +242,7 @@ selftest_passed(uint32_t flags)
 {
     g_dbg.b_selftest_ok = true;
     g_b_fault_reported = false;
+    g_b_bad_data = false;
     if (g_b_initial)
     {
         post_sm(SM_EVT_READY, (uint16_t)SM_SUBSYS_IMU);
@@ -231,15 +254,23 @@ selftest_passed(uint32_t flags)
                          g_now_ms);
 }
 
+/* reason: imu_cal_result_t or IMU_FAIL_* */
 static void
-selftest_failed(ER er)
+selftest_failed(ER er, uint8_t reason)
 {
     g_dbg.b_selftest_ok = false;
+    g_dbg.cal_result = reason;
+    if (((uint8_t)IMU_CAL_NOT_1G == reason) ||
+        ((uint8_t)IMU_CAL_IMPOSSIBLE == reason))
+    {
+        g_b_bad_data = true;            /* the chip answers, data wrong  */
+    }
     g_tries++;
     if (g_tries < ST_TRIES)
     {
         g_wait = RETRY_CYCLES;          /* next attempt in 1 s           */
         g_st_cycle = 0u;
+        g_b_reloaded = false;
         return;
     }
 
@@ -256,13 +287,14 @@ selftest_failed(ER er)
         post_sm(SM_EVT_SELFTEST_FAIL, (uint16_t)SM_SUBSYS_IMU);
 #endif
     }
-    enter_fault(er);
+    enter_fault(er, reason);
 }
 
 /*
  * One cycle of SELF-TEST & CALIBRATE.  Cycle 0: the chip answers at 0x1D
- * or 0x1E with WHO_AM_I = 49h, and its settings read back.  Cycles
- * 1..100: average at rest (skipped if already calibrated, and for a
+ * or 0x1E with WHO_AM_I = 49h (after a trimming reload if its last data
+ * was wrong), and its settings read back.  Cycles 1..100: average at rest
+ * (skipped if already calibrated and the data was not the problem; for a
  * runtime re-test the at-rest check is only attempted, never required).
  */
 static void
@@ -285,17 +317,36 @@ selftest_cycle(uint32_t flags)
         drv_imu_recover();
         er = drv_imu_find(&addr);
         g_dbg.addr = addr;
-        if (E_OK == er)
-        {
-            er = drv_imu_configure();
-        }
         if (E_OK != er)
         {
-            selftest_failed(er);
+            selftest_failed(er, IMU_FAIL_NOT_FOUND);
             return;
         }
-        if (g_dbg.b_calibrated)
+        if (g_b_bad_data && !g_b_reloaded)
         {
+            /* Its last data was wrong: reload the factory trimming, wait,
+               then come back here to find and set it up again */
+            g_b_reloaded = true;
+            g_dbg.reloads++;
+            imu_console_reload(g_dbg.cal_result, g_dbg.g_mg, g_now_ms);
+            er = drv_imu_reboot();
+            if (E_OK != er)
+            {
+                selftest_failed(er, IMU_FAIL_SETUP);
+                return;
+            }
+            g_wait = RELOAD_CYCLES;
+            return;
+        }
+        er = drv_imu_configure();
+        if (E_OK != er)
+        {
+            selftest_failed(er, IMU_FAIL_SETUP);
+            return;
+        }
+        if (g_dbg.b_calibrated && !g_b_bad_data)
+        {
+            g_dbg.cal_result = (uint8_t)IMU_CAL_OK;
             selftest_passed(flags);     /* design: skip if calibrated    */
             return;
         }
@@ -306,7 +357,7 @@ selftest_cycle(uint32_t flags)
 
     if (!read_cycle(&in, false))
     {
-        selftest_failed(E_IO);
+        selftest_failed(E_IO, IMU_FAIL_READ);
         return;
     }
     imu_cal_add(&g_cal, (int16_t const (*)[3])in.acc, in.n_acc);
@@ -325,15 +376,50 @@ selftest_cycle(uint32_t flags)
     }
     else if (!g_b_initial && (IMU_CAL_MOVED == g_dbg.cal_result))
     {
-        /* Back during a run: the sensor works, the car just is not
-           still.  Run uncalibrated rather than stay without data. */
-        imu_align_identity(&g_align);
+        /* Back during a run: the sensor works (|g| is possible, or the
+           result would be IMU_CAL_IMPOSSIBLE), the car just is not still.
+           Keep the boot calibration; without one, run uncalibrated rather
+           than stay without data. */
+        if (!g_dbg.b_calibrated)
+        {
+            imu_align_identity(&g_align);
+        }
         selftest_passed(flags);
     }
     else
     {
-        selftest_failed(E_IO);
+        selftest_failed(E_IO, g_dbg.cal_result);
     }
+}
+
+/* MONITOR: every 1 s, the mean |a| must be possible for a car.  Wrong
+   data is handled like a lost sensor (FR27), and the re-test reloads
+   the chip.  false if the sensor was just declared faulty. */
+static bool
+sane_cycle(imu_in_t const *p_in)
+{
+    int32_t g_mg;
+    bool b_judged;
+
+    imu_cal_add(&g_sane, (int16_t const (*)[3])p_in->acc, p_in->n_acc);
+    g_sane_cycles++;
+    if (g_sane_cycles < SANE_CYCLES)
+    {
+        return true;
+    }
+    g_mg = imu_cal_mean_mg(&g_sane);
+    b_judged = (g_sane.n >= ST_MIN_SAMPLES);
+    imu_cal_reset(&g_sane);
+    g_sane_cycles = 0u;
+    if (!b_judged || imu_g_plausible(g_mg))
+    {
+        return true;
+    }
+    g_dbg.g_mg = g_mg;
+    g_dbg.cal_result = (uint8_t)IMU_CAL_IMPOSSIBLE;
+    g_b_bad_data = true;
+    enter_fault(E_OK, (uint8_t)IMU_CAL_IMPOSSIBLE);
+    return false;
 }
 
 static void
@@ -382,11 +468,15 @@ monitor_cycle(uint32_t flags)
         g_fail_run++;
         if (g_fail_run >= FAIL_LIMIT)
         {
-            enter_fault(E_IO);
+            enter_fault(E_IO, IMU_FAIL_READ);
         }
         return;
     }
     g_fail_run = 0u;
+    if (!sane_cycle(&in))
+    {
+        return;
+    }
     in.b_motors = (0u != (flags & SM_FLG_MOTORS_ENABLED)) ||
                   (S4_CFG_BENCH_MOTORS &&
                    (0u != (flags & SM_FLG_SENSORS_ENABLED)));

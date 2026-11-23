@@ -1,6 +1,6 @@
 /*
  *  test_logic.c
- *  S4-H03..H16: imu_logic against the car/hump model and synthetic data.
+ *  S4-H03..H22: imu_logic against the car/hump model and synthetic data.
  */
 
 #include <math.h>
@@ -927,6 +927,94 @@ test_run_peak(void)
           (unsigned int)g_ctx.view.last_peak_mm);
 }
 
+/* S4-H22 a chip whose data cannot be the car.  2026-11-23: one read a
+   steady 5156 mg until powered off; the first board read about -2.9 g
+   on every axis, noisy.  Both must be "reading impossible" (the task
+   then reloads the chip), never "car moved", which a runtime re-test
+   accepts.  A moving car with a possible |g| must still be "moved". */
+static void
+test_impossible_reading(void)
+{
+    /* m01_stage2_lsm303d, first board at rest: sensor-axis counts */
+    static int16_t const stuck[3] = { -23693, -23825, -22714 };
+    int16_t samples[4][3];
+    int16_t raw[3];
+    imu_cal_t cal;
+    imu_align_t align;
+    imu_cal_result_t res;
+    int32_t g_mg;
+    int c;
+    int i;
+    int k;
+
+    imu_cal_reset(&cal);
+    for (c = 0; c < 100; c++)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            imu_map_acc(stuck, samples[i]);
+        }
+        imu_cal_add(&cal, samples, 4u);
+    }
+    res = imu_cal_finish(&cal, 360u, &align, &g_mg);
+    CHECK("S4-H22", (IMU_CAL_IMPOSSIBLE == res) && (g_mg > 4000),
+          "steady stuck chip: reading impossible (result %d, |g| %d mg)",
+          (int)res, (int)g_mg);
+
+    imu_cal_reset(&cal);
+    for (c = 0; c < 100; c++)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            for (k = 0; k < 3; k++)
+            {
+                /* +-2000 counts, changing every cycle */
+                raw[k] = (int16_t)(stuck[k] + ((((c * 7) + (i * 3) + k) % 5) -
+                                               2) * 1000);
+            }
+            imu_map_acc(raw, samples[i]);
+        }
+        imu_cal_add(&cal, samples, 4u);
+    }
+    res = imu_cal_finish(&cal, 360u, &align, &g_mg);
+    CHECK("S4-H22", IMU_CAL_IMPOSSIBLE == res,
+          "noisy stuck chip: reading impossible, not car moved (result %d, "
+          "|g| %d mg)", (int)res, (int)g_mg);
+
+    imu_cal_reset(&cal);
+    for (c = 0; c < 100; c++)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            samples[i][0] = (int16_t)(((c % 2) == 0) ? 600 : -600);
+                                                    /* +-0.15 g forward */
+            samples[i][1] = 0;
+            samples[i][2] = 4000;
+        }
+        imu_cal_add(&cal, samples, 4u);
+    }
+    res = imu_cal_finish(&cal, 360u, &align, &g_mg);
+    CHECK("S4-H22", IMU_CAL_MOVED == res,
+          "car starting and stopping: still car moved (result %d, |g| %d mg)",
+          (int)res, (int)g_mg);
+
+    CHECK("S4-H22", imu_g_plausible(1000) && imu_g_plausible(1500) &&
+          imu_g_plausible(500) && !imu_g_plausible(1501) &&
+          !imu_g_plausible(499) && !imu_g_plausible(5156) &&
+          !imu_g_plausible(0), "1 g +- %d mg is possible, beyond is not",
+          IMU_ST_IMPOSSIBLE_MG);
+
+    imu_cal_reset(&cal);
+    g_mg = imu_cal_mean_mg(&cal);
+    samples[0][0] = 0;
+    samples[0][1] = 0;
+    samples[0][2] = 4000;
+    imu_cal_add(&cal, samples, 1u);
+    CHECK("S4-H22", (0 == g_mg) && (1000 == imu_cal_mean_mg(&cal)),
+          "running mean |a|: none -> 0, 1 g -> %d mg",
+          (int)imu_cal_mean_mg(&cal));
+}
+
 void
 test_logic(void)
 {
@@ -940,4 +1028,5 @@ test_logic(void)
     test_class_sequence();
     test_collision_tip();
     test_run_peak();
+    test_impossible_reading();
 }
