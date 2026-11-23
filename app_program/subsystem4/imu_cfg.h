@@ -11,6 +11,7 @@
 
 #ifndef IMU_CFG_H
 #define IMU_CFG_H
+#include "../demo_config.h"
 
 /* ---------------------------------------------------------------------
  *  Report-only mode, until the thresholds are measured on the car.
@@ -28,6 +29,9 @@
  *  Losing the IMU during a run never stops the car in either mode (FR27).
  * --------------------------------------------------------------------- */
 #define S4_CFG_REPORT_ONLY      1
+#if DEMO_IGNORE_IMU && !S4_CFG_REPORT_ONLY
+#error "No-IMU demo must keep IMU faults report-only"
+#endif
 
 /* ---------------------------------------------------------------------
  *  Console readout (USB serial).

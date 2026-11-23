@@ -20,6 +20,8 @@ valid range needs.
 | `<root>/hb` | car → base | 0 | no | every 1 s while online | heartbeat, 6 bytes |
 | `<root>/evt` | car → base | 0 | no | as events occur | batch of events, ≤ 64 bytes |
 | `<root>/cmd` | base → car | 0 | no | on demand | command, 1+ bytes |
+| `<root>/diag` | car → base | 0 | no | bring-up builds only | debug packet, up to 64 bytes ([Bring-up topics](#bring-up-topics)) |
+| `<root>/demo` | car → base | 0 | no | demo builds only | 64 bytes ([Bring-up topics](#bring-up-topics)) |
 
 The car's MQTT client ID is `MQTT_CLIENT_ID` (default `is04-car`). The
 keepalive is 10 s, so the broker publishes the `offline` last will within
@@ -128,11 +130,52 @@ fields need, with zero padding bits; anything else is rejected with a
 - START is accepted only in STANDBY. STOP is accepted in STANDBY, NAVIGATING
   and OBSTACLE_AVOIDANCE. BIND is accepted only in STANDBY and replaces the
   whole table: symbols not listed become unbound, so the car ignores them.
+- Demo builds (`DEMO=1`) add conditions to START: it is rejected unless the
+  IR sensors are calibrated, the line is valid and fresh, and the IMU is
+  ready (unless built with `DEMO_NO_IMU=1`). With `DEMO_JUNCTION_TEST=1` it
+  also needs symbol A bound.
 - The State Machine decides; its `CMD_ACK` event reports the result. PING is
   acknowledged by Networking at once and is useful for measuring command
   latency (NFR2).
-- Barcode actions: 0 left, 1 right, 2 straight, 3 U-turn. Default bindings at
-  power-on: A left, B right, C straight, D U-turn.
+- Barcode actions: 0 left, 1 right, 2 straight, 3 U-turn. **Nothing is bound
+  at power-on**: send BIND before START, or every barcode is rejected as
+  `unbound`. The table is held in RAM and is empty again after a reboot.
+- A decoded barcode does not turn the car at once. The action is remembered
+  and carried out at the next cross-junction, including U-turn.
+
+### Bench and demo commands (opcode 5)
+
+One byte each, handled by Networking before the normal decoder, so they are
+not part of the 3-bit opcode table above. Anything else with opcode 5 is
+rejected as malformed. The acknowledgement is a `CMD_ACK` with opcode 5.
+
+| Byte | Effect | Accepted when |
+|---|---|---|
+| `A0` / `A1` | run the left / right motor at a fixed 20 % for 500 ms | STANDBY only, in a build with `MOTION_MQTT_BENCH` and not a demo build; START or STOP cancels it |
+| `B1` | capture the IR white level (hold the sensors over white) | demo build, STANDBY only |
+| `B2` | capture the IR black level (hold the sensors over the line) | demo build, STANDBY only |
+| `B3` | zero the IMU | demo build, STANDBY only |
+| `B0` | start the encoder GPIO self-test | only in a build with `MOTION_GPIO_SELFTEST` |
+
+The IR capture is rejected if the readings move by more than 150 counts while
+it runs, so keep the car still and repeat. In a `MOTION_GPIO_SELFTEST` build,
+`A0`, `A1` and START are refused.
+
+These commands are for bring-up on the bench. A normal run does not use them.
+
+## Bring-up topics
+
+`<root>/diag` and `<root>/demo` carry fixed-size debug packets for the
+encoder, IR and demo builds. They are **not** bit-packed like the frames
+above: each is a sequence of little-endian 32-bit words, up to
+`MQTT_UTK_MAX_PAYLOAD` (64) bytes. Their layout belongs to the subsystem that
+produces them (`drv_encoder_diag()` for Motion, `demo_ir_diag()` for the IR
+sensors, `send_demo()` in `networking.c` for `demo`), changes with the build
+flags, and is not a stable interface. `base_station.py monitor` ignores both
+topics; use `mosquitto_sub -t "is04/car/diag" -F "%x"` to look at them.
+
+They are published only when the matching build flag is set, and the demo IR
+stream shares the TX buffer with events, so heavy diagnostics can delay them.
 
 ## Faults
 
@@ -209,7 +252,23 @@ C structs, because bit-field layout is compiler-defined and would add padding.
    `mtk3pico_smp1_usb_cdc_wifi_lwip_mqtt.uf2`.
 4. `pip install paho-mqtt`, then `python tools/base_station.py monitor` (add
    `--host <broker IP>` if the broker is on another machine). In a second
-   terminal: `ping`, `start`, `stop`, `bind A=left ...`.
+   terminal run the commands in the order below.
+
+## Order of commands for a run
+
+1. Start the broker, then `monitor`. Wait for `status online` and the state
+   to reach STANDBY. Commands are refused while the car is INITIALISING.
+2. `ping`: confirms the command path.
+3. `bind A=left B=right C=straight D=uturn` (your course's bindings). There
+   are no defaults.
+4. Demo builds only: `raw B1` over white, `raw B2` over the line, `raw B3`
+   with the car flat and still.
+5. `start`. The acknowledgement should be accepted and the state change to
+   NAVIGATING.
+6. `stop` to park. Picking the car up also ends the run (collision fault).
+
+Check each acknowledgement. A rejected command leaves the state unchanged,
+and the reason is in the car's USB serial output.
 
 `monitor --sizes` prints each frame's binary size next to the size of the
 same data as JSON, for the Week 13 message-size comparison.

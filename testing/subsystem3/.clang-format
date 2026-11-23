@@ -1,0 +1,23 @@
+BasedOnStyle: LLVM
+ColumnLimit: 80
+IndentWidth: 4
+UseTab: Never
+BreakBeforeBraces: Allman
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
+IndentCaseLabels: true
+IndentCaseBlocks: false
+PointerAlignment: Middle
+SortIncludes: Never
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveBitFields: Consecutive
+SpaceBeforeParens: Custom
+SpaceBeforeParensOptions:
+  AfterControlStatements: true
+  AfterFunctionDeclarationName: true
+  AfterFunctionDefinitionName: true
+  BeforeNonEmptyParentheses: false
+SeparateDefinitionBlocks: Always

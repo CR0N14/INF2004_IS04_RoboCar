@@ -29,6 +29,11 @@
  */
 
 #include "imu_task.h"
+#include "../demo_config.h"
+#if ENCODER_FREE_DEMO
+#include "demo_imu.h"
+#include "demo_pickup.h"
+#endif
 #include "subsystem4.h"
 #include "imu_cfg.h"
 #include "imu_console.h"
@@ -101,6 +106,16 @@ static bool         g_b_fault_reported;
 static imu_in_t const g_in_zero;
 static s4_tlm_t const g_tlm_zero;
 
+#if ENCODER_FREE_DEMO
+static ID g_demo_request;
+static demo_imu_t g_demo, g_demo_pub;
+static demo_pickup_t g_pickup;
+static uint32_t wall_ms(void){SYSTIM t;tk_get_otm(&t);return t.lo;}
+ER demo_imu_read(demo_imu_t *out){ER e=tk_loc_mtx(g_mtx_tlm,TMO_POL);if(e==E_OK){*out=g_demo_pub;tk_unl_mtx(g_mtx_tlm);}return e;}
+bool demo_imu_ready(void){demo_imu_t v;return demo_imu_read(&v)==E_OK&&v.ready&&!v.latched&&wall_ms()-v.time_ms<=100u;}
+bool demo_imu_latched(void){demo_imu_t v;return demo_imu_read(&v)==E_OK&&v.latched;}
+ER demo_imu_zero(void){if(SM_STATUS_STATE(sm_status_word())!=SM_STATE_STANDBY)return E_OBJ;return tk_set_flg(g_demo_request,1u);}
+#endif
 /* ---- Events ------------------------------------------------------- */
 
 static void
@@ -486,6 +501,14 @@ monitor_cycle(uint32_t flags)
     took = drv_imu_now_us() - t0;
     g_dbg.logic_us_max = (took > g_dbg.logic_us_max) ? took :
                          g_dbg.logic_us_max;
+#if ENCODER_FREE_DEMO
+    g_demo.time_ms=wall_ms();
+    if(in.n_acc){for(int i=0;i<3;i++)g_demo.mg[i]=in.acc[in.n_acc-1][i]/IMU_Q2_PER_MG;}
+    g_demo.latched=demo_pickup_step(&g_pickup,g_demo.time_ms,
+        g_ctx.view.pitch_cdeg,g_ctx.view.roll_cdeg,in.b_motors,
+        out.b_collision||out.b_tipover);
+    if(out.b_hump){g_demo.peak_mm=out.hump.peak_mm;g_demo.height_valid=true;}
+#endif
     handle_outputs(&out);
 }
 
@@ -554,6 +577,10 @@ publish(void)
     if (E_OK == tk_loc_mtx(g_mtx_tlm, TMO_FEVR))
     {
         g_tlm = t;
+#if ENCODER_FREE_DEMO
+        g_demo.ready=g_dbg.b_calibrated&&g_mode==IMU_MODE_MONITOR;
+        g_demo_pub=g_demo;
+#endif
         g_dbg_pub = g_dbg;
         (void)tk_unl_mtx(g_mtx_tlm);
     }
@@ -603,8 +630,20 @@ imu_task(INT stacd, void *exinf)
 
         wait_tick();
         g_dbg.cycles++;
+#if ENCODER_FREE_DEMO
+        uint32_t actual_now = wall_ms();
+        if (g_demo.time_ms != 0u && actual_now - g_demo.time_ms > 30u &&
+            g_mode == IMU_MODE_MONITOR) {
+            imu_logic_restart(&g_ctx);
+            g_demo.height_valid = false;
+        }
+#endif
         g_now_ms += IMU_CYCLE_MS;
         flags = sm_mode_flags();
+#if ENCODER_FREE_DEMO
+        UINT req=0;tk_wai_flg(g_demo_request,1u,TWF_ORW|TWF_BITCLR,&req,TMO_POL);
+        if(req&&SM_STATUS_STATE(sm_status_word())==SM_STATE_STANDBY){g_demo.latched=false;g_demo.height_valid=false;g_demo.peak_mm=0;g_dbg.b_calibrated=false;g_pickup=(demo_pickup_t){0};start_selftest(true);}
+#endif
 
         if ((0u != (flags & SM_FLG_INITIALISING)) &&
             (0u == (g_prev_flags & SM_FLG_INITIALISING)) &&
@@ -688,6 +727,9 @@ imu_task_init(void)
     T_CMTX cmtx = {0};
     T_CCYC ccyc = {0};
 
+#if ENCODER_FREE_DEMO
+    T_CFLG f={0};f.flgatr=TA_TFIFO;g_demo_request=tk_cre_flg(&f);if(g_demo_request<0)return g_demo_request;
+#endif
     g_tlm.imu_status = (unsigned int)S4_IMU_SELFTEST;
     g_mode = (uint8_t)IMU_MODE_SELFTEST;
 

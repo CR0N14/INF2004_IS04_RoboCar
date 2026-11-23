@@ -13,12 +13,13 @@
 
 #include "sm_types.h"
 
-/* Whole statechart context: 30 bits, one 32-bit word */
+/* Whole statechart context: 35 logical bits; ABI storage may include padding */
 typedef struct
 {
     unsigned int state      : 3;    /* sm_state_t                        */
     unsigned int nav_mode   : 3;    /* sm_nav_mode_t                     */
     unsigned int b_pending  : 1;    /* a barcode action waits for a      */
+    unsigned int pending_symbol : 5; /* A-Z remembered until junction */
     unsigned int pending    : 2;    /*   junction (sm_action_t)          */
     unsigned int retries    : 2;    /* ERROR -> INITIALISING retries     */
     unsigned int ready_mask : 5;    /* SM_READY_BIT() of ready subsystems */

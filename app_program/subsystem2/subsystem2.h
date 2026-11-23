@@ -2,14 +2,20 @@
  *	subsystem2.h
  *	Subsystem 2 -- Motion Control.  Student ID: 2303576.
  *
- *	EMPTY TEMPLATE.  Put here only what OTHER subsystems may use (object IDs,
- *	message formats, priorities); keep everything else LOCAL in the .c.
+ *	Public interface: only what OTHER subsystems may use.  Everything else
+ *	is local to the subsystem2/ files:
+ *	  motion_config.h    pins and tunables
+ *	  drv_motor.c/.h     PWM motor driver      (Motion Control task only)
+ *	  drv_encoder.c/.h   quadrature encoders   (interrupt handler)
+ *	  motion_logic.c/.h  PID, speed, steering mix, stall, manoeuvres
+ *	  subsystem2.c       Motion Control task, statechart, these functions
  */
 
 #ifndef SUBSYSTEM2_H
 #define SUBSYSTEM2_H
 
 #include "../app.h"
+#include <stdint.h>
 
 #define S2_PRI_MAIN	PRI_MOTION_CONTROL	/* app.h priority map */
 
@@ -51,5 +57,34 @@ typedef struct
 } s2_tlm_t;
 
 ER s2_get_tlm(s2_tlm_t *p_tlm);
+
+/* ---------------------------------------------------------------------
+ *  Steering input, S3 Line Following -> S2  (DRAFT: format to be agreed
+ *  with S3, then recorded in TEAM.md section 5)
+ *
+ *  S3 calls s2_set_steering() every time it has a new line position
+ *  (e.g. every 10 ms).  S2 keeps only the latest value, under its own
+ *  mutex, and uses it only while the State Machine's nav mode is
+ *  TRACKING or RECOVERY.  A value older than STEER_STALE_MS is ignored
+ *  and the car holds still until fresh steering arrives.
+ *
+ *  steer_pct: -100..+100 (clamped).  Positive = steer RIGHT.  It sets how
+ *  much the inside wheel slows down: 0 = straight, 50 = inside wheel at
+ *  half speed, 100 = inside wheel stopped (pivot).
+ *
+ *  Never blocks for long: the mutex is held only to copy two values.
+ *  Returns E_OK, or the tk_loc_mtx() error.
+ * --------------------------------------------------------------------- */
+#define S2_STEER_MAX_PCT    100
+
+ER s2_set_steering(INT steer_pct);
+
+/* Acquisition-associated input and motion snapshot for the IR service. */
+ER s2_set_line_target(INT steer_pct, uint32_t acquired_ms, BOOL valid);
+ER s2_get_motion_sample(s2_tlm_t *p_tlm, uint32_t *p_acquired_ms);
+
+ER s2_bench_request(UINT wheel);
+ER s2_bench_cancel(void);
+ER s2_demo_duty(int *left, int *right, uint32_t *stamp);
 
 #endif /* SUBSYSTEM2_H */
