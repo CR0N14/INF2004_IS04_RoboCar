@@ -1,6 +1,6 @@
 /*
  *  test_logic.c
- *  S4-H03..H22: imu_logic against the car/hump model and synthetic data.
+ *  S4-H03..H24: imu_logic against the car/hump model and synthetic data.
  */
 
 #include <math.h>
@@ -1015,6 +1015,110 @@ test_impossible_reading(void)
           (int)imu_cal_mean_mg(&cal));
 }
 
+/* S4-H23 the swing that "car moved" reports: max - min of the 10 ms
+   means on each axis, so one bad 10 ms on Z shows as Z only */
+static void
+test_swing(void)
+{
+    int16_t samples[4][3];
+    int32_t swing[3];
+    imu_cal_t cal;
+    imu_align_t align;
+    int32_t g_mg;
+    int c;
+    int i;
+
+    imu_cal_reset(&cal);
+    imu_cal_swing_mg(&cal, swing);
+    CHECK("S4-H23", (0 == swing[0]) && (0 == swing[1]) && (0 == swing[2]),
+          "no data: swing 0");
+
+    for (c = 0; c < 100; c++)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            samples[i][0] = (int16_t)(((c + i) % 3) * 4);   /* 0..2 mg */
+            samples[i][1] = 0;
+            /* one 10 ms mean 100 mg high on z (400 q2 on every sample) */
+            samples[i][2] = (int16_t)((50 == c) ? 4400 : 4000);
+        }
+        imu_cal_add(&cal, samples, 4u);
+    }
+    imu_cal_swing_mg(&cal, swing);
+    CHECK("S4-H23", (swing[0] <= 2) && (0 == swing[1]) && (100 == swing[2]),
+          "one bump on z: swing X %d, Y %d, Z %d mg", (int)swing[0],
+          (int)swing[1], (int)swing[2]);
+    CHECK("S4-H23", IMU_CAL_MOVED == imu_cal_finish(&cal, 360u, &align,
+                                                    &g_mg),
+          "and that is car moved (limit %d mg)", IMU_ST_STILL_MG);
+}
+
+/* Mean gravity of 100 cycles of one body q2 vector */
+static void
+cal_of(imu_cal_t *p_cal, int16_t x, int16_t y, int16_t z)
+{
+    int16_t samples[4][3];
+    int c;
+    int i;
+
+    imu_cal_reset(p_cal);
+    for (c = 0; c < 100; c++)
+    {
+        for (i = 0; i < 4; i++)
+        {
+            samples[i][0] = x;
+            samples[i][1] = y;
+            samples[i][2] = z;
+        }
+        imu_cal_add(p_cal, samples, 4u);
+    }
+}
+
+/* S4-H24 standing level: the angle from the board's attitude on level
+   ground (IMU_MOUNT_UP_*), which a calibration must be within */
+static void
+test_level(void)
+{
+    /* t4_powercycle_stage2, car on the floor: sensor-axis counts */
+    static int16_t const floor_raw[3] = { -1326, 783, -7005 };
+    int16_t samples[4][3];
+    imu_cal_t cal;
+    int32_t tilt;
+    int i;
+
+    imu_cal_reset(&cal);
+    CHECK("S4-H24", 18000 == imu_cal_tilt_cdeg(&cal), "no data: 180 deg");
+
+    imu_cal_reset(&cal);
+    for (i = 0; i < 4; i++)
+    {
+        imu_map_acc(floor_raw, samples[i]);
+    }
+    imu_cal_add(&cal, samples, 4u);
+    tilt = imu_cal_tilt_cdeg(&cal);
+    CHECK("S4-H24", tilt <= 30, "the floor reading itself: %d cdeg",
+          (int)tilt);
+
+    cal_of(&cal, -964, 16, 3836);
+    tilt = imu_cal_tilt_cdeg(&cal);
+    CHECK("S4-H24", tilt <= 5, "IMU_MOUNT_UP_* x 4 (q2): %d cdeg", (int)tilt);
+
+    cal_of(&cal, -964, -151, 3833);     /* rolled 2.5 deg                */
+    tilt = imu_cal_tilt_cdeg(&cal);
+    CHECK("S4-H24", (abs(tilt - 250) <= 20) && (tilt <= IMU_ST_LEVEL_CDEG),
+          "rolled 2.5 deg: %d cdeg, level (limit %d)", (int)tilt,
+          IMU_ST_LEVEL_CDEG);
+
+    cal_of(&cal, -283, 16, 3945);       /* pitched 10 deg                */
+    tilt = imu_cal_tilt_cdeg(&cal);
+    CHECK("S4-H24", (abs(tilt - 1000) <= 20) && (tilt > IMU_ST_LEVEL_CDEG),
+          "pitched 10 deg: %d cdeg, not level", (int)tilt);
+
+    cal_of(&cal, 964, -16, -3836);      /* upside down                   */
+    tilt = imu_cal_tilt_cdeg(&cal);
+    CHECK("S4-H24", tilt >= 17900, "upside down: %d cdeg", (int)tilt);
+}
+
 void
 test_logic(void)
 {
@@ -1029,4 +1133,6 @@ test_logic(void)
     test_collision_tip();
     test_run_peak();
     test_impossible_reading();
+    test_swing();
+    test_level();
 }

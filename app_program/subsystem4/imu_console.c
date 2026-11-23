@@ -779,15 +779,23 @@ print_deg(char const *p_label, int32_t cdeg)
 
 EXPORT void
 imu_console_selftest(bool b_ok, uint8_t cal_result, int32_t g_mg,
-                     uint8_t addr, uint32_t now_ms)
+                     uint8_t addr, bool b_calibrated, uint32_t now_ms)
 {
+    char const *p_note = "";
+
     print_ms(now_ms);
+    if (!b_calibrated)
+    {
+        p_note = ", calibrating at the first still, level second";
+    }
+    else if ((uint8_t)IMU_CAL_MOVED == cal_result)
+    {
+        p_note = ", car moving: calibration kept";
+    }
     if (b_ok)
     {
         tm_printf((UB *)"IMU self-test passed: LSM303D at 0x%02x "
-                  "(|g| %d mg%s)\n", (unsigned int)addr, (int)g_mg,
-                  ((uint8_t)IMU_CAL_MOVED == cal_result) ?
-                  ", car moving: not recalibrated" : "");
+                  "(|g| %d mg%s)\n", (unsigned int)addr, (int)g_mg, p_note);
     }
     else
     {
@@ -824,6 +832,90 @@ imu_console_fault(ER er, uint8_t reason, uint32_t now_ms)
     }
     tm_printf((UB *)", data invalid, retrying every 1 s\n");
 }
+
+/* "X 12, Y 9, Z 87 mg", and the axes over the limit */
+static void
+print_swing(int32_t const p_swing[3])
+{
+    static char const g_axis[3] = { 'X', 'Y', 'Z' };
+    uint32_t i;
+    bool b_over = false;
+
+    tm_printf((UB *)"swing in 1 s X %d, Y %d, Z %d mg (limit %d)",
+              (int)p_swing[0], (int)p_swing[1], (int)p_swing[2],
+              (int)IMU_ST_STILL_MG);
+    for (i = 0u; i < 3u; i++)
+    {
+        if (p_swing[i] > IMU_ST_STILL_MG)
+        {
+            tm_printf((UB *)"%s%c", b_over ? "+" : ": moved on ",
+                      g_axis[i]);
+            b_over = true;
+        }
+    }
+}
+
+EXPORT void
+imu_console_moved(int32_t const p_swing[3], uint32_t now_ms)
+{
+    print_ms(now_ms);
+    tm_printf((UB *)"IMU self-test, car moved: ");
+    print_swing(p_swing);
+    tm_printf((UB *)" (x forward, y left, z up)\n");
+}
+
+/* cdeg >= 0 as "12.3 deg" */
+static void
+print_angle(int32_t cdeg)
+{
+    int32_t const tenths = div_round(cdeg, 10);
+
+    tm_printf((UB *)"%d.%d deg", (int)(tenths / 10), (int)(tenths % 10));
+}
+
+EXPORT void
+imu_console_calibrated(int32_t const p_swing[3], int32_t g_mg,
+                       int32_t tilt_cdeg, uint32_t now_ms)
+{
+    print_ms(now_ms);
+    tm_printf((UB *)"IMU calibrated on a still second: |g| %d mg, ",
+              (int)g_mg);
+    print_angle(tilt_cdeg);
+    tm_printf((UB *)" from level standing, ");
+    print_swing(p_swing);
+    tm_printf((UB *)"\n");
+}
+
+EXPORT void
+imu_console_not_level(int32_t tilt_cdeg, uint32_t now_ms)
+{
+    print_ms(now_ms);
+    tm_printf((UB *)"IMU still but not standing level: ");
+    print_angle(tilt_cdeg);
+    tm_printf((UB *)" from level (limit ");
+    print_angle(IMU_ST_LEVEL_CDEG);
+    tm_printf((UB *)"), not calibrated; put the car down flat\n");
+}
+
+#if (S4_CONSOLE_STILL == S4_CFG_CONSOLE)
+EXPORT void
+imu_console_still(int32_t const p_swing[3], int32_t g_mg, uint32_t n,
+                  uint32_t now_ms)
+{
+    static drv_imu_stats_t g_last;
+    drv_imu_stats_t st;
+
+    drv_imu_get_stats(&st);
+    print_ms(now_ms);
+    tm_printf((UB *)"still check: ");
+    print_swing(p_swing);
+    tm_printf((UB *)"  |g| %d mg, %u samples, i2c fails %u, "
+              "FIFO overruns %u\n", (int)g_mg, (unsigned int)n,
+              (unsigned int)(st.fails - g_last.fails),
+              (unsigned int)(st.fifo_overruns - g_last.fifo_overruns));
+    g_last = st;
+}
+#endif
 
 EXPORT void
 imu_console_status(imu_view_t const *p_view, uint8_t status,

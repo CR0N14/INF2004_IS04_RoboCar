@@ -10,6 +10,14 @@
  *  FAULT --every 1 s, sensor answers--> SELF-TEST (runtime)
  *  Any state --SM_FLG_INITIALISING rising--> SELF-TEST (initial)
  *
+ *  The self-test calibrates on 1 s at rest, standing level (within
+ *  IMU_ST_LEVEL_CDEG of the board's attitude on level ground).  If the
+ *  car is not still or not level then, the sensor still passes (it
+ *  works) and MONITOR calibrates on the first still, level second while
+ *  the motors are off.  2026-11-23: the car is touched in the seconds
+ *  after boot or imu-zero, and the old 3 tries in 5 s failed every
+ *  time, although it then sat still.
+ *
  *  Wrong data from a chip that answers (not 1 g at rest, or impossible)
  *  makes the next attempt reload the chip's factory trimming (CTRL0
  *  BOOT) first, and always run the 1 s average.  On 2026-11-23 a chip
@@ -38,6 +46,7 @@
 #include "imu_cfg.h"
 #include "imu_console.h"
 #include "imu_logic.h"
+#include "imu_params.h"
 #include "imu_fixmath.h"
 #include "drv_imu.h"
 #include "../subsystem1/state_machine.h"
@@ -86,6 +95,7 @@ static imu_ctx_t    g_ctx;
 static imu_cal_t    g_cal;
 static imu_cal_t    g_sane;         /* MONITOR: the current 1 s of data  */
 static uint32_t     g_sane_cycles;
+static bool         g_b_tilt_said;  /* "not standing level" printed      */
 static bool         g_b_bad_data;   /* last 1 s mean wrong: reload chip  */
 static bool         g_b_reloaded;   /* ... done in the current attempt   */
 static imu_align_t  g_align;
@@ -219,6 +229,7 @@ enter_mode(imu_mode_t mode)
         imu_logic_restart(&g_ctx);
         imu_cal_reset(&g_sane);
         g_sane_cycles = 0u;
+        g_b_tilt_said = false;
     }
     g_mode = (uint8_t)mode;
 }
@@ -266,7 +277,7 @@ selftest_passed(uint32_t flags)
     enter_mode((0u != (flags & SM_FLG_SENSORS_ENABLED)) ? IMU_MODE_MONITOR :
                IMU_MODE_IDLE);
     imu_console_selftest(true, g_dbg.cal_result, g_dbg.g_mg, g_dbg.addr,
-                         g_now_ms);
+                         g_dbg.b_calibrated, g_now_ms);
 }
 
 /* reason: imu_cal_result_t or IMU_FAIL_* */
@@ -290,7 +301,7 @@ selftest_failed(ER er, uint8_t reason)
     }
 
     imu_console_selftest(false, g_dbg.cal_result, g_dbg.g_mg, g_dbg.addr,
-                         g_now_ms);
+                         g_dbg.b_calibrated, g_now_ms);
     if (g_b_initial)
     {
 #if S4_CFG_REPORT_ONLY
@@ -317,6 +328,7 @@ selftest_cycle(uint32_t flags)
 {
     imu_in_t in;
     uint8_t addr = DRV_IMU_NO_ADDR;
+    int32_t tilt;
     ER er;
 
     if (0u != g_wait)
@@ -384,17 +396,31 @@ selftest_cycle(uint32_t flags)
 
     g_dbg.cal_result = (uint8_t)imu_cal_finish(&g_cal, ST_MIN_SAMPLES,
                                                &g_align, &g_dbg.g_mg);
-    if (IMU_CAL_OK == g_dbg.cal_result)
+    tilt = imu_cal_tilt_cdeg(&g_cal);
+    if ((IMU_CAL_OK == g_dbg.cal_result) && (tilt <= IMU_ST_LEVEL_CDEG))
     {
         g_dbg.b_calibrated = true;
         selftest_passed(flags);
     }
-    else if (!g_b_initial && (IMU_CAL_MOVED == g_dbg.cal_result))
+    else if ((IMU_CAL_OK == g_dbg.cal_result) ||
+             (IMU_CAL_MOVED == g_dbg.cal_result))
     {
-        /* Back during a run: the sensor works (|g| is possible, or the
-           result would be IMU_CAL_IMPOSSIBLE), the car just is not still.
-           Keep the boot calibration; without one, run uncalibrated rather
-           than stay without data. */
+        int32_t swing[3];
+
+        /* The sensor works (|g| is possible, or the result would be
+           IMU_CAL_IMPOSSIBLE), the car just is not still, or not
+           standing level.  Keep the calibration it has; without one, run
+           uncalibrated (identity: sane_cycle() calibrates on body data)
+           until the first still, level second. */
+        if (IMU_CAL_MOVED == g_dbg.cal_result)
+        {
+            imu_cal_swing_mg(&g_cal, swing);
+            imu_console_moved(swing, g_now_ms);
+        }
+        else
+        {
+            imu_console_not_level(tilt, g_now_ms);
+        }
         if (!g_dbg.b_calibrated)
         {
             imu_align_identity(&g_align);
@@ -407,14 +433,65 @@ selftest_cycle(uint32_t flags)
     }
 }
 
+/* Not calibrated yet, motors off, a full second of data: calibrate on
+   it if the car was still and standing level.  Its data is body data
+   (identity alignment while uncalibrated).  A still second that is not
+   1 g re-tests the chip (trimming reload first, as in the self-test).
+   true if the alignment changed or the self-test was started. */
+static bool
+still_calibrate(void)
+{
+    imu_align_t align;
+    int32_t g_mg;
+    int32_t swing[3];
+    int32_t tilt;
+    imu_cal_result_t res;
+
+    res = imu_cal_finish(&g_sane, ST_MIN_SAMPLES, &align, &g_mg);
+    tilt = imu_cal_tilt_cdeg(&g_sane);
+    if ((IMU_CAL_OK == res) && (tilt > IMU_ST_LEVEL_CDEG))
+    {
+        if (!g_b_tilt_said)
+        {
+            g_b_tilt_said = true;       /* once per stay in MONITOR      */
+            imu_console_not_level(tilt, g_now_ms);
+        }
+        return false;
+    }
+    if (IMU_CAL_OK == res)
+    {
+        g_align = align;
+        g_dbg.b_calibrated = true;
+        g_dbg.cal_result = (uint8_t)IMU_CAL_OK;
+        g_dbg.g_mg = g_mg;
+        imu_logic_restart(&g_ctx);      /* attitude restarts level       */
+        imu_cal_swing_mg(&g_sane, swing);
+        imu_console_calibrated(swing, g_mg, tilt, g_now_ms);
+        return true;
+    }
+    if (IMU_CAL_NOT_1G == res)
+    {
+        g_dbg.cal_result = (uint8_t)IMU_CAL_NOT_1G;
+        g_dbg.g_mg = g_mg;
+        g_b_bad_data = true;
+        start_selftest(false);
+        return true;
+    }
+    return false;                       /* moving: next second           */
+}
+
 /* MONITOR: every 1 s, the mean |a| must be possible for a car.  Wrong
    data is handled like a lost sensor (FR27), and the re-test reloads
-   the chip.  false if the sensor was just declared faulty. */
+   the chip.  The same second calibrates the car if it still needs it
+   (still_calibrate).  false if this cycle's data must not go on: the
+   sensor was just declared faulty or re-tested, or the alignment just
+   changed. */
 static bool
-sane_cycle(imu_in_t const *p_in)
+sane_cycle(imu_in_t const *p_in, uint32_t flags)
 {
     int32_t g_mg;
     bool b_judged;
+    bool b_changed = false;
 
     imu_cal_add(&g_sane, (int16_t const (*)[3])p_in->acc, p_in->n_acc);
     g_sane_cycles++;
@@ -424,11 +501,24 @@ sane_cycle(imu_in_t const *p_in)
     }
     g_mg = imu_cal_mean_mg(&g_sane);
     b_judged = (g_sane.n >= ST_MIN_SAMPLES);
+#if (S4_CONSOLE_STILL == S4_CFG_CONSOLE)
+    {
+        int32_t swing[3];
+
+        imu_cal_swing_mg(&g_sane, swing);
+        imu_console_still(swing, g_mg, g_sane.n, g_now_ms);
+    }
+#endif
+    if (b_judged && imu_g_plausible(g_mg) && !g_dbg.b_calibrated &&
+        (0u == (flags & SM_FLG_MOTORS_ENABLED)))
+    {
+        b_changed = still_calibrate();
+    }
     imu_cal_reset(&g_sane);
     g_sane_cycles = 0u;
     if (!b_judged || imu_g_plausible(g_mg))
     {
-        return true;
+        return !b_changed;
     }
     g_dbg.g_mg = g_mg;
     g_dbg.cal_result = (uint8_t)IMU_CAL_IMPOSSIBLE;
@@ -488,7 +578,7 @@ monitor_cycle(uint32_t flags)
         return;
     }
     g_fail_run = 0u;
-    if (!sane_cycle(&in))
+    if (!sane_cycle(&in, flags))
     {
         return;
     }

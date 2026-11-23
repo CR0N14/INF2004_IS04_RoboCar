@@ -121,6 +121,18 @@
    powered off; the task now reloads its trimming (CTRL0 BOOT). */
 #define IMU_ST_IMPOSSIBLE_MG    500
 
+/* Gravity in the body frame, uncalibrated, with the car standing on
+   level ground: the board's tilt on its bracket, 14.1 deg nose-down and
+   0.2 deg to the side.  [CAR] 2026-11-23 t4_powercycle_stage2, car on
+   the floor (S4-M01b, 2026-11-12: 13.8 deg).  A calibration is taken
+   only within IMU_ST_LEVEL_CDEG of it, so never from a car held still in
+   a hand.  Measure these again if the board is remounted (until then
+   every still second says "not standing level"). */
+#define IMU_MOUNT_UP_X_MG       (-241)
+#define IMU_MOUNT_UP_Y_MG       4
+#define IMU_MOUNT_UP_Z_MG       959
+#define IMU_ST_LEVEL_CDEG       300
+
 /* =====================================================================
  *  Geometry: IMU chip relative to the rear axle (hub centre).  Measured
  *  by hand 2026-11-04 (1.75 cm behind, 9.2 cm above).  [BENCH] re-check

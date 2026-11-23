@@ -50,11 +50,17 @@
  *                      accelerometer set-ups (datasheet defaults, after a
  *                      factory-trim reload, ours, self-test on) and prints
  *                      the statistics of each.  Nothing else runs.
+ *    S4_CONSOLE_STILL  still check on the whole car: every second in
+ *                      MONITOR, the swing of each axis (what the
+ *                      self-test calls "car moved"), |g| and the I2C
+ *                      errors of that second.  The IMU task runs as
+ *                      normal.
  * --------------------------------------------------------------------- */
 #define S4_CONSOLE_OFF          0
 #define S4_CONSOLE_BENCH        1
 #define S4_CONSOLE_RAW          2
 #define S4_CONSOLE_ACCDIAG      3
+#define S4_CONSOLE_STILL        4
 
 #define S4_CFG_CONSOLE          S4_CONSOLE_OFF
 

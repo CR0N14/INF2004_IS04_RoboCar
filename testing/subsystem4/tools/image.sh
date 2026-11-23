@@ -9,6 +9,8 @@
 #         s4_bench_readout   default build, S4_CFG_CONSOLE S4_CONSOLE_BENCH,
 #                            S4_CFG_BENCH_MOTORS 1, S4_CFG_REPORT_ONLY 1
 #         s4_unit_tests      make TEST=1, imu_cfg.h defaults
+#       and, on request only: s4_still_check (default build,
+#       S4_CFG_CONSOLE S4_CONSOLE_STILL: whole car, swing per second)
 #   testing/subsystem4/tools/image.sh s4_bench_readout
 #       one of the four
 #   testing/subsystem4/tools/image.sh NAME [SWITCH=VALUE ...] [-- MAKE_ARGS]
@@ -84,6 +86,7 @@ preset() {
     s4_bench_readout)   echo "S4_CFG_CONSOLE=S4_CONSOLE_BENCH" \
                              "S4_CFG_BENCH_MOTORS=1 S4_CFG_REPORT_ONLY=1" ;;
     s4_unit_tests)      echo "-- TEST=1" ;;
+    s4_still_check)     echo "S4_CFG_CONSOLE=S4_CONSOLE_STILL" ;;
     *)                  return 1 ;;
     esac
 }
