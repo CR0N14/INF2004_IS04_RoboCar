@@ -233,6 +233,15 @@ imu_cal_result_t imu_cal_finish(imu_cal_t const *p_cal, uint32_t want_n,
 /* |mean| of the samples added so far, mg (0 if none) */
 int32_t imu_cal_mean_mg(imu_cal_t const *p_cal);
 
+/* Swing of each axis so far: max - min of the 10 ms means, mg (0 if
+   none).  Over IMU_ST_STILL_MG on any axis is IMU_CAL_MOVED. */
+void    imu_cal_swing_mg(imu_cal_t const *p_cal, int32_t p_mg[3]);
+
+/* Angle between the mean gravity so far (body, uncalibrated) and the
+   gravity of the car standing on level ground (IMU_MOUNT_UP_*), cdeg;
+   18000 if none.  Over IMU_ST_LEVEL_CDEG: not standing level. */
+int32_t imu_cal_tilt_cdeg(imu_cal_t const *p_cal);
+
 /* false if a 1 s mean |a| cannot be the car (IMU_ST_IMPOSSIBLE_MG) */
 bool    imu_g_plausible(int32_t g_mg);
 

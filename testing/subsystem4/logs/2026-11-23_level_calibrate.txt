@@ -1,0 +1,314 @@
+--- record.sh: connected to /dev/cu.usbmodemMTK3PICO1 at 14:06:25 ---
+
+
+microT-Kernel Version 3.00
+
+
+=== micro T-Kernel on Raspberry Pi Pico W (spec 0x6300, product 0x0003) ===
+dual-core (SMP) build, usermain on core 0
+wifi: cyw43_utk_task starting (proc 1)
+wifi: cyw43_init() ...
+wifi: cyw43_init() returned, bringing interface up ...
+sm: INITIALISING -> INITIALISING (evt 0, faults 0x0000)
+all subsystems started
+
+sm: INITIALISING -> STANDBY (evt 18, faults 0x0000)
+[S5] angle=45 deg distance=22 cm
+s4 1.01 IMU self-test, car moved: swing in 1 s X 159, Y 51, Z 710 mg (limit 40): moved on X+Y+Z (x forward, y left, z up)
+s4 1.01 IMU self-test passed: LSM303D at 0x1d (|g| 982 mg, car moving: calibrating at the first still second)
+[S5] angle=90 deg distance=43 cm
+s4 2.01 still check: swing in 1 s X 30, Y 49, Z 22 mg (limit 40): moved on Y  |g| 989 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=18 cm
+s4 3.01 still check: swing in 1 s X 52, Y 17, Z 22 mg (limit 40): moved on X  |g| 989 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 4.01 still check: swing in 1 s X 21, Y 23, Z 10 mg (limit 40)  |g| 989 mg, 391 samples, i2c fails 0, FIFO overruns 0
+s4 4.01 IMU calibrated on a still second: |g| 989 mg, swing in 1 s X 21, Y 23, Z 10 mg (limit 40)
+[S5] angle=45 deg distance=47 cm
+s4 5.01 still check: swing in 1 s X 25, Y 23, Z 7 mg (limit 40)  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 6.01 still check: swing in 1 s X 16, Y 9, Z 10 mg (limit 40)  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=18 cm
+s4 7.01 still check: swing in 1 s X 30, Y 26, Z 14 mg (limit 40)  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0
+--- record.sh: /dev/cu.usbmodemMTK3PICO1 closed at 14:06:31 ---
+--- record.sh: connected to /dev/cu.usbmodemMTK3PICO1 at 14:06:42 ---
+
+
+microT-Kernel Version 3.00
+
+
+=== micro T-Kernel on Raspberry Pi Pico W (spec 0x6300, product 0x0003) ===
+dual-core (SMP) build, usermain on core 0
+wifi: cyw43_utk_task starting (proc 1)
+wifi: cyw43_init() ...
+wifi: cyw43_init() returned, bringing interface up ...
+sm: INITIALISING -> INITIALISING (evt 0, faults 0x0000)
+all subsystems started
+
+sm: INITIALISING -> STANDBY (evt 18, faults 0x0000)
+[S5] angle=45 deg distance=29 cm
+s4 1.01 IMU self-test, car moved: swing in 1 s X 48, Y 30, Z 262 mg (limit 40): moved on X+Z (x forward, y left, z up)
+s4 1.01 IMU self-test passed: LSM303D at 0x1d (|g| 986 mg, calibrating at the first still, level second)
+[S5] angle=90 deg distance=20 cm
+s4 2.01 still check: swing in 1 s X 13, Y 10, Z 7 mg (limit 40)  |g| 989 mg, 390 samples, i2c fails 0, FIFO overruns 0
+s4 2.01 IMU calibrated on a still second: |g| 989 mg, 0.1 deg from level standing, swing in 1 s X 13, Y 10, Z 7 mg (limit 40)
+[S5] angle=135 deg distance=18 cm
+s4 3.01 still check: swing in 1 s X 52, Y 40, Z 21 mg (limit 40): moved on X  |g| 1001 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 4.01 still check: swing in 1 s X 31, Y 35, Z 26 mg (limit 40)  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=47 cm
+s4 5.01 still check: swing in 1 s X 43, Y 12, Z 9 mg (limit 40): moved on X  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 6.01 still check: swing in 1 s X 16, Y 9, Z 12 mg (limit 40)  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=18 cm
+s4 7.01 still check: swing in 1 s X 37, Y 26, Z 11 mg (limit 40)  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 8.01 still check: swing in 1 s X 41, Y 18, Z 30 mg (limit 40): moved on X  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=36 cm
+s4 9.01 still check: swing in 1 s X 30, Y 16, Z 18 mg (limit 40)  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 10.01 still check: swing in 1 s X 13, Y 10, Z 10 mg (limit 40)  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=18 cm
+s4 11.01 still check: swing in 1 s X 39, Y 36, Z 13 mg (limit 40)  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=20 cm
+s4 12.01 still check: swing in 1 s X 37, Y 45, Z 54 mg (limit 40): moved on Y+Z  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=46 cm
+s4 13.01 still check: swing in 1 s X 478, Y 86, Z 46 mg (limit 40): moved on X+Y+Z  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=131 cm
+s4 14.01 still check: swing in 1 s X 380, Y 38, Z 94 mg (limit 40): moved on X+Z  |g| 1004 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=60 cm
+s4 15.01 still check: swing in 1 s X 175, Y 65, Z 53 mg (limit 40): moved on X+Y+Z  |g| 1008 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=131 cm
+s4 16.01 still check: swing in 1 s X 187, Y 85, Z 92 mg (limit 40): moved on X+Y+Z  |g| 1007 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg no echo
+s4 17.01 still check: swing in 1 s X 111, Y 47, Z 17 mg (limit 40): moved on X+Y  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=131 cm
+s4 18.01 still check: swing in 1 s X 81, Y 21, Z 21 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=60 cm
+s4 19.01 still check: swing in 1 s X 41, Y 27, Z 12 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=131 cm
+s4 20.01 still check: swing in 1 s X 37, Y 35, Z 11 mg (limit 40)  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=40 cm
+s4 21.01 still check: swing in 1 s X 48, Y 32, Z 12 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 22.01 still check: swing in 1 s X 21, Y 16, Z 8 mg (limit 40)  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+s4 23.01 still check: swing in 1 s X 30, Y 37, Z 10 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=59 cm
+s4 24.01 still check: swing in 1 s X 32, Y 42, Z 13 mg (limit 40): moved on Y  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=130 cm
+s4 25.01 still check: swing in 1 s X 22, Y 33, Z 11 mg (limit 40)  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=57 cm
+s4 26.01 still check: swing in 1 s X 21, Y 17, Z 11 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=65 cm
+s4 27.01 still check: swing in 1 s X 39, Y 43, Z 9 mg (limit 40): moved on Y  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=57 cm
+s4 28.01 still check: swing in 1 s X 30, Y 30, Z 11 mg (limit 40)  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=62 cm
+s4 29.01 still check: swing in 1 s X 18, Y 31, Z 10 mg (limit 40)  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=39 cm
+s4 30.01 still check: swing in 1 s X 24, Y 17, Z 13 mg (limit 40)  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 31.01 still check: swing in 1 s X 57, Y 29, Z 13 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=58 cm
+s4 32.01 still check: swing in 1 s X 29, Y 31, Z 9 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=130 cm
+s4 33.01 still check: swing in 1 s X 25, Y 33, Z 9 mg (limit 40)  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=40 cm
+s4 34.01 still check: swing in 1 s X 51, Y 16, Z 10 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 35.01 still check: swing in 1 s X 37, Y 42, Z 15 mg (limit 40): moved on Y  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=58 cm
+s4 36.01 still check: swing in 1 s X 42, Y 32, Z 13 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 37.01 still check: swing in 1 s X 35, Y 34, Z 12 mg (limit 40)  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=34 cm
+s4 38.01 still check: swing in 1 s X 113, Y 64, Z 43 mg (limit 40): moved on X+Y+Z  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 39.01 still check: swing in 1 s X 73, Y 34, Z 20 mg (limit 40): moved on X  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=40 cm
+s4 40.01 still check: swing in 1 s X 49, Y 25, Z 13 mg (limit 40): moved on X  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 41.01 still check: swing in 1 s X 29, Y 28, Z 10 mg (limit 40)  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=33 cm
+s4 42.01 still check: swing in 1 s X 45, Y 16, Z 12 mg (limit 40): moved on X  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 43.01 still check: swing in 1 s X 47, Y 21, Z 12 mg (limit 40): moved on X  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=41 cm
+s4 44.01 still check: swing in 1 s X 31, Y 26, Z 15 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=60 cm
+s4 45.01 still check: swing in 1 s X 32, Y 25, Z 12 mg (limit 40)  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=36 cm
+s4 46.01 still check: swing in 1 s X 30, Y 31, Z 8 mg (limit 40)  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 47.01 still check: swing in 1 s X 33, Y 18, Z 10 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=67 cm
+s4 48.01 still check: swing in 1 s X 44, Y 33, Z 13 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=57 cm
+s4 49.01 still check: swing in 1 s X 34, Y 25, Z 13 mg (limit 40)  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=34 cm
+s4 50.01 still check: swing in 1 s X 31, Y 34, Z 10 mg (limit 40)  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=57 cm
+s4 51.01 still check: swing in 1 s X 40, Y 19, Z 10 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=40 cm
+s4 52.01 still check: swing in 1 s X 37, Y 44, Z 13 mg (limit 40): moved on Y  |g| 1006 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=58 cm
+s4 53.01 still check: swing in 1 s X 92, Y 264, Z 103 mg (limit 40): moved on X+Y+Z  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=32 cm
+s4 54.01 still check: swing in 1 s X 32, Y 26, Z 18 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 55.01 still check: swing in 1 s X 24, Y 14, Z 9 mg (limit 40)  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=40 cm
+s4 56.01 still check: swing in 1 s X 36, Y 25, Z 10 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 57.01 still check: swing in 1 s X 27, Y 23, Z 12 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=32 cm
+s4 58.01 still check: swing in 1 s X 29, Y 42, Z 11 mg (limit 40): moved on Y  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 59.01 still check: swing in 1 s X 24, Y 16, Z 16 mg (limit 40)  |g| 1005 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=56 cm
+s4 60.01 still check: swing in 1 s X 31, Y 19, Z 8 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 61.01 still check: swing in 1 s X 27, Y 25, Z 9 mg (limit 40)  |g| 1005 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=34 cm
+s4 62.01 still check: swing in 1 s X 41, Y 36, Z 20 mg (limit 40): moved on X  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=19 cm
+s4 63.01 still check: swing in 1 s X 1685, Y 491, Z 854 mg (limit 40): moved on X+Y+Z  |g| 992 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=18 cm
+s4 64.01 still check: swing in 1 s X 53, Y 79, Z 16 mg (limit 40): moved on X+Y  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=19 cm
+s4 65.01 still check: swing in 1 s X 174, Y 228, Z 146 mg (limit 40): moved on X+Y+Z  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=41 cm
+s4 66.01 still check: swing in 1 s X 49, Y 27, Z 15 mg (limit 40): moved on X  |g| 1001 mg, 390 samples, i2c fails 0, FIFO overruns 0
+s4 67.01 still check: swing in 1 s X 51, Y 43, Z 20 mg (limit 40): moved on X+Y  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=19 cm
+s4 68.01 still check: swing in 1 s X 74, Y 35, Z 26 mg (limit 40): moved on X  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=18 cm
+s4 69.01 still check: swing in 1 s X 91, Y 82, Z 35 mg (limit 40): moved on X+Y  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=19 cm
+s4 70.01 still check: swing in 1 s X 74, Y 61, Z 25 mg (limit 40): moved on X+Y  |g| 1001 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=64 cm
+s4 71.01 still check: swing in 1 s X 968, Y 404, Z 503 mg (limit 40): moved on X+Y+Z  |g| 979 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 72.01 still check: swing in 1 s X 400, Y 595, Z 384 mg (limit 40): moved on X+Y+Z  |g| 1002 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=72 cm
+s4 73.01 still check: swing in 1 s X 244, Y 278, Z 239 mg (limit 40): moved on X+Y+Z  |g| 1006 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=128 cm
+s4 74.01 still check: swing in 1 s X 73, Y 150, Z 66 mg (limit 40): moved on X+Y+Z  |g| 1008 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=57 cm
+s4 75.01 still check: swing in 1 s X 61, Y 73, Z 60 mg (limit 40): moved on X+Y+Z  |g| 1007 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=129 cm
+s4 76.01 still check: swing in 1 s X 107, Y 131, Z 67 mg (limit 40): moved on X+Y+Z  |g| 1008 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=71 cm
+--- record.sh: /dev/cu.usbmodemMTK3PICO1 closed at 14:07:58 ---
+--- record.sh: connected to /dev/cu.usbmodemMTK3PICO1 at 14:08:00 ---
+
+
+microT-Kernel Version 3.00
+
+
+=== micro T-Kernel on Raspberry Pi Pico W (spec 0x6300, product 0x0003) ===
+dual-core (SMP) build, usermain on core 0
+wifi: cyw43_utk_task starting (proc 1)
+wifi: cyw43_init() ...
+wifi: cyw43_init() returned, bringing interface up ...
+sm: INITIALISING -> INITIALISING (evt 0, faults 0x0000)
+all subsystems started
+
+sm: INITIALISING -> STANDBY (evt 18, faults 0x0000)
+[S5] angle=45 deg distance=92 cm
+s4 1.01 IMU self-test, car moved: swing in 1 s X 160, Y 191, Z 301 mg (limit 40): moved on X+Y+Z (x forward, y left, z up)
+s4 1.01 IMU self-test passed: LSM303D at 0x1d (|g| 993 mg, calibrating at the first still, level second)
+[S5] angle=90 deg distance=126 cm
+s4 2.01 still check: swing in 1 s X 56, Y 80, Z 41 mg (limit 40): moved on X+Y+Z  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=58 cm
+s4 3.01 still check: swing in 1 s X 49, Y 63, Z 37 mg (limit 40): moved on X+Y  |g| 995 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=125 cm
+s4 4.01 still check: swing in 1 s X 37, Y 51, Z 29 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=154 cm
+s4 5.01 still check: swing in 1 s X 29, Y 52, Z 26 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=83 cm
+s4 6.01 still check: swing in 1 s X 21, Y 42, Z 19 mg (limit 40): moved on Y  |g| 995 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=69 cm
+s4 7.01 still check: swing in 1 s X 39, Y 33, Z 23 mg (limit 40)  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+s4 7.01 IMU still but not standing level: 28.2 deg from level (limit 3.0 deg), not calibrated; put the car down flat
+[S5] angle=90 deg distance=125 cm
+s4 8.01 still check: swing in 1 s X 43, Y 44, Z 34 mg (limit 40): moved on X+Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg no echo
+s4 9.01 still check: swing in 1 s X 37, Y 66, Z 33 mg (limit 40): moved on Y  |g| 995 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=125 cm
+s4 10.01 still check: swing in 1 s X 58, Y 69, Z 38 mg (limit 40): moved on X+Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=70 cm
+s4 11.01 still check: swing in 1 s X 38, Y 46, Z 35 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=125 cm
+s4 12.01 still check: swing in 1 s X 37, Y 31, Z 29 mg (limit 40)  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=50 cm
+s4 13.01 still check: swing in 1 s X 32, Y 46, Z 22 mg (limit 40): moved on Y  |g| 994 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=80 cm
+s4 14.01 still check: swing in 1 s X 24, Y 29, Z 17 mg (limit 40)  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=69 cm
+s4 15.01 still check: swing in 1 s X 45, Y 48, Z 26 mg (limit 40): moved on X+Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=126 cm
+s4 16.01 still check: swing in 1 s X 35, Y 49, Z 37 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=55 cm
+s4 17.01 still check: swing in 1 s X 40, Y 64, Z 30 mg (limit 40): moved on Y  |g| 994 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=125 cm
+s4 18.01 still check: swing in 1 s X 42, Y 51, Z 40 mg (limit 40): moved on X+Y  |g| 995 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=69 cm
+s4 19.01 still check: swing in 1 s X 42, Y 45, Z 40 mg (limit 40): moved on X+Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=126 cm
+s4 20.01 still check: swing in 1 s X 37, Y 50, Z 33 mg (limit 40): moved on Y  |g| 995 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=57 cm
+s4 21.01 still check: swing in 1 s X 36, Y 44, Z 26 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=126 cm
+s4 22.01 still check: swing in 1 s X 25, Y 52, Z 24 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=71 cm
+s4 23.01 still check: swing in 1 s X 37, Y 58, Z 34 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=125 cm
+s4 24.01 still check: swing in 1 s X 41, Y 34, Z 36 mg (limit 40): moved on X  |g| 995 mg, 391 samples, i2c fails 0, FIFO overruns 0
+s4 25.01 still check: swing in 1 s X 37, Y 40, Z 30 mg (limit 40)  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=55 cm
+s4 26.01 still check: swing in 1 s X 30, Y 39, Z 27 mg (limit 40)  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=125 cm
+s4 27.01 still check: swing in 1 s X 35, Y 47, Z 35 mg (limit 40): moved on Y  |g| 994 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=70 cm
+s4 28.01 still check: swing in 1 s X 65, Y 121, Z 39 mg (limit 40): moved on X+Y  |g| 996 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=126 cm
+s4 29.01 still check: swing in 1 s X 30, Y 42, Z 31 mg (limit 40): moved on Y  |g| 995 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=51 cm
+s4 30.01 still check: swing in 1 s X 206, Y 188, Z 74 mg (limit 40): moved on X+Y+Z  |g| 990 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=43 cm
+s4 31.01 still check: swing in 1 s X 1207, Y 1968, Z 1066 mg (limit 40): moved on X+Y+Z  |g| 990 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=17 cm
+s4 32.01 still check: swing in 1 s X 36, Y 53, Z 19 mg (limit 40): moved on Y  |g| 989 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=17 cm
+s4 33.01 still check: swing in 1 s X 40, Y 50, Z 40 mg (limit 40): moved on Y  |g| 989 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=49 cm
+s4 34.01 still check: swing in 1 s X 41, Y 49, Z 20 mg (limit 40): moved on X+Y  |g| 989 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=16 cm
+s4 35.01 still check: swing in 1 s X 54, Y 76, Z 23 mg (limit 40): moved on X+Y  |g| 989 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=17 cm
+s4 36.01 still check: swing in 1 s X 47, Y 68, Z 30 mg (limit 40): moved on X+Y  |g| 989 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=17 cm
+s4 37.01 still check: swing in 1 s X 37, Y 37, Z 19 mg (limit 40)  |g| 989 mg, 391 samples, i2c fails 0, FIFO overruns 0
+s4 37.01 IMU calibrated on a still second: |g| 989 mg, 0.2 deg from level standing, swing in 1 s X 37, Y 37, Z 19 mg (limit 40)
+[S5] angle=45 deg distance=37 cm
+s4 38.01 still check: swing in 1 s X 48, Y 51, Z 16 mg (limit 40): moved on X+Y  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=16 cm
+s4 39.01 still check: swing in 1 s X 56, Y 60, Z 15 mg (limit 40): moved on X+Y  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=17 cm
+s4 40.01 still check: swing in 1 s X 78, Y 58, Z 28 mg (limit 40): moved on X+Y  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=17 cm
+s4 41.01 still check: swing in 1 s X 49, Y 52, Z 22 mg (limit 40): moved on X+Y  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=36 cm
+s4 42.01 still check: swing in 1 s X 117, Y 118, Z 61 mg (limit 40): moved on X+Y+Z  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=16 cm
+s4 43.01 still check: swing in 1 s X 28, Y 65, Z 11 mg (limit 40): moved on Y  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=17 cm
+s4 44.01 still check: swing in 1 s X 83, Y 103, Z 63 mg (limit 40): moved on X+Y+Z  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=17 cm
+s4 45.01 still check: swing in 1 s X 33, Y 54, Z 11 mg (limit 40): moved on Y  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=45 deg distance=43 cm
+s4 46.01 still check: swing in 1 s X 22, Y 26, Z 8 mg (limit 40)  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=90 deg distance=16 cm
+s4 47.01 still check: swing in 1 s X 21, Y 18, Z 10 mg (limit 40)  |g| 1000 mg, 390 samples, i2c fails 0, FIFO overruns 0
+[S5] angle=135 deg distance=17 cm
+s4 48.01 still check: swing in 1 s X 27, Y 55, Z 14 mg (limit 40): moved on Y  |g| 1000 mg, 391 samples, i2c fails 0, FIFO overruns 0

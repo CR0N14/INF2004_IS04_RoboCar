@@ -2,6 +2,7 @@
 #if ENCODER_FREE_DEMO
 #include "demo_ir.h"
 #include "drv_ir.h"
+#include "../subsystem2/demo_steering.h"
 #include "ir_config.h"
 #include "../subsystem1/state_machine.h"
 #include "../subsystem2/subsystem2.h"
@@ -10,8 +11,8 @@ static demo_line_t published;
 static s3_tlm_t    published_tlm;
 
 /* Full-rate right IR diagnostics, buffered independently of MQTT.
-   512 samples hold 5 s at 10 ms, enough to ride out a WiFi stall. */
-#define DIAG_RING 512u
+   256 samples hold 5 s at 20 ms, enough to ride out a WiFi stall. */
+#define DIAG_RING 256u
 static uint32_t diag_ring[DIAG_RING][5], diag_next[5];
 static unsigned diag_head, diag_tail;
 static uint32_t diag_sequence;
@@ -179,25 +180,8 @@ static void request_calibration (uint32_t now, uint32_t status)
     }
 }
 
-static void finish_calibration (void)
+static void configure_calibration (bool stable)
 {
-    bool stable = true;
-    for (int i = 0; i < 3; i++)
-        if (hi[i] - lo[i] > 150u)
-            stable = false;
-    if (stable)
-    {
-        for (int i = 0; i < 3; i++)
-        {
-            if (capture == 1)
-                s.white[i] = sum[i] / count;
-            else
-                s.black[i] = sum[i] / count;
-        }
-        have |= capture;
-    }
-    s.cal_phase = stable ? 0 : 4;
-    capture     = 0;
     if (have == 3)
     {
         s.calibrated = stable;
@@ -227,6 +211,28 @@ static void finish_calibration (void)
         else
             s.cal_phase = 4;
     }
+}
+
+static void finish_calibration (void)
+{
+    bool stable = true;
+    for (int i = 0; i < 3; i++)
+        if (hi[i] - lo[i] > 150u)
+            stable = false;
+    if (stable)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            if (capture == 1)
+                s.white[i] = sum[i] / count;
+            else
+                s.black[i] = sum[i] / count;
+        }
+        have |= capture;
+    }
+    s.cal_phase = stable ? 0 : 4;
+    capture     = 0;
+    configure_calibration(stable);
 }
 
 static void calibration_step (bool valid, uint32_t now, uint32_t status)
@@ -296,20 +302,22 @@ static void junction_step (bool enabled, uint32_t now)
 static void process_frame (ir_frame_t const * frame, uint32_t now,
                            uint32_t status, sm_nav_mode_t nav)
 {
+    s.barcode_capturing           = false;
+    uint16_t darkness_tracking[3] = {0};
     for (int i = 0; i < 3; i++)
     {
         ir_calibration_t cal = {.white = s.white[i], .black = s.black[i]};
         uint16_t         d   = 0;
         ir_processing_normalise(cal, s.raw[i], 200, &d);
+        darkness_tracking[i] = d;
+        s.dark[i]            = d;
         if (d >= 2400)
             s.mask |= 1u << i;
         if (d <= 1600)
             s.mask &= ~(1u << i);
     }
-    /* Centre-only is straight; left-only turns left. White triggers
-       search. With only left+centre trackers the right side is not
-       directly observed. */
-    s.steer      = (s.mask & 3u) == 1u ? -DEMO_LINE_CORRECTION : 0;
+    s.steer =
+        demo_analogue_steer(darkness_tracking[0], darkness_tracking[1], s.mask);
     bool enabled = SM_STATUS_STATE(status) == SM_STATE_NAVIGATING &&
                    nav == SM_NAV_TRACKING;
     if (DEMO_JUNCTION_TEST)
@@ -340,6 +348,8 @@ static void process_frame (ir_frame_t const * frame, uint32_t now,
     unsigned         before_state = decoder.state, before_count = decoder.count;
     barcode_result_t result = barcode_decoder_step(
         &decoder, frame, perm, binding, motion, (uint16_t)clock_ms());
+    s.barcode_capturing =
+        enabled && moving && decoder.state == BARCODE_CAPTURING;
     uint16_t darkness = 0;
     ir_processing_normalise(decoder.config.calibration, s.raw[2], 200,
                             &darkness);
@@ -414,6 +424,16 @@ static void task (INT code, void * arg)
         tk_ext_tsk();
         return;
     }
+    /* Temporary measured defaults; MQTT calibration overrides until reboot. */
+    uint16_t const white[3] = {169u, 177u, 231u};
+    uint16_t const black[3] = {3082u, 3120u, 3563u};
+    for (int i = 0; i < 3; i++)
+    {
+        s.white[i] = white[i];
+        s.black[i] = black[i];
+    }
+    have = 3u;
+    configure_calibration(true);
     ir_source_t source = {drv_ir_clock, drv_ir_read, &driver, 0};
     for (;;)
     {

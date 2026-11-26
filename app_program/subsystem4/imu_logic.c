@@ -227,6 +227,59 @@ imu_cal_mean_mg(imu_cal_t const *p_cal)
                          IMU_Q2_PER_MG);
 }
 
+void
+imu_cal_swing_mg(imu_cal_t const *p_cal, int32_t p_mg[3])
+{
+    uint32_t i;
+
+    for (i = 0u; i < 3u; i++)
+    {
+        p_mg[i] = (0u == p_cal->cycles) ? 0 :
+                  imu_div_round(p_cal->hi[i] - p_cal->lo[i], IMU_Q2_PER_MG);
+    }
+}
+
+int32_t
+imu_cal_tilt_cdeg(imu_cal_t const *p_cal)
+{
+    static int32_t const up[3] =
+    {
+        IMU_MOUNT_UP_X_MG, IMU_MOUNT_UP_Y_MG, IMU_MOUNT_UP_Z_MG
+    };
+    int32_t mean[3];
+    int32_t n[3];               /* mean gravity, unit vector, Q14        */
+    int32_t u[3];               /* level standing, unit vector, Q14      */
+    int32_t c[3];               /* n x u, Q14                            */
+    int32_t mag;
+    int32_t const umag = (int32_t)norm3(up[0], up[1], up[2]);
+    uint32_t i;
+
+    if (0u == p_cal->n)
+    {
+        return 18000;
+    }
+    for (i = 0u; i < 3u; i++)
+    {
+        mean[i] = imu_div_round(p_cal->sum[i], (int32_t)p_cal->n);
+    }
+    mag = (int32_t)norm3(mean[0], mean[1], mean[2]);
+    if (0 == mag)
+    {
+        return 18000;
+    }
+    for (i = 0u; i < 3u; i++)
+    {
+        n[i] = imu_div_round(mean[i] * Q14_ONE, mag);
+        u[i] = imu_div_round(up[i] * Q14_ONE, umag);
+    }
+    c[0] = imu_div_round((n[1] * u[2]) - (n[2] * u[1]), Q14_ONE);
+    c[1] = imu_div_round((n[2] * u[0]) - (n[0] * u[2]), Q14_ONE);
+    c[2] = imu_div_round((n[0] * u[1]) - (n[1] * u[0]), Q14_ONE);
+    return imu_atan2_cdeg((int32_t)norm3(c[0], c[1], c[2]),
+                          imu_div_round((n[0] * u[0]) + (n[1] * u[1]) +
+                                        (n[2] * u[2]), Q14_ONE));
+}
+
 bool
 imu_g_plausible(int32_t g_mg)
 {

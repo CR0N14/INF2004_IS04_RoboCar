@@ -221,3 +221,111 @@ demo_measure_width(demo_range_fn read, void *p_ctx, demo_width_t *p_out)
     p_out->readings = (uint8_t)((scan.readings > 255u) ? 255u : scan.readings);
     return true;
 }
+
+/* Demo bypass clearance analysis, retained alongside refined width scan. */
+
+#include "../demo_config.h"
+#include "../subsystem1/sm_types.h"
+/* sin/cos at multiples of 5 degrees, scaled 10000; no runtime trig. */
+static int const sn[13]={0,872,1736,2588,3420,4226,5000,5736,6428,7071,7660,8192,8660};
+static int const cs[13]={10000,9962,9848,9659,9397,9063,8660,8192,7660,7071,6428,5736,5000};
+#define FAR_CM 400u
+static bool profile_valid(uint16_t d){return d>=2u&&d<=FAR_CM;}
+bool demo_profile_analyse(uint16_t const d[25],demo_profile_t *p){
+ if(!d||!p||!profile_valid(d[12])||d[12]>35u)return false;
+ bool hit[25];
+ for(int i=0;i<25;i++){
+  int a=i<12?12-i:i-12;
+  if(!profile_valid(d[i])){hit[i]=false;continue;}
+  /* Forward depth of this return; the obstacle face is within 8 cm. */
+  int depth=((int)d[i]*cs[a]+5000)/10000;
+  hit[i]=depth-(int)d[12]<=8;
+ }
+ int l=12,r=12;while(l>0&&hit[l-1])--l;while(r<24&&hit[r+1])++r;
+ if(l==0||r==24||l==r)return false; /* both edges must be inside the sweep */
+ int w=((int)d[l]*sn[12-l]+(int)d[r]*sn[r-12]+5000)/10000-2*(int)DEMO_SONAR_EDGE_CORR_CM;
+ if(w<=0||w>127)return false;
+ uint16_t lo=FAR_CM,hi=FAR_CM,closest=d[12];
+ for(int i=0;i<25;i++){
+  uint16_t v=profile_valid(d[i])?d[i]:FAR_CM;
+  if(i<l){if(v<lo)lo=v;}
+  else if(i>r){if(v<hi)hi=v;}
+  else if(v<closest)closest=v;
+ }
+ p->width_cm=(uint16_t)w;p->closest_cm=closest;
+ p->low_edge=(uint8_t)l;p->high_edge=(uint8_t)r;
+ p->left_cm=DEMO_SERVO_LEFT_LOW?lo:hi;p->right_cm=DEMO_SERVO_LEFT_LOW?hi:lo;
+ return true;
+}
+uint8_t demo_profile_choose(demo_profile_t const *p){
+ if(!p)return SM_AVOID_STOP;
+ if(p->left_cm>=DEMO_SIDE_CLEAR_CM&&p->left_cm>=p->right_cm)return SM_AVOID_LEFT; /* tie: left */
+ if(p->right_cm>=DEMO_SIDE_CLEAR_CM)return SM_AVOID_RIGHT;
+ return SM_AVOID_STOP;
+}
+#define GRID_LO 30
+#define GRID_HI 150
+#define CACHE_NONE 0xFFFFu
+#define SIDE_STEP_DEG 20
+typedef struct {demo_range_fn read;void *ctx;uint16_t cache[GRID_HI-GRID_LO+1];} measure_t;
+/* Remember the best reading per angle: a valid echo beats no echo, and the
+   nearer of two valid echoes is kept (conservative for clearance). */
+static uint16_t cached_read(void *p_ctx,unsigned int angle){
+ measure_t *m=(measure_t *)p_ctx;
+ uint16_t r=m->read(m->ctx,angle);
+ if(angle>=(unsigned)GRID_LO&&angle<=(unsigned)GRID_HI){
+  uint16_t *c=&m->cache[angle-GRID_LO];
+  if(profile_valid(r)){if(*c==CACHE_NONE||!profile_valid(*c)||r<*c)*c=r;}
+  else if(*c==CACHE_NONE)*c=r;
+ }
+ return r;
+}
+static uint16_t grid_read(measure_t *m,int angle){
+ uint16_t v=m->cache[angle-GRID_LO];
+ if(v==CACHE_NONE||!profile_valid(v)){
+  /* Read, plus one retry, so a single dropped echo does not hide a near
+     side wall. */
+  v=cached_read(m,(unsigned)angle);
+  if(!profile_valid(v))v=cached_read(m,(unsigned)angle);
+ }
+ return profile_valid(v)?v:(uint16_t)FAR_CM;
+}
+bool demo_profile_measure(demo_range_fn read,void *p_ctx,demo_profile_t *p,demo_width_t *p_w){
+ measure_t m;demo_width_t w;
+ if(!read||!p)return false;
+ m.read=read;m.ctx=p_ctx;
+ for(int i=0;i<=GRID_HI-GRID_LO;i++)m.cache[i]=CACHE_NONE;
+ if(!demo_measure_width(cached_read,&m,&w))return false;
+ int low_limit=(int)w.left_deg-(int)DEMO_BEAM_HALF_DEG;   /* beyond the low corner */
+ int high_limit=(int)w.right_deg+(int)DEMO_BEAM_HALF_DEG; /* beyond the high corner */
+ uint16_t lo=0,hi=0;bool lo_any=false,hi_any=false;
+ /* The width scan ends on the high side: read it first (outer limit
+    inwards), then the low side, to keep servo swings short. 20-degree
+    grid from the sweep limit; cached 10-degree readings are reused. */
+ for(int a=GRID_HI;a>high_limit;a-=SIDE_STEP_DEG){uint16_t v=grid_read(&m,a);if(!hi_any||v<hi)hi=v;hi_any=true;}
+ for(int a=GRID_LO;a<low_limit;a+=SIDE_STEP_DEG){uint16_t v=grid_read(&m,a);if(!lo_any||v<lo)lo=v;lo_any=true;}
+ /* Coarse misses already read beyond each corner count too. */
+ for(int a=GRID_LO;a<=GRID_HI;a+=10){
+  uint16_t v=m.cache[a-GRID_LO];
+  if(v==CACHE_NONE)continue;
+  v=profile_valid(v)?v:(uint16_t)FAR_CM;
+  if(a<low_limit){if(!lo_any||v<lo)lo=v;lo_any=true;}
+  else if(a>high_limit){if(!hi_any||v<hi)hi=v;hi_any=true;}
+ }
+ uint16_t closest=w.ahead_cm;
+ for(int a=w.left_deg;a<=w.right_deg;a++){
+  uint16_t v=(a>=GRID_LO&&a<=GRID_HI)?m.cache[a-GRID_LO]:CACHE_NONE;
+  if(v!=CACHE_NONE&&profile_valid(v)&&v<closest)closest=v;
+ }
+ p->width_cm=w.width_cm;p->closest_cm=closest;
+ p->low_edge=(uint8_t)(((int)w.left_deg-GRID_LO)/5);
+ p->high_edge=(uint8_t)(((int)w.right_deg-GRID_LO+4)/5>24?24:((int)w.right_deg-GRID_LO+4)/5);
+ p->left_cm=DEMO_SERVO_LEFT_LOW?lo:hi;p->right_cm=DEMO_SERVO_LEFT_LOW?hi:lo;
+ if(p_w)*p_w=w;
+ return true;
+}
+bool demo_profile_width(uint16_t const d[25],uint16_t *width){
+ demo_profile_t p;
+ if(!width||!demo_profile_analyse(d,&p))return false;
+ *width=p.width_cm;return true;
+}

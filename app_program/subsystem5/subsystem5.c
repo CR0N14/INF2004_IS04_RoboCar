@@ -3,6 +3,7 @@
 #include "subsystem5.h"
 #include "../demo_config.h"
 #include "demo_profile.h"
+#include "demo_sonar.h"
 #include "drv_servo.h"
 #include "drv_ultrasonic.h"
 #include "../subsystem1/state_machine.h"
@@ -487,69 +488,172 @@ static void scan_position(s5_detection_t *detection, UINT angle)
 }
 
 #if ENCODER_FREE_DEMO
-/* Missing data is never read as clear: no echo after a retry gives 0. */
-static UINT demo_clearance(width_scan_t *p_s, unsigned int angle)
+#define DEMO_SCAN_ATTEMPTS 3u     /* failed analyses before a SCAN fault  */
+#define DEMO_READ_GAP_MS   60u    /* >60 ms between triggers              */
+static volatile uint8_t g_demo_aim = FORWARD_ANGLE_DEG; /* written by S2 */
+static UINT g_servo_deg = FORWARD_ANGLE_DEG; /* commanded angle, S5 only  */
+static uint16_t g_read_cm = S5_NO_ECHO_CM;
+static uint8_t g_read_deg = FORWARD_ANGLE_DEG;
+static uint32_t g_read_ms;
+
+EXPORT void s5_demo_set_aim(uint8_t angle_deg)
 {
-    uint16_t d = width_scan_read(p_s, angle);
-
-    if (d == S5_NO_ECHO_CM) {
-        d = width_scan_read(p_s, angle);
+    if (angle_deg <= 180u) {
+        g_demo_aim = angle_deg;
     }
-    return (d == S5_NO_ECHO_CM) ? 0u : d;
 }
 
-static void demo_scan(void){
- width_scan_t scan={FORWARD_ANGLE_DEG,false,false};
- demo_width_t w={0};
- s5_tlm_t p={0};
- UINT left=0u,right=0u;
- bool ok;
+EXPORT ER s5_demo_reading(uint16_t *distance_cm, uint8_t *angle_deg, uint32_t *time_ms)
+{
+    ER er;
 
+    if (distance_cm == NULL || angle_deg == NULL || time_ms == NULL) {
+        return E_PAR;
+    }
+    if (g_mtx_tlm <= 0) {
+        return E_OBJ;
+    }
+    er = tk_loc_mtx(g_mtx_tlm, TMO_POL);
+    if (er != E_OK) {
+        return er;
+    }
+    *distance_cm = g_read_cm;
+    *angle_deg = g_read_deg;
+    *time_ms = g_read_ms;
+    return tk_unl_mtx(g_mtx_tlm);
+}
+
+/* Publish one reading with the angle it was actually taken at. */
+static void demo_publish(s5_scan_state_t state, UINT angle, UINT distance_cm)
+{
+    if (tk_loc_mtx(g_mtx_tlm, TMO_FEVR) != E_OK) {
+        return;
+    }
+    g_tlm.scan_state = state;
+    g_tlm.servo_deg = angle;
+    g_tlm.distance_cm = distance_cm;
+    g_read_cm = (uint16_t)distance_cm;
+    g_read_deg = (uint8_t)angle;
+    g_read_ms = now_ms();
+    (void)tk_unl_mtx(g_mtx_tlm);
+}
+
+/* Move the servo only when needed; settle about 100 ms plus 3 ms/degree. */
+static void demo_aim(UINT angle)
+{
+    UINT swing;
+
+    if (angle == g_servo_deg) {
+        return;
+    }
+    swing = (angle > g_servo_deg) ? angle - g_servo_deg : g_servo_deg - angle;
+    if (s5_servo_set_angle(angle) == E_OK) {
+        g_servo_deg = angle;
+    }
+    tk_dly_tsk((TMO)(100u + 3u * swing));
+}
+
+static bool demo_hold(void){uint32_t s=sm_status_word();return SM_STATUS_STATE(s)==SM_STATE_OBSTACLE_AVOIDANCE&&SM_STATUS_NAV(s)==SM_NAV_HOLD;}
+
+#if DEMO_SONAR_REFINED
+typedef struct {bool aborted,fault;} demo_range_t;
+/* Range callback for demo_profile_measure(): aim (settle 100 ms + 3 ms/deg),
+   or wait DEMO_READ_GAP_MS (60 ms) before re-reading the same angle, so
+   triggers stay at least 60 ms apart. Stops reading once HOLD ends or the servo rejects an angle. */
+static uint16_t demo_range(void *p_ctx,unsigned int angle){
+ demo_range_t *s=(demo_range_t *)p_ctx;
+ if(s->aborted||s->fault)return S5_NO_ECHO_CM;
+ if(!demo_hold()){s->aborted=true;return S5_NO_ECHO_CM;}
+ if(angle!=g_servo_deg){
+  demo_aim(angle);
+  if(g_servo_deg!=angle){s->fault=true;return S5_NO_ECHO_CM;}
+ }else tk_dly_tsk((TMO)DEMO_READ_GAP_MS);
+ if(!demo_hold()){s->aborted=true;return S5_NO_ECHO_CM;}
+ UINT d=s5_ultrasonic_read_cm();
+ demo_publish(S5_SCAN_SCANNING,angle,d);
+ return (uint16_t)d;
+}
+#endif
+/* Stationary profile scan. 1: profile posted, 0: analysis failed,
+   -1: HOLD ended during the scan. */
+static int demo_scan(void){
+ s5_tlm_t p={0};demo_profile_t pr={0};UINT bearing=FORWARD_ANGLE_DEG;
  p.recommendation=SM_AVOID_STOP;publish_profile(&p);
- ok=demo_measure_width(width_scan_read,&scan,&w);
- if(ok&&!scan.aborted&&!scan.fault){
-  left=demo_clearance(&scan,PROFILE_LEFT_ANGLE_DEG);
-  right=demo_clearance(&scan,PROFILE_RIGHT_ANGLE_DEG);
+#if DEMO_SONAR_REFINED
+ demo_range_t rd={false,false};demo_width_t w={0};
+ bool ok=demo_profile_measure(demo_range,&rd,&pr,&w);
+ demo_aim(FORWARD_ANGLE_DEG);
+ if(rd.aborted)return -1;
+ if(!ok||rd.fault)return 0;
+ bearing=w.bearing_deg;
+ tm_printf((UB*)"[S5] corners %u..%u deg, ahead %u cm, %u readings\n",
+           (UINT)w.left_deg,(UINT)w.right_deg,(UINT)w.ahead_cm,(UINT)w.readings);
+#else
+ uint16_t d[25]={0};
+ for(UINT i=0;i<25;i++){
+  UINT angle=30u+5u*i;
+  if(!demo_hold())return -1;
+  demo_aim(angle);
+  if(g_servo_deg!=angle){demo_aim(FORWARD_ANGLE_DEG);return 0;}
+  if(!demo_hold())return -1;
+  d[i]=(uint16_t)s5_ultrasonic_read_cm();
+  demo_publish(S5_SCAN_SCANNING,angle,d[i]); /* next servo settle spaces the triggers */
  }
- if(!scan.aborted){
-  if(!ok||scan.fault){
-   if(in_hold())sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
-  }else{
-   p.b_profile=1;p.width_cm=w.width_cm;p.closest_cm=w.ahead_cm;p.bearing_deg=w.bearing_deg;
-   p.left_clear_cm=left>255u?255u:left;p.right_clear_cm=right>255u?255u:right;
-   if(left>=PROFILE_SAFE_CLEAR_CM&&left>=right)p.recommendation=SM_AVOID_LEFT;
-   else if(right>=PROFILE_SAFE_CLEAR_CM)p.recommendation=SM_AVOID_RIGHT;
-   publish_profile(&p);
-   tm_printf((UB*)"[S5] width: %u cm, corners %u..%u deg, ahead %u cm, clear L%u R%u, %u readings\n",
-             (unsigned int)w.width_cm,(unsigned int)w.left_deg,(unsigned int)w.right_deg,
-             (unsigned int)w.ahead_cm,(unsigned int)left,(unsigned int)right,(unsigned int)w.readings);
-   if(in_hold())sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
-  }
- }
- s5_servo_set_angle(90);tk_dly_tsk(500);
+ demo_aim(FORWARD_ANGLE_DEG);
+ if(!demo_profile_analyse(d,&pr))return 0;
+#endif
+ p.b_profile=1;p.width_cm=pr.width_cm>127u?127u:pr.width_cm;p.closest_cm=pr.closest_cm;
+ p.bearing_deg=bearing;
+ p.left_clear_cm=pr.left_cm>255u?255u:pr.left_cm;p.right_clear_cm=pr.right_cm>255u?255u:pr.right_cm;
+ p.recommendation=demo_profile_choose(&pr);
+ publish_profile(&p);
+ tm_printf((UB*)"[S5] width=%u cm left=%u right=%u recommend=%u\n",
+           (UINT)pr.width_cm,(UINT)pr.left_cm,(UINT)pr.right_cm,(UINT)p.recommendation);
+ if(demo_hold())(void)sm_post_event(SM_EVT_PROFILE_READY,p.recommendation);
+ return 1;
 }
+
 static void demo_ultrasound_loop(void){
- unsigned near=0,missing=0;bool scan_done=false;
- s5_servo_set_angle(90);tk_dly_tsk(500);
+ unsigned near=0,attempts=0;bool scan_done=false;
+ (void)s5_servo_set_angle(FORWARD_ANGLE_DEG);g_servo_deg=FORWARD_ANGLE_DEG;tk_dly_tsk(500);
  for(;;){
   uint32_t st=sm_status_word();
-  if(in_hold()){
-   if(!scan_done){demo_scan();scan_done=true;}
-   else { /* STOP profiles remain stopped; rescan after a bounded pause. */
-    tk_dly_tsk(500);if(in_hold())demo_scan();
+  sm_state_t state=SM_STATUS_STATE(st);sm_nav_mode_t nav=SM_STATUS_NAV(st);
+  if(demo_hold()){
+   near=0;
+   if(!scan_done){
+    int r=demo_scan();
+    if(r>0){scan_done=true;attempts=0;}
+    else if(r==0&&++attempts>=DEMO_SCAN_ATTEMPTS){
+     if(demo_hold())(void)sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
+     attempts=0;scan_done=true;
+    }
+   }else{ /* STOP keeps HOLD: rescan after a bounded pause. */
+    tk_dly_tsk(500);if(demo_hold())scan_done=false;
    }
-  }else{
-   scan_done=false;UINT d=s5_ultrasonic_read_cm();publish_tlm(S5_SCAN_MONITORING,90,d);
-   bool moving=SM_STATUS_STATE(st)==SM_STATE_NAVIGATING||SM_STATUS_STATE(st)==SM_STATE_OBSTACLE_AVOIDANCE;
-   if(moving){
-    if(d==S5_NO_ECHO_CM){if(++missing>=3)sm_post_event(SM_EVT_FAULT,SM_FAULT_NO_ECHO);}
-    else {missing=0;if(d<25){if(++near>=2){
-      if(SM_STATUS_NAV(st)==SM_NAV_BYPASS||SM_STATUS_NAV(st)==SM_NAV_RECOVERY)sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
-      else sm_post_event(SM_EVT_OBSTACLE,0);
-    }}else near=0;}
-   }else {near=0;missing=0;}
-   tk_dly_tsk(100);
+   continue;
   }
+  scan_done=false;attempts=0;
+  if(state==SM_STATE_OBSTACLE_AVOIDANCE&&nav==SM_NAV_BYPASS){
+   /* S2 drives the bypass and chooses where to look; S5 only measures. */
+   near=0;
+   demo_aim(g_demo_aim);
+   UINT d=s5_ultrasonic_read_cm();demo_publish(S5_SCAN_AVOIDANCE,g_servo_deg,d);
+   tk_dly_tsk(DEMO_READ_GAP_MS);
+   continue;
+  }
+  demo_aim(FORWARD_ANGLE_DEG);
+  UINT d=s5_ultrasonic_read_cm();demo_publish(S5_SCAN_MONITORING,FORWARD_ANGLE_DEG,d);
+  bool moving=state==SM_STATE_NAVIGATING||state==SM_STATE_OBSTACLE_AVOIDANCE;
+  if(moving){
+   /* No echo is an unknown distance, not a fatal fault in the demo. */
+   if(d==S5_NO_ECHO_CM){near=0;}
+   else {if(d<OBSTACLE_THRESHOLD_CM){if(++near>=2){
+     if(nav==SM_NAV_RECOVERY)(void)sm_post_event(SM_EVT_FAULT,SM_FAULT_SCAN);
+     else (void)sm_post_event(SM_EVT_OBSTACLE,0);
+   }}else near=0;}
+  }else{near=0;}
+  tk_dly_tsk(100);
  }
 }
 #endif

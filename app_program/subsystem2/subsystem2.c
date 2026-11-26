@@ -41,6 +41,7 @@
 #include "demo_motion.h"
 #include "../subsystem3/demo_ir.h"
 #include "../subsystem4/demo_imu.h"
+#include "../subsystem5/demo_sonar.h"
 #endif
 
 /* ---- Constants ------------------------------------------------------- */
@@ -904,7 +905,14 @@ static void demo_cycle(void){
  (void)demo_imu_read(&imu);
  now=now_ms(); /* Snapshots may have been published during the reads. */
  bool pickup=!DEMO_IGNORE_IMU && imu.latched;
+ /* Bypass inputs: S4 heading and the latest S5 reading with its angle. */
+ demo_sense_t sense={0};
+ sense.heading_ok=imu.heading_ok&&now-imu.time_ms<=100u;
+ sense.heading_cdeg=imu.heading_cdeg;
+ sense.sonar_ok=s5_demo_reading(&sense.sonar_cm,&sense.sonar_deg,&sense.sonar_time)==E_OK;
+ ctx.sense=sense;
  demo_output_t o=demo_motion_step(&ctx,now,status,&line,n?cmds[n-1]:0,pickup);
+ s5_demo_set_aim(o.aim?o.aim_deg:90u);
  if(!DEMO_IGNORE_IMU && !pickup && (!imu.ready||now-imu.time_ms>100u)) {
   o.left=0;o.right=0;
   if(SM_STATUS_STATE(status)==SM_STATE_NAVIGATING ||
