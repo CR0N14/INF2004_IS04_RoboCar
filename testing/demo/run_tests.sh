@@ -16,3 +16,12 @@ echo "Stationary barcode: motor inhibit checks passed"
 
 clang -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -DENCODER_FREE_DEMO=1 -DDEMO_BARCODE_DRIVE_MS=3000u testing/demo/test_barcode_drive.c app_program/subsystem2/demo_motion.c -o "$binary"
 "$binary"
+
+clang -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -DENCODER_FREE_DEMO=1 testing/demo/test_bypass.c app_program/subsystem2/demo_motion.c app_program/subsystem5/demo_profile.c -o "$binary"
+"$binary"
+
+clang -std=c11 -Wall -Wextra -Werror -fsanitize=address,undefined -DENCODER_FREE_DEMO=1 -DDEMO_SMOOTH_TRACK=1 testing/demo/test_smooth_track.c app_program/subsystem2/demo_motion.c -o "$binary"
+"$binary"
+
+clang -std=gnu11 -Wall -Wextra -Werror -fsanitize=address,undefined -DENCODER_FREE_DEMO=1 testing/demo/test_sonar_profile.c app_program/subsystem5/demo_profile.c -lm -o "$binary"
+"$binary"

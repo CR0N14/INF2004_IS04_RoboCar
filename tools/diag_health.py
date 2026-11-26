@@ -6,7 +6,7 @@
 Each IRB1 packet carries 3 consecutive samples. A sequence jump between
 packets is lost samples. Delay is how far arrival falls behind the car's
 clock, relative to the least-delayed packet; a delay that climbs towards
-5 s means the car's 512-sample buffer is filling and will drop samples.
+5 s means the car's 256-sample buffer is filling and will drop samples.
 """
 import datetime as dt
 import json

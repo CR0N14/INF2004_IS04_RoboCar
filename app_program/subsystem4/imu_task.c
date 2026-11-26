@@ -598,6 +598,9 @@ monitor_cycle(uint32_t flags)
         g_ctx.view.pitch_cdeg,g_ctx.view.roll_cdeg,in.b_motors,
         out.b_collision||out.b_tipover);
     if(out.b_hump){g_demo.peak_mm=out.hump.peak_mm;g_demo.height_valid=true;}
+    /* Heading for the obstacle bypass; stale after 10 cycles (100 ms). */
+    g_demo.heading_cdeg=g_ctx.view.heading_cdeg;
+    g_demo.heading_ok=g_ctx.view.b_heading&&(g_ctx.cycle-g_ctx.head_cycle)<=10u;
 #endif
     handle_outputs(&out);
 }

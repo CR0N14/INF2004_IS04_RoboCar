@@ -184,6 +184,8 @@ BARCODE_DRIVE_MS ?= 0
 BARCODE_CLEAR_MS ?= 600
 IR_PERIOD_MS ?= 10
 JUNCTION_TEST ?= 0
+SMOOTH_TRACK ?= 0
+SONAR_REFINED ?= 0
 CFLAGS += -DENCODER_FREE_DEMO=$(DEMO) \
           -DDEMO_IGNORE_IMU=$(DEMO_NO_IMU) \
           -DDEMO_BASE_DUTY=$(DEMO_DUTY) \
@@ -191,7 +193,7 @@ CFLAGS += -DENCODER_FREE_DEMO=$(DEMO) \
           -DDEMO_BARCODE_DRIVE_MS=$(BARCODE_DRIVE_MS)u \
           -DDEMO_BARCODE_CLEAR_MS=$(BARCODE_CLEAR_MS)u \
           -DDEMO_IR_PERIOD_MS=$(IR_PERIOD_MS)u \
-          -DDEMO_JUNCTION_TEST=$(JUNCTION_TEST)
+          -DDEMO_JUNCTION_TEST=$(JUNCTION_TEST) -DDEMO_SMOOTH_TRACK=$(SMOOTH_TRACK) -DDEMO_SONAR_REFINED=$(SONAR_REFINED)
 CFLAGS  += -DAPP_TEST=$(TEST)
 CFLAGS  += -DTM_CONSOLE_UART=$(CRASH_REPORT)
 ifeq ($(CRASH_REPORT),0)
@@ -225,7 +227,7 @@ endif
 # before any recipe executes.
 ################################################################################
 
-PROFILE_ID := smp$(SMP)-$(CONSOLE)-wifi$(WIFI)-net$(NET)-mqtt$(MQTT)-crash$(CRASH_REPORT)-test$(TEST)-demo$(DEMO)-noimu$(DEMO_NO_IMU)-duty$(DEMO_DUTY)-barcodebench$(BARCODE_BENCH)-barcodedrive$(BARCODE_DRIVE_MS)-clear$(BARCODE_CLEAR_MS)-ir$(IR_PERIOD_MS)-junction$(JUNCTION_TEST)
+PROFILE_ID := smp$(SMP)-$(CONSOLE)-wifi$(WIFI)-net$(NET)-mqtt$(MQTT)-crash$(CRASH_REPORT)-test$(TEST)-demo$(DEMO)-noimu$(DEMO_NO_IMU)-duty$(DEMO_DUTY)-barcodebench$(BARCODE_BENCH)-barcodedrive$(BARCODE_DRIVE_MS)-clear$(BARCODE_CLEAR_MS)-ir$(IR_PERIOD_MS)-junction$(JUNCTION_TEST)-smooth$(SMOOTH_TRACK)-sonarref$(SONAR_REFINED)
 PROFILE_FILE := .build_profile
 
 ifneq ($(strip $(shell cat $(PROFILE_FILE) 2>/dev/null)),$(PROFILE_ID))
